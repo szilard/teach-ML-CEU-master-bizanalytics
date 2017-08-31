@@ -40,7 +40,7 @@ Class announcements and student Q&A will be done via [github issues](https://git
 
 ### Syllabus and Schedule:
 
-## ML #1
+### ML #1
 
 Week 1:
 
@@ -51,7 +51,7 @@ Week 3:
 Week 4:
 
 
-## ML #2
+### ML #2
 
 Week 9:
 
