@@ -9,6 +9,11 @@ at the Central European University (CEU) starting January 2017.
 The material for the previous 2-credit course taught in 2015 and 2016 can be found 
 [here](https://github.com/szilard/teach-data-science-msc-analytics-ceu).
 
+
+### Courses
+
+The above breakdown is somewhat adhoc and mainly to comply with the university's administrative requirements.
+
 #### Data Science and Machine Learning 1 (Concepts):
 
 After an overview of the entire data science landscape this course will focus on machine learning. The course will introduce the main fundamental concepts in machine learning (supervised learning, training, scoring, accuracy measures, test set, overfitting, cross validation, model capacity, hyperparameter tuning, grid and random search, regularization, ensembles, model selection etc.) The concepts will be illustrated with R code therefore it requires prior familiarity with R.
