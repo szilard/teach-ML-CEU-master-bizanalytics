@@ -10,7 +10,7 @@ The material for the previous 2-credit course taught in 2015 and 2016 can be fou
 [here](https://github.com/szilard/teach-data-science-msc-analytics-ceu).
 
 
-### Courses/Goals
+### Course Description and Objectives
 
 The breakdown below (into ML #1 an #2) is somewhat adhoc and mainly to comply with administrative requirements.
 Both courses will intertwine general ML concepts, algorithms and software implementations/tools and will

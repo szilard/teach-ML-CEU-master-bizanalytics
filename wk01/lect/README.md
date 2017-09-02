@@ -9,7 +9,7 @@ Overview of data science. The elements of a data science project. Overview of to
 
 ### Slides
 
-Slides [here]().
+Slides [here](https://drive.google.com/open?id=1PmOffoPnJAgw3FeU2icZ33eDWBJa994D4kb22ngHUf0).
 
 
 ### Reading

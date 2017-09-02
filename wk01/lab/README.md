@@ -16,7 +16,7 @@ should have
 
 should be able to 
 
-- create a simple Rmarkdown file
+- create a simple Rmarkdown file, run it in RStudio and get html report
 - upload files to their github account
 
 TODO: what else?
