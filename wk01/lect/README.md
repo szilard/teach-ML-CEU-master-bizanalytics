@@ -16,8 +16,5 @@ Slides [here]().
 
 ...
 
-### Lab
-
-Goal: 
 
 
