@@ -20,6 +20,7 @@ should be able to
 
 - create a simple Rmarkdown file, run it in RStudio and get html report
 - upload files to their github account
+- start an EC2 instance TODO: find an AMI with R/RStudio/h2o etc. installed
 
 TODO: what else?
 
