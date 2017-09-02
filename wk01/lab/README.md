@@ -1,4 +1,6 @@
 
+## Lab wk01
+
 ### Goals
 
 After this first lab every student should have installed and working on there laptops:
