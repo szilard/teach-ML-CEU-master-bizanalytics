@@ -51,7 +51,7 @@ Class announcements and student Q&A will be done via [github issues](https://git
 
 ### ML #1
 
-Week 1: [lecture](wk01/lect) [lab](wk01/lab)
+Week 1: Introduction. Details: [Lecture](wk01/lect) | [Lab](wk01/lab).
 
 Week 2:
 
