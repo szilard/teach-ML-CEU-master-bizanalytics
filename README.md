@@ -35,9 +35,11 @@ Jenő Pál (TA)
 
 ### Grading
 
-- 10% Weekly Quiz
-- 50% Weekly Homework
-- 40% Final Exam 
+- x% Weekly Quiz
+- x% Weekly Homework
+- x% Final Exam 
+
+TBD: weekly papers to read? final project?
 
 (each course ML #1 and #2 separately)
 
@@ -53,22 +55,22 @@ Class announcements and student Q&A will be done via [github issues](https://git
 
 Week 1: Introduction. Details: [Lecture](wk01/lect) | [Lab](wk01/lab).
 
-Week 2:
+Week 2: Details: [Lecture](wk02/lect) | [Lab](wk02/lab).
 
-Week 3:
+Week 3: Details: [Lecture](wk03/lect) | [Lab](wk03/lab).
 
-Week 4:
+Week 4: Details: [Lecture](wk04/lect) | [Lab](wk04/lab).
 
 
 ### ML #2
 
-Week 9:
+Week 9: Details: [Lecture](wk09/lect) | [Lab](wk09/lab).
 
-Week 10:
+Week 10: Details: [Lecture](wk10/lect) | [Lab](wk10/lab).
 
-Week 11:
+Week 11: Details: [Lecture](wk11/lect) | [Lab](wk11/lab).
 
-Week 12:
+Week 12: Details: [Lecture](wk12/lect) | [Lab](wk12/lab).
 
 
 
