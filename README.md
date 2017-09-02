@@ -12,11 +12,10 @@ The material for the previous 2-credit course taught in 2015 and 2016 can be fou
 
 ### Courses/Goals
 
-The breakdown below (into ML #1 an #2) is somewhat adhoc and mainly to comply with the university's 
-administrative requirements.
-The courses will intertwine general ML concepts, algorithms and software implementations/tools and they will
+The breakdown below (into ML #1 an #2) is somewhat adhoc and mainly to comply with administrative requirements.
+Both courses will intertwine general ML concepts, algorithms and software implementations/tools and will
 aim to strike a balance of theory and practice with the goal of equiping students with both the
-foundations to understand the ML methodology and also with skills to use ML in practical
+foundations to understand the ML methodology and also with the skills needed for using ML in practical
 business applications.
 
 #### Data Science and Machine Learning 1 (Concepts):
