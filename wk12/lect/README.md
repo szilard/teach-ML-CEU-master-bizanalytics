@@ -6,7 +6,7 @@
 
 ### Slides
 
-Slides [here]().
+Slides [here](https://drive.google.com/open?id=1nDL9EUMk2L1HRMryAoenaDWRTd7RQTdCKqsRvHxxL7Q).
 
 
 ### Reading
