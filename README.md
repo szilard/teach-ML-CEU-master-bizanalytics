@@ -53,24 +53,24 @@ Class announcements and student Q&A will be done via [github issues](https://git
 
 ### ML #1
 
-Week 1: Overview of data science. The elements of a data science project. Exploratory data analysis. Data preparation/munging. Data visualization. Machine learning. Workflow, reproducibility and productivity. Tools: R/Python, databases, machine learning libraries, big data tools, tools for workflow/reproducibility. Details: [Lecture](wk01/lect) | [Lab](wk01/lab).
+**Week 1:** Overview of data science. The elements of a data science project. Exploratory data analysis. Data preparation/munging. Data visualization. Machine learning. Workflow, reproducibility and productivity. Tools: R/Python, databases, machine learning libraries, big data tools, tools for workflow/reproducibility. Details: [Lecture](wk01/lect) | [Lab](wk01/lab).
 
-Week 2: Details: [Lecture](wk02/lect) | [Lab](wk02/lab).
+**Week 2:** Details: [Lecture](wk02/lect) | [Lab](wk02/lab).
 
-Week 3: Details: [Lecture](wk03/lect) | [Lab](wk03/lab).
+**Week 3:** Details: [Lecture](wk03/lect) | [Lab](wk03/lab).
 
-Week 4: Details: [Lecture](wk04/lect) | [Lab](wk04/lab).
+**Week 4:** Details: [Lecture](wk04/lect) | [Lab](wk04/lab).
 
 
 ### ML #2
 
-Week 9: Details: [Lecture](wk09/lect) | [Lab](wk09/lab).
+**Week 9:** Details: [Lecture](wk09/lect) | [Lab](wk09/lab).
 
-Week 10: Details: [Lecture](wk10/lect) | [Lab](wk10/lab).
+**Week 10:** Details: [Lecture](wk10/lect) | [Lab](wk10/lab).
 
-Week 11: Details: [Lecture](wk11/lect) | [Lab](wk11/lab).
+**Week 11:** Details: [Lecture](wk11/lect) | [Lab](wk11/lab).
 
-Week 12: Details: [Lecture](wk12/lect) | [Lab](wk12/lab).
+**Week 12:** Detils: [Lecture](wk12/lect) | [Lab](wk12/lab).
 
 
 
