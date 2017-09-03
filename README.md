@@ -56,35 +56,35 @@ Class announcements and student Q&A will be done via [github issues](https://git
 **Week 1:** Overview of data science. The elements of a data science project. Exploratory data analysis.
 Data preparation/munging. Data visualization. Machine learning. Workflow, reproducibility and productivity.
 Tools: R/Python, databases, machine learning libraries, big data tools, tools for workflow/reproducibility.
-Details: [Lecture](wk01/lect) | [Lab](wk01/lab).
+[Lecture](wk01/lect) | [Lab](wk01/lab).
 
 **Week 2:** Introduction to supervised learning. Linear models vs k-nearest neighbors. 
 Training and test error. Bias and variance.
-Details: [Lecture](wk02/lect) | [Lab](wk02/lab).
+[Lecture](wk02/lect) | [Lab](wk02/lab).
 
 **Week 3:** Model evaluation and selection. Overfitting, regularization, cross-validation. ROC curve, AUC.
 Hyperparameter tuning, grid and random search. 
-Details: [Lecture](wk03/lect) | [Lab](wk03/lab).
+[Lecture](wk03/lect) | [Lab](wk03/lab).
 
 **Week 4:** Unsupervised learning. Clustering (k-means, hierarchical). 
-Details: [Lecture](wk04/lect) | [Lab](wk04/lab).
+[Lecture](wk04/lect) | [Lab](wk04/lab).
 
 
 ### ML #2
 
 **Week 9:** Linear models, lasso. Trees, random forests and gradient boosting machines. 
 Tools: R packages, Vowpal Wabbit, xgboost, lightgbm, H2O 
-Details: [Lecture](wk09/lect) | [Lab](wk09/lab).
+[Lecture](wk09/lect) | [Lab](wk09/lab).
 
 **Week 10:** Support vector machines. Neural networks and deep learning. 
 Tools: R packages, H2O, Keras. 
-Details: [Lecture](wk10/lect) | [Lab](wk10/lab).
+[Lecture](wk10/lect) | [Lab](wk10/lab).
 
 **Week 11:** Ensembles, stacking. Deploying machine learning models to production. 
-Details: [Lecture](wk11/lect) | [Lab](wk11/lab).
+[Lecture](wk11/lect) | [Lab](wk11/lab).
 
 **Week 12:** Recap and summary. 
-Details: [Lecture](wk12/lect) | [Lab](wk12/lab).
+[Lecture](wk12/lect) | [Lab](wk12/lab).
 
 
 
