@@ -1,7 +1,8 @@
 
 ## Lect wk09
 
-...
+Linear models, lasso. Trees, random forests and gradient boosting machines. 
+Tools: R packages, Vowpal Wabbit, xgboost, lightgbm, H2O 
 
 
 ### Slides

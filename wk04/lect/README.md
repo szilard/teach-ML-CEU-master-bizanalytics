@@ -1,7 +1,7 @@
 
 ## Lect wk04
 
-...
+Unsupervised learning. Clustering (k-means, hierarchical). 
 
 
 ### Slides

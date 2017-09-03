@@ -1,7 +1,7 @@
 
 ## Lect wk11
 
-...
+Ensembles, stacking. Deploying machine learning models to production. 
 
 
 ### Slides

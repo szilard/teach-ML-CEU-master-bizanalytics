@@ -1,7 +1,7 @@
 
 ## Lect wk12
 
-...
+Recap and summary. 
 
 
 ### Slides

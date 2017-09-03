@@ -1,7 +1,8 @@
 
 ## Lect wk02
 
-...
+Introduction to supervised learning. Linear models vs k-nearest neighbors. 
+Training and test error. Bias and variance.
 
 
 ### Slides

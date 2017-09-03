@@ -1,7 +1,8 @@
 
 ## Lect wk10
 
-...
+Support vector machines. Neural networks and deep learning. 
+Tools: R packages, H2O, Keras. 
 
 
 ### Slides

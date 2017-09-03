@@ -1,7 +1,8 @@
 
 ## Lect wk03
 
-...
+Model evaluation and selection. Overfitting, regularization, cross-validation. ROC curve, AUC.
+Hyperparameter tuning, grid and random search. 
 
 
 ### Slides
