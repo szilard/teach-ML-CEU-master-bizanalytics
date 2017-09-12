@@ -3,7 +3,6 @@
 
 Overview of data science. The elements of a data science project. Exploratory data analysis.
 Data preparation/munging. Data visualization. Machine learning. Workflow, reproducibility and productivity.
-Tools: R/Python, databases, machine learning libraries, big data tools, tools for workflow/reproducibility.
 
 
 ### Slides

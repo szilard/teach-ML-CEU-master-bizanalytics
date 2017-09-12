@@ -54,7 +54,6 @@ Class announcements and student Q&A will be done via [github issues](https://git
 
 **Week 1:** Overview of data science. The elements of a data science project. Exploratory data analysis.
 Data preparation/munging. Data visualization. Machine learning. Workflow, reproducibility and productivity.
-Tools: R/Python, databases, machine learning libraries, big data tools, tools for workflow/reproducibility.
 [Lecture](wk01/lect) | [Lab](wk01/lab).
 
 **Week 2:** Introduction to supervised learning. Linear models vs k-nearest neighbors. 
