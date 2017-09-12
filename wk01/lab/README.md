@@ -23,7 +23,8 @@ should be able to
 - start an EC2 instance, create an image, stop/restart, configure security groups (open ports)
 
 On EC2 one can use this [AMI](http://www.louisaslett.com/RStudio_AMI/) with R and Rstudio server already
-installed. Installing Java and the h2o R package is easy:
+installed. Please change the default password for the `rstudio` user (e.g. as described 
+at the previous link). Installing Java and the h2o R package is easy:
 ```
 sudo apt-get install default-jre
 R
