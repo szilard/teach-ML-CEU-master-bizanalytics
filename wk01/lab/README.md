@@ -3,13 +3,13 @@
 
 ### Goals
 
-After this first lab every student should have installed and working on there laptops:
+After this first lab every student should have installed and working on their laptops:
 
 - R
 - RStudio
 - R packages: ...
 - Java (needed for h2o)
-- h2o (TODO: create a test script)
+- h2o (TODO: create a test script to easily test installation)
 
 should have 
 

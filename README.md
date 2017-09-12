@@ -66,7 +66,7 @@ Training and test error. Bias and variance.
 Hyperparameter tuning, grid and random search. 
 [Lecture](wk03/lect) | [Lab](wk03/lab).
 
-**Week 4:** Unsupervised learning. Clustering (k-means, hierarchical). 
+**Week 4:** Unsupervised learning. Clustering (k-means, hierarchical). **Final Exam (ML #1).**
 [Lecture](wk04/lect) | [Lab](wk04/lab).
 
 
@@ -83,7 +83,7 @@ Tools: R packages, H2O, Keras.
 **Week 11:** Ensembles, stacking. Deploying machine learning models to production. 
 [Lecture](wk11/lect) | [Lab](wk11/lab).
 
-**Week 12:** Recap and summary. 
+**Week 12:** Recap and summary. **Final Exam (ML #2).**
 [Lecture](wk12/lect) | [Lab](wk12/lab).
 
 
