@@ -9,7 +9,7 @@ After this first lab every student should have installed and working on their la
 - RStudio
 - some R packages TBD
 - Java (needed for h2o)
-- h2o (from R, run [this](h2o-test.R) to test if it is working)
+- h2o (from R, run [this](h2o-test-installation.R) to test if it is working)
 
 should have 
 
