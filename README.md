@@ -35,11 +35,10 @@ Jenő Pál (TA)
 
 ### Grading
 
-- x% Weekly Quiz
-- x% Weekly Homework
-- x% Final Exam 
-
-TBD: weekly papers to read? final project?
+- 10% Lab Weekly Quiz
+- 40% Weekly Homework
+- 10% Lecture Weekly Quiz
+- 40% Final Exam 
 
 (each course ML #1 and #2 separately)
 
