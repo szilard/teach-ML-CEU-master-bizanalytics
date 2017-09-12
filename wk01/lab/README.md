@@ -20,7 +20,6 @@ should be able to
 
 - create a simple Rmarkdown file, run it in RStudio and get html report
 - upload files to their github account
-
 - start an EC2 instance, create an image, stop/restart, configure security groups (open ports)
 - do same work in RStudio server on EC2 and on RStudio locally on laptop
 
