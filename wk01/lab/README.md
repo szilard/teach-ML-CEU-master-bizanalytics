@@ -33,7 +33,7 @@ sudo apt-get install default-jre
 
 Warning: The Rstudio connection from your browser does not use SSL, therefore don't use this server
 on projects requiring security (e.g. with confidential data) or set up SSL connection (https) before
-you connect the very first time.
+you connect to RStudio the very first time.
 
 
 
