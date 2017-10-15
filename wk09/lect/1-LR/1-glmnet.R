@@ -4,7 +4,7 @@ library(glmnet)
 library(ROCR)
 
 
-d <- read_csv("wk09/data/airline100K.csv")
+d <- read_csv("wk09/lect/data/airline100K.csv")
 
 set.seed(123)
 N <- nrow(d)
