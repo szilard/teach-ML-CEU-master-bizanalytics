@@ -6,7 +6,7 @@ library(ROCR)
 set.seed(123)
 
 
-d <- read_csv("wk-06-ML/data/airline100K.csv")
+d <- read_csv("wk09/lect/data/airline100K.csv")
 
 set.seed(123)
 N <- 10000   

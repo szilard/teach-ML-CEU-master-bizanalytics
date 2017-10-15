@@ -4,7 +4,7 @@ library(h2o)
 h2o.init(nthreads=-1)
 
 
-dx <- h2o.importFile("wk-06-ML/data/airline100K.csv")
+dx <- h2o.importFile("wk09/lect/data/airline100K.csv")
 
 dx_split <- h2o.splitFrame(dx, ratios = c(0.6,0.2), seed = 123)
 dx_train <- dx_split[[1]]
