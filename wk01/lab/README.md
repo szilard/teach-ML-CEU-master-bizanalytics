@@ -48,4 +48,9 @@ devtools::install_github("Microsoft/LightGBM", subdir = "R-package")
 ```
 (might need cmake: `sudo apt-get install cmake`)
 
+### TODO
+
+AMI with CUDA, cuDNN, DL libs?
+
+
 

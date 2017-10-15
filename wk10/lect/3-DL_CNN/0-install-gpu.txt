@@ -57,13 +57,7 @@ make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas USE_CUDA=1 USE_CUDA_PATH=/usr/lo
     sudo dpkg -i libcudnn5-dev_5.1.10-1+cuda8.0_amd64.deb
 
 sudo make rpkg
-sudo R CMD INSTALL mxnet_current_r.tar.gz
-
-
-libdc1394 error: Failed to initialize libdc1394
-https://stackoverflow.com/questions/29274638/opencv-libdc1394-error-failed-to-initialize-libdc1394
-sudo ln /dev/null /dev/raw1394
-
+sudo R CMD INSTALL R-package
 
 
 
@@ -73,7 +67,7 @@ https://rstudio.github.io/keras/index.html#installation
 
 devtools::install_github("rstudio/keras")
 library(keras)
-install_tensorflow(gpu = TRUE)
+install_keras(tensorflow = "gpu")
 
 
 
