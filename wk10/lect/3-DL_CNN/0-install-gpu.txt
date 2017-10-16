@@ -17,8 +17,8 @@ sudo apt-get install cuda
 
 
 ## get cuDNN (req. login)
-##sudo dpkg -i libcudnn6_6.0.21-1+cuda8.0_amd64.deb   ## no good for TF
-sudo dpkg -i libcudnn5_5.1.10-1+cuda8.0_amd64.deb
+sudo dpkg -i libcudnn6_6.0.21-1+cuda8.0_amd64.deb
+
 
 
 vim ~/.bashrc
@@ -34,13 +34,13 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64
 #### Tensorflow
 
 sudo apt-get install python-pip python-dev
-pip install tensorflow-gpu
+sudo pip install tensorflow-gpu
 
 
 
 #### Keras2
 
-pip install keras --upgrade
+sudo pip install keras --upgrade
 
 
 
@@ -52,12 +52,11 @@ sudo apt-get install -y libopenblas-dev libopencv-dev
 
 git clone --recursive https://github.com/dmlc/mxnet
 cd mxnet
-make -j $(nproc) USE_OPENCV=1 USE_BLAS=openblas USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1
+make -j4 USE_OPENCV=1 USE_BLAS=openblas USE_CUDA=1 USE_CUDA_PATH=/usr/local/cuda USE_CUDNN=1
 
-    sudo dpkg -i libcudnn5-dev_5.1.10-1+cuda8.0_amd64.deb
+    sudo dpkg -i libcudnn6-dev_6.0.21-1+cuda8.0_amd64.deb
 
 sudo make rpkg
-sudo R CMD INSTALL R-package
 
 
 
