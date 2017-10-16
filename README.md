@@ -35,10 +35,8 @@ Jenő Pál (TA)
 
 ### Grading
 
-- 10% Lab Weekly Quiz
-- 40% Weekly Homework
-- 10% Lecture Weekly Quiz
-- 40% Final Exam 
+- 50% Weekly Assignments (Homework Exercises)
+- 50% Final Exam 
 
 (each course ML #1 and #2 separately)
 
