@@ -50,7 +50,7 @@ devtools::install_github("Microsoft/LightGBM", subdir = "R-package")
 
 ### TODO
 
-AMI with CUDA, cuDNN, DL libs?
+AMI with CUDA, cuDNN. Install RStudio keras. Other DL libs?
 
 
 
