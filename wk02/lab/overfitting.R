@@ -10,7 +10,7 @@ set.seed(1234)
 # DATA, CREATE TRAIN/TEST SPLIT
 
 # https://www.kaggle.com/harlfoxem/housesalesprediction/data
-data <- read_csv("wk02/lab/kc_house_data.csv")
+data <- read_csv("wk02/lab/data/kc_house_data.csv")
 
 test_ratio <- 0.5
 data_train <- data %>% sample_frac(test_ratio)
