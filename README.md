@@ -27,9 +27,15 @@ After an overview of the entire data science landscape this course will focus on
 This course will build on the previous one (which introduced the basic concepts in machine learning) and will discuss state-of-the-art algorithms for supervised learning (linear models, lasso, decision trees, random forests, gradient boosting machines, neural networks, support vector machine, deep learning etc.). A large part of the course will be dedicated to using (hands-on) the software tools for machine learning used by data scientists in practice (various high-performance R packages, h2o, xgboost, libraries for deep learning on GPUs etc.).
 
 
-### Instructors
+
+### Course Designer (and Instructor previous years): 
 
 Szilárd Pafka <br> 
+
+
+### Instructors
+
+Zoltán Papp <br> 
 Jenő Pál (TA)
 
 
