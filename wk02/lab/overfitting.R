@@ -10,13 +10,13 @@ set.seed(1234)
 # DATA, CREATE TRAIN/TEST SPLIT
 
 # https://www.kaggle.com/harlfoxem/housesalesprediction/data
-data <- read_csv("wk02/lab/kc_house_data.csv")
+data <- read_csv("wk02/lab/data/kc_house_data.csv")
 
 test_ratio <- 0.5
 data_train <- data %>% sample_frac(test_ratio)
 data_test <- anti_join(data, data_train, by = "id")
 
-#
+# ESTIMATION AND EVALUATION
 
 RMSE <- function(x, true_x) sum((x - true_x)^2)
 
@@ -27,10 +27,11 @@ results <- map_df(
     ~ {
         param <- .
         model <- rpart(
-            formula = log(price) ~ bedrooms + bathrooms + sqft_living + sqft_lot + floors + waterfront + view + condition + grade + sqft_above + sqft_basement + yr_built + yr_renovated + zipcode + lat + long + sqft_living15 + sqft_lot15,
-            data = data_train,
+            formula = log(price) ~ .,
+            data = data_train %>% select(-id, - date),
             control = rpart.control(xval = 0, cp = 0.00001, minbucket = param),
-            method = "anova")
+            method = "anova"
+        )
 
         train_error <- RMSE(predict(model, data_train), log(data_train[["price"]]))
         test_error <- RMSE(predict(model, data_test), log(data_test[["price"]]))
@@ -39,5 +40,7 @@ results <- map_df(
                    "parameter" = param)
     }
 ) %>% rbind()
+
+# PLOT TRAIN AND TEST ERRORS
 
 ggplot(results) + geom_line(aes(x = parameter, y = error_value, color = error_type))
