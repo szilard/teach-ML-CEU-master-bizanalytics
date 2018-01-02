@@ -24,7 +24,7 @@ After an overview of the entire data science landscape this course will focus on
 
 #### Data Science and Machine Learning 2 (Tools):
 
-This course will build on the previous one (which introduced the basic concepts in machine learning) and will discuss state-of-the-art algorithms for supervised learning (linear models, lasso, decision trees, random forests, gradient boosting machines, neural networks, support vector machine, deep learning etc.). A large part of the course will be dedicated to using (hands-on) the software tools for machine learning used by data scientists in practice (various high-performance R packages, h2o, xgboost, libraries for deep learning on GPUs etc.).
+This course will build on the previous one (which introduced the basic concepts in machine learning) and will discuss state-of-the-art algorithms for supervised learning (linear models, lasso, decision trees, random forests, gradient boosting machines, neural networks, support vector machine, deep learning etc.). A large part of the course will be dedicated to using (hands-on) the software tools for machine learning used by data scientists in practice (various high-performance R packages, xgboost, libraries for deep learning on GPUs etc.).
 
 
 
@@ -42,7 +42,7 @@ Jenő Pál (TA)
 ### Grading
 
 - 45% Weekly Assignments (Homework Exercises)
-- 10% Quiz at the beginning of lectures, except first lectures
+- 10% Quiz at the beginning of lectures, except the first lecture of each course
 - 45% Final Exam 
 
 (each course ML #1 and #2 separately)
