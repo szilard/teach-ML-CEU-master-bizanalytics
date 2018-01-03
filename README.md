@@ -41,7 +41,7 @@ Jenő Pál (TA)
 
 ### Grading
 
-- 45% Weekly Assignments (homework exercises)
+- 45% Weekly Assignments (homework exercises). These will be submitted using Moodle.
 - 45% Final Exam
 - 10% Quizzes at the beginning of each lecture, except the first lectures of each course. Quizzes cannot be taken later, missing a lecture or being late will result in 0% for the actual quiz.
 
@@ -60,7 +60,7 @@ Weekly assignment acceptance policy and achievable grades:
 
 ### Announcements and Q&A
 
-Class announcements and student Q&A will be done via [github issues](https://github.com/pappzoltan/teach-ML-CEU-master-bizanalytics/issues).
+Class announcements and student Q&A will be done via Moodle
 
 
 ### Syllabus and Schedule:
@@ -70,10 +70,10 @@ Class announcements and student Q&A will be done via [github issues](https://git
 **Week 1:** Overview of data science. The elements of a data science project. Data preparation. Exploratory data analysis, data visualization. Machine learning. Workflow, reproducibility and productivity.
 [Lecture](wk01/lect) | [Lab](wk01/lab).
 
-**Week 2:** Introduction to supervised learning. Linear models vs k-nearest neighbors. Training and test error. Validation set. Time series split up by time. Bias and variance.
+**Week 2:** Introduction to supervised learning. Linear models vs k-nearest neighbors. Training and test error. Validation set. Bias and variance. Model evaluation and selection. Benchmark model selection. Boostraping, resampling. Time series split up by time. 
 [Lecture](wk02/lect) | [Lab](wk02/lab).
 
-**Week 3:** Benchmark model selection. Model evaluation and selection. High level introduction of RF, Lasso, SVM, Boost, NNOverfitting, regularization, cross-validation, naive implementation. Boostraping, resampling. ROC curve, AUC. Calibration plot, Hyperparameter tuning, grid and random search. 
+**Week 3:** High level introduction of RF, Lasso, SVM, Boost, NNOverfitting, regularization, cross-validation, naive implementation. ROC curve, AUC. Calibration plot, Hyperparameter tuning, grid and random search. 
 [Lecture](wk03/lect) | [Lab](wk03/lab).
 
 **Week 4:** Unsupervised learning. Clustering (k-means, hierarchical). PCA / ICA. Time Series Analysis: correlation, autocorrelation, Filtering. Reviewing best practices in data science and practical research.
