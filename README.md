@@ -52,7 +52,10 @@ Weekly assignment dates and deadlines for ML #1:
 - Jan 23, due on Jan 29 8:00 AM
 - Jan 30, due on Feb 5 8:00 AM
 
-Weekly assignment acceptance policy: 50% of the original grade within 24 hours, 0% after that.
+Weekly assignment acceptance policy: 
+- 100% of the grades until due date
+- 50% of the grades within 24 hours past due date
+- 0% after that.
 
 
 ### Announcements and Q&A
