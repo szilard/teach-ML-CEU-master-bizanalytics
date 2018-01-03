@@ -41,11 +41,18 @@ Jenő Pál (TA)
 
 ### Grading
 
-- 45% Weekly Assignments (Homework Exercises)
+- 45% Weekly Assignments (homework exercises)
+- 45% Final Exam
 - 10% Quiz at the beginning of lectures, except the first lecture of each course
-- 45% Final Exam 
 
 (each course ML #1 and #2 separately)
+
+Weekly assignment dates and deadlines for ML #1:
+- Jan 16, due on Jan 22 8:00 AM
+- Jan 23, due on Jan 29 8:00 AM
+- Jan 30, due on Feb 5 8:00 AM
+
+Weekly assignment acceptance policy: 50% of the original grade within 24 hours, 0% after that.
 
 
 ### Announcements and Q&A
