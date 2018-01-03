@@ -43,7 +43,7 @@ Jenő Pál (TA)
 
 - 45% Weekly Assignments (homework exercises)
 - 45% Final Exam
-- 10% Quiz at the beginning of lectures, except the first lecture of each course
+- 10% Quizzes at the beginning of each lecture, except the first lectures of each course. Quizzes cannot be taken later, missing a lecture or being late will result in 0% for the actual quiz.
 
 (each course ML #1 and #2 separately)
 
@@ -52,9 +52,9 @@ Weekly assignment dates and deadlines for ML #1:
 - Jan 23, due on Jan 29 8:00 AM
 - Jan 30, due on Feb 5 8:00 AM
 
-Weekly assignment acceptance policy: 
-- 100% of the grades until due date
-- 50% of the grades within 24 hours past due date
+Weekly assignment acceptance policy and achievable grades: 
+- 100% until due date
+- 50% within 24 hours past due date
 - 0% after that.
 
 
