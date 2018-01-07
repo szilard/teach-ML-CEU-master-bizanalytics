@@ -1,0 +1,204 @@
+---
+title: "R tools"
+subtitle: "Data Science and Machine Learning 1 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-01-09'
+output:
+  html_notebook:
+    df_print: paged
+  html_document:
+    df_print: paged
+---
+
+## Packages
+
+Install necessary packages. We will install more as we progress in the course.
+
+```{r, eval=FALSE}
+install.packages(c("readr",
+                   "data.table",
+                   "purrr",
+                   "glmnet",
+                   "randomForest",
+                   "gbm",
+                   "rpart",
+                   "caret",
+                   "ROCR",
+                   "titanic"
+                   ))
+```
+
+If we want to use packages, we have to import them.
+```{r, message=FALSE}
+library(data.table)
+library(readr)
+library(ggplot2)
+library(purrr)
+```
+
+We will use [`h2o`](https://www.h2o.ai/) in the second part of the course.
+Its installation requires Java. Once that is installed, run
+
+```{r, eval=FALSE}
+install.packages("h2o")
+```
+
+To test if the installation works, run these:
+
+```{r, eval=FALSE}
+library(h2o)
+h2o.init(nthreads=-1)
+
+dx_train <- h2o.importFile("https://s3.amazonaws.com/benchm-ml--main/train-0.1m.csv")
+dx_test <- h2o.importFile("https://s3.amazonaws.com/benchm-ml--main/test.csv")
+md <- h2o.randomForest(x = 1:8, y = 9, training_frame = dx_train, ntrees = 50)  
+h2o.performance(md, dx_test)@metrics$AUC
+```
+
+## Elements of R
+
+Very useful resources: RStudio [cheat sheets](https://www.rstudio.com/resources/cheatsheets/): 
+`ggplot2`, `rmarkdown` and more. For `data.table`, see [here](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf).
+Building on [DA1](https://github.com/daroczig/CEU-R-lab) we are going to use
+`data.table` for data munging, `ggplot2` for visualization and `rmarkdown`
+for preparing notes (homeworks).
+
+### Loading data
+
+From data packages, reading csvs - `readr::read_csv`, `data.table::fread`.
+
+```{r, results="hide"}
+# there are packages that contain data
+library(titanic)
+titanic_train
+```
+
+```{r}
+# readr reads into a decorated dataframe, a "tibble"
+# -- same data that is packaged to the `titanic` package, both from Kaggle
+df <- read_csv("../../data/titanic/train.csv")
+str(df)
+```
+
+```{r}
+# fread: for large csvs very fast and reliable. Reads to data.table
+dt <- fread("../../data/titanic/train.csv")
+str(dt)
+```
+
+
+### Data manipulation
+
+Filtering, selecting, adding new variables, grouping, aggregation, random sampling,
+counting unique elements.
+
+```{r}
+dt <- data.table(titanic_train)
+```
+
+```{r}
+# filter only male
+dt[Sex == "male"]
+```
+
+```{r, select}
+# select columns
+dt[, .(Sex, Survived)]
+```
+```{r}
+# add a new variable
+dt[, SurvivedInfo := ifelse(Survived == 1, "survived", "did not survive")]
+head(dt[, .(Survived, SurvivedInfo)])
+
+# delete variable
+dt[, SurvivedInfo := NULL]
+```
+
+```{r}
+# aggregate by groups
+dt[, .(num_passangers = .N,
+       num_survivors = sum(Survived)),
+   by = .(Sex)]
+```
+
+### Loops, maps
+
+For loop, lapply, sapply, purrr maps
+
+```{r}
+for (number in 1:5) {
+  print(number * 2)
+}
+```
+```{r}
+# using the purrr package
+walk(1:5, ~{ print(.x * 2)})
+
+# if you want to keep the result in a list
+doubled <- map(1:5, ~ { .x * 2})
+str(doubled)
+
+# or as a vector: 
+doubled_vec <- map_dbl(1:5, ~ { .x * 2})
+str(doubled_vec)
+```
+
+
+### Visualization
+
+We are going to use `ggplot2`.
+
+### Exercise: preparing a calibration plot
+
+```{r}
+# make a simple model for survival using logistic regression
+model <- glm(Survived ~ Sex + Fare, data = dt, family = binomial)
+prediction <- predict.glm(model, newdata = dt, type = "response")
+dt[, Survived_Score := prediction]
+```
+
+```{r}
+# bin people according to their scores
+dt[, Survived_Score_Category := cut(Survived_Score, seq(0, 1, 0.1))]
+
+# calculate mean of score and truth in categories
+calibration <- dt[, 
+      .(mean_score = mean(Survived_Score),
+        mean_truth = mean(Survived),
+        num_people = .N),
+       keyby = Survived_Score_Category]
+```
+
+```{r}
+# add the lines step by step and see how the figure becomes nicer and nicer!
+ggplot(data = calibration,
+       aes(x = mean_score, y = mean_truth, size = num_people)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+  xlim(0, 1) +
+  ylim(0, 1) +
+  coord_fixed(ratio = 1) +
+  labs(x = "Truth",
+       y = "Predicted",
+       size = "Number of people") +
+  theme_bw()
+```
+
+### Reproducibility
+
+For yourself, for others. What is necessary for anyone else to reproduce
+my analysis?
+
+* others do not have the same directory structure: use relative paths instead
+of absolute
+* others do not necessarily use the same R and package versions
+  + provide `sessionInfo()`
+  + use some tool (out of the scope of this course. Examples: [`packrat`](https://rstudio.github.io/packrat/) package, [MRAN](https://mran.revolutionanalytics.com/) time machine)
+* if I use random numbers, I have to ensure others use the same random numbers
+  * simplest case: use `set.seed`
+
+```{r}
+sessionInfo()
+```
+
+
