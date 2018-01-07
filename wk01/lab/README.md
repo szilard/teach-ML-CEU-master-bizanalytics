@@ -4,16 +4,11 @@
 
 After this first lab every student should have installed and working on their laptops:
 
-- R
-- RStudio
-- R packages: `tidyverse` (includes `ggplot2`, `dplyr`, `purrr` and more), `data.table`, `ROCR`, `glmnet`, `gbm`, `rpart`
+- R and RStudio with necessary packages (especially `data.table`, `ggplot2`
+and `caret`)
 
-should have 
+and should be able to 
 
-- a github account
-
-should be able to 
-
-
+- work with R: data reading, munging, visualization 
 - create a simple Rmarkdown file, run it in RStudio and get html report
-- upload files to their github account and to Moodle
+- upload files to Moodle in the format expected for the homework assignments

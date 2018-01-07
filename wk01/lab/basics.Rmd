@@ -1,12 +1,12 @@
 ---
-title: "R tools"
+title: "Lab week 1 - R tools"
 subtitle: "Data Science and Machine Learning 1 - CEU 2018"
 author: "Jeno Pal"
 date: '2018-01-09'
 output:
-  html_notebook:
-    df_print: paged
   html_document:
+    df_print: paged
+  html_notebook:
     df_print: paged
 ---
 
@@ -15,7 +15,8 @@ output:
 Install necessary packages. We will install more as we progress in the course.
 
 ```{r, eval=FALSE}
-install.packages(c("readr",
+install.packages(c("ggplot2"
+                   "readr",
                    "data.table",
                    "purrr",
                    "glmnet",
@@ -54,6 +55,19 @@ dx_test <- h2o.importFile("https://s3.amazonaws.com/benchm-ml--main/test.csv")
 md <- h2o.randomForest(x = 1:8, y = 9, training_frame = dx_train, ntrees = 50)  
 h2o.performance(md, dx_test)@metrics$AUC
 ```
+
+## Workflow with Rmarkdown Notebook
+
+Consult the excellent [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) on Rmarkdown and see the homepage
+on [notebooks](http://rmarkdown.rstudio.com/r_notebooks.html).
+For the markdown syntax, again, see the cheatsheet.
+
+In RStudio:
+
+1. `File -> New File -> R Notebook`
+2. Add chunks, edit interactively, execude code...
+  - do not always expect Preview to be 100% correct
+3. When all is well, `Knit to HTML`
 
 ## Elements of R
 
