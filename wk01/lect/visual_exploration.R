@@ -4,6 +4,7 @@
 # install.packages('lubridate')
 # install.packages('ddply')
 
+
 library(ggplot2)
 library(lubridate)
 library(plyr)
@@ -16,6 +17,15 @@ train$weather <- factor(train$weather, labels = c("Good", "Normal", "Bad", "Very
 train$hour    <- factor(hour(ymd_hms(train$datetime)))
 train$times   <- as.POSIXct(strftime(ymd_hms(train$datetime), format="%H:%M:%S"), format="%H:%M:%S")
 train$Weekday <- wday(ymd_hms(train$datetime), label=TRUE)
+
+## Few example plots
+ggplot(train, aes(x=count))+geom_density() 
+ggplot(train, aes(x=season, y=windspeed))+geom_boxplot() # easy to understand
+ggplot(train, aes(x=windspeed)) + geom_density() + facet_grid(. ~ season) # difficult to understand
+
+ggplot(train, aes(x=temp)) + geom_density() + facet_grid(. ~ season)
+
+##################################
 
 season_summary <- ddply(train,.(season,hour),
                         summarise, count = mean(count))
@@ -85,3 +95,5 @@ ggplot(train, aes(x = hour, y = Bad, colour = season)) +
   theme_minimal() +
   ggtitle("The probability of Bad weather is higher in Summer and Winter. \n") + 
   theme(plot.title=element_text(size=18))
+
+
