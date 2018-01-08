@@ -229,7 +229,7 @@ sessionInfo()
 
 ## Recommended readings
 
-- [Elements of Statistical Learning](https://web.stanford.edu/~hastie/ElemStatLearn/) - an advanced treatment of machine learning concepts (freely available)
+- [Elements of Statistical Learning](https://web.stanford.edu/~hastie/ElemStatLearn/) - the standard reference book of machine learning (freely available)
 - [Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/) - a more accessible treatment of the same material from the same authors (with R codes)
 - [Applied Predictive Modelling](http://appliedpredictivemodeling.com/) - a thorough and practical guide to predictive modelling from the author of the `caret` package (with R code)
 
