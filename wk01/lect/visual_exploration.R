@@ -3,14 +3,16 @@
 # install.packages('ggplot2')
 # install.packages('lubridate')
 # install.packages('ddply')
+install.packages('data.table')
 
 
 library(ggplot2)
 library(lubridate)
 library(plyr)
+library(data.table)
 
 data_localfile <- "wk01/lect/data/bike_rental_train.csv"
-train <- read.csv(data_localfile)
+train <- fread(data_localfile)
 
 train$season  <- factor(train$season, labels = c("Spring", "Summer", "Fall", "Winter"))
 train$weather <- factor(train$weather, labels = c("Good", "Normal", "Bad", "Very Bad"))
@@ -18,12 +20,21 @@ train$hour    <- factor(hour(ymd_hms(train$datetime)))
 train$times   <- as.POSIXct(strftime(ymd_hms(train$datetime), format="%H:%M:%S"), format="%H:%M:%S")
 train$Weekday <- wday(ymd_hms(train$datetime), label=TRUE)
 
+train$prediction <- 100
+train[season == "Spring", prediction := 10 ]
+
+error <- sum((train$prediction - train$count) ^  2)/length(train$prediction)
+error
+
 ## Few example plots
 ggplot(train, aes(x=count))+geom_density() 
 ggplot(train, aes(x=season, y=windspeed))+geom_boxplot() # easy to understand
 ggplot(train, aes(x=windspeed)) + geom_density() + facet_grid(. ~ season) # difficult to understand
 
 ggplot(train, aes(x=temp)) + geom_density() + facet_grid(. ~ season)
+
+traindt = data.table(train)
+season_summary <- traindt[, .(count = mean(count)), by=.(season, hour)]
 
 ##################################
 
