@@ -68,6 +68,7 @@ weather_prob <- ddply(train,.(season, hour),
                       Bad = mean(weather == "Bad"),
                       Very_bad = mean(weather == "Very Bad"))
 
+weather_prob
 
 ggplot(train, aes(x = hour, y = Good, colour = season)) +
   geom_point(data = weather_prob, aes(group = season)) +
