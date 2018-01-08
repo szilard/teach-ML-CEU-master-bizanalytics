@@ -1,0 +1,41 @@
+---
+title: "Bike Rental"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(ggplot2)
+library(lubridate)
+library(plyr)
+
+data_localfile <- "./data/bike_rental_train.csv"
+train <- read.csv(data_localfile)
+
+train$season  <- factor(train$season, labels = c("Spring", "Summer", "Fall", "Winter"))
+train$weather <- factor(train$weather, labels = c("Good", "Normal", "Bad", "Very Bad"))
+train$hour    <- factor(hour(ymd_hms(train$datetime)))
+train$times   <- as.POSIXct(strftime(ymd_hms(train$datetime), format="%H:%M:%S"), format="%H:%M:%S")
+train$Weekday <- wday(ymd_hms(train$datetime), label=TRUE)
+
+ggplot(train, aes(x=season, y=windspeed))+geom_boxplot()
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+ggplot(train, aes(x=season, y=temp))+geom_boxplot()
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
