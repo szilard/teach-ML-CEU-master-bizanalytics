@@ -14,7 +14,7 @@ library(data.table)
 data_localfile <- "wk01/lect/data/bike_rental_train.csv"
 train <- fread(data_localfile)
 
-train$season  <- factor(train$season, labels = c("Spring", "Summer", "Fall", "Winter"))
+train$season  <- factor(train$season, labels = c("Q1", "Q2", "Q3", "Q4"))
 train$weather <- factor(train$weather, labels = c("Good", "Normal", "Bad", "Very Bad"))
 train$hour    <- factor(hour(ymd_hms(train$datetime)))
 train$times   <- as.POSIXct(strftime(ymd_hms(train$datetime), format="%H:%M:%S"), format="%H:%M:%S")
@@ -34,8 +34,8 @@ ggplot(train, aes(x=windspeed)) + geom_density() + facet_grid(. ~ season) # diff
 ggplot(train, aes(x=temp)) + geom_density() + facet_grid(. ~ season)
 
 traindt = data.table(train)
-season_summary <- traindt[, .(count = mean(count)), by=.(season, hour)]
-weather_summary <- traindt[, .(count = mean(count)), by=.(weather, hour)]
+season_summary <- train[, .(count = mean(count)), by=.(season, hour)]
+weather_summary <- train[, .(count = mean(count)), by=.(weather, hour)]
 
 ggplot(train, aes(x = hour, y = count, colour = season)) +
   geom_point(data = season_summary, aes(group = season)) +
