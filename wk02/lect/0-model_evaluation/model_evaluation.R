@@ -3,12 +3,15 @@
 # install.packages('ddply')
 # install.packages('data.table')
 # install.packages('caret')
+# install.packages('party')
 
 library(ggplot2)
 library(lubridate)
 library(plyr)
 library(data.table)
 library(caret)
+library(party)
+
 
 GetBikeData <- function(filePath) {
   dt <- fread(filePath)
@@ -164,15 +167,64 @@ outOfSampleError <- melt(outOfSampleError, id=c("method"))
 outOfSampleError
 ggplot(outOfSampleError, aes(x=method, y=value, color=variable)) + geom_point(size=5)
 
-bikeTrain
-lmModel <- lm(count~quarter+holiday+workingday+temp+hour, bikeTrain)
+
+# Exercise 1: 
+#   - find additional features (to season, weekday), and find a good combination for best prediction
+#   - what adjusted R squared can you achieve?
+lmModel <- lm(count~season+weekday, bikeTrain)
+summary(lmModel)
 RootMeanSquaredError(bikeTest$count, predict(lmModel, bikeTest))
 
+# Exercise 2: 
+#   - find additional features (to season, weekday), and find a good combination for best prediction
+#   - find a good crossvalidation size (number)
+#   - does repeat have an impact?
+#   - does preProcessing improve results?
+#   - can you improve resulst by setting k values manually?
 set.seed(123)
 trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
-knnModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrain, method = "knn",
+knnModel <- train(count~season+workingday, data = bikeTrain, method = "knn",
                  trControl=trctrl,
-                 preProcess = c("center", "scale"),
-                 tuneGrid = data.frame(k=c(2:8)))
+                 preProcess=c("center", "scale"),
+                 tuneLength=10
+                 #tuneGrid = data.frame(k=c(2:8))
+                 )
 knnModel
 RootMeanSquaredError(bikeTest$count, predict(knnModel, bikeTest))
+
+
+# Exercise 3/A: 
+#   - Find good input features 
+#   - find maxdepth
+#   - find minsplit
+library(rpart)
+
+treeSimpleModel <- ctree(count~season+weekday, data=bikeTrain,
+                         controls = ctree_control())
+RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
+
+treeSimpleModel <- ctree(count~season+holiday+workingday+temp+hour, data=bikeTrain,
+                         controls = ctree_control(mincriterion=0.999999999999)) # maxdepth = 10, minsplit=10, 
+RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
+plot(treeSimpleModel)
+
+# Exercise 3/B:
+#   - cp (minimum R^2 improvement) parameter is new here, can you find the best values for it?
+#   - would rpart2 (using maxdepth) improve results? 
+trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+treeCPModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrain, method = "rpart",
+                  trControl=trctrl,
+                  tuneLength = 20
+                  #tuneGrid = data.frame(cp=seq(0.000001, 0.001, 0.0001))
+                  )
+treeCPModel
+RootMeanSquaredError(bikeTest$count, predict(treeCPModel, bikeTest))
+
+treeMDModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrain, method = "rpart2",
+                     trControl=trctrl,
+                     tuneLength = 20
+                     #tuneGrid = data.frame(maxdepth=seq(1,10))
+)
+treeMDModel
+RootMeanSquaredError(bikeTest$count, predict(treeMDModel, bikeTest))
+
