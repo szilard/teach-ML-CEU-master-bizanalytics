@@ -204,7 +204,7 @@ treeSimpleModel <- ctree(count~season+weekday, data=bikeTrain,
 RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
 
 treeSimpleModel <- ctree(count~season+holiday+workingday+temp+hour, data=bikeTrain,
-                         controls = ctree_control(mincriterion=0.999999999999)) # maxdepth = 10, minsplit=10, 
+                         controls = ctree_control()) # maxdepth = 10, minsplit=10, mincriterion=0.99
 RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
 plot(treeSimpleModel)
 
