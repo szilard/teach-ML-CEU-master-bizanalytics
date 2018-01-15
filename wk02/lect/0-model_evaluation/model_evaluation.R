@@ -161,5 +161,18 @@ outOfSampleError <- data.table(method=factor(1:6, labels = c("MeanBM", "Season",
 
 outOfSampleError$method <- factor(outOfSampleError$method)
 outOfSampleError <- melt(outOfSampleError, id=c("method"))
-
+outOfSampleError
 ggplot(outOfSampleError, aes(x=method, y=value, color=variable)) + geom_point(size=5)
+
+bikeTrain
+lmModel <- lm(count~quarter+holiday+workingday+temp+hour, bikeTrain)
+RootMeanSquaredError(bikeTest$count, predict(lmModel, bikeTest))
+
+set.seed(123)
+trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+knnModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrain, method = "knn",
+                 trControl=trctrl,
+                 preProcess = c("center", "scale"),
+                 tuneGrid = data.frame(k=c(2:8)))
+knnModel
+RootMeanSquaredError(bikeTest$count, predict(knnModel, bikeTest))
