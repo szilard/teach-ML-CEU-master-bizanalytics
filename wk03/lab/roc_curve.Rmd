@@ -1,0 +1,75 @@
+---
+title: "Lab #3: binary classification"
+author: "Jeno Pal"
+date: "12/29/2017"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ROCR)
+library(titanic)
+```
+
+### AUC - interpretation
+
+Area under the curve.
+
+Interpretation: the probability that a randomly chosen positive case has a higher score than a randomly chosen negative.
+
+Verify via simulation:
+
+
+```{r}
+# DATA PREPARATION
+data <- titanic_train %>% as_tibble()
+data <- data %>% select(Survived, Name, Sex, Fare)
+
+# check that name is a unique identifier
+n_unique_names <- data %>% select(Name) %>% n_distinct()
+stopifnot(nrow(data) == n_unique_names)
+
+set.seed(42)
+data_train <- data %>% sample_frac(0.5)
+data_test <- anti_join(data, data_train, by = "Name")
+```
+
+```{r}
+# train a binary classifier
+model <- glm(Survived ~ Sex + Fare, 
+             data = data_train, 
+             family = binomial(link = "logit"))
+
+# predict on test set
+predicted <- predict.glm(model, newdata = data_test, type = "response")
+data_test <- data_test %>% mutate(predicted = predicted)
+
+# calculate AUC
+prediction_obj <- prediction(predicted, data_test %>% select(Survived))
+auc <- performance(prediction_obj, measure = "auc")@y.values[[1]]
+```
+
+```{r}
+# calculate the interpretation
+
+data_test_negative <- data_test %>% filter(Survived == 0)
+data_test_positive <- data_test %>% filter(Survived == 1)
+
+n_repetitions <- 100000
+
+simulated_auc <- counter / n_repetitions
+
+# vectorized calculation
+sample_negatives <- sample(1:nrow(data_test_negative), n_repetitions, replace = TRUE)
+sample_positives <- sample(1:nrow(data_test_positive), n_repetitions, replace = TRUE)
+
+scores_negatives <- data_test_negative[sample_negatives, "predicted"]
+scores_positives <- data_test_positive[sample_positives, "predicted"]
+
+simulated_auc <- sum(scores_positives > scores_negatives) / n_repetitions
+```
+

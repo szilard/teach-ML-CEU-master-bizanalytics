@@ -7,7 +7,7 @@ Data preparation/munging. Data visualization. Machine learning. Workflow, reprod
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1PmOffoPnJAgw3FeU2icZ33eDWBJa994D4kb22ngHUf0).
+Slides [here](https://docs.google.com/presentation/d/1CQ-tigerIwBrkGa-bGNi2VL9oKmnczXnR6MPmGruhiE/edit#slide=id.gd62effe74_1_84).
 
 
 ### Reading
