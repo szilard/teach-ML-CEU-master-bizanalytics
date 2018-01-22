@@ -1,0 +1,406 @@
+---
+title: "Lab week 3 - Binary classification"
+subtitle: "Data Science and Machine Learning 1 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-01-23'
+output:
+  html_document:
+    df_print: paged
+  html_notebook:
+    df_print: paged
+---
+
+In binary classification the goal is to predict a _binary outcome_ that is
+either positive or negative. This is a general term, it is important to know
+what's what.
+
+```{r, message=FALSE}
+library(ggplot2)
+library(data.table)
+library(caret)
+library(glmnet)
+library(ROCR)
+
+theme_set(theme_bw())
+```
+
+## Data: medical appointment no-shows
+```{r}
+# https://www.kaggle.com/joniarroba/noshowappointments
+data <- fread("../../data/medical-appointments-no-show/no-show-data.csv")
+str(data)
+```
+
+```{r}
+# some data cleaning
+data[, c("PatientId", "AppointmentID", "Neighbourhood") := NULL]
+setnames(data, 
+         c("No-show", 
+           "Age", 
+           "Gender",
+           "ScheduledDay", 
+           "AppointmentDay",
+           "Scholarship",
+           "Hipertension",
+           "Diabetes",
+           "Alcoholism",
+           "Handcap",
+           "SMS_received"), 
+         c("no_show", 
+           "age", 
+           "gender", 
+           "scheduled_day", 
+           "appointment_day",
+           "scholarship",
+           "hypertension",
+           "diabetes",
+           "alcoholism",
+           "handicap",
+           "sms_received"))
+# clean up a little bit
+data <- data[age %between% c(0, 95)]
+# for binary prediction with caret, the target variable must be a factor
+data[, no_show := factor(no_show, levels = c("Yes", "No"))]
+data[, no_show_num := ifelse(no_show == "Yes", 1, 0)]
+data[, handicap := ifelse(handicap > 0, 1, 0)]
+
+# create new variables
+data[, scheduled_day := as.Date(scheduled_day)]
+data[, appointment_day := as.Date(appointment_day)]
+data[, days_since_scheduled := as.integer(appointment_day - scheduled_day)]
+data <- data[days_since_scheduled > -1]
+```
+
+### Some descriptives
+
+#### Age
+
+```{r}
+data_by_age <- data[ ,
+  .(no_show_rate = mean(no_show_num), num_obs = .N),
+  keyby = .(age_category = cut(age, breaks = seq(0, 100, by = 5), include.lowest = TRUE))]
+
+ggplot(data = data_by_age, aes(x = age_category, y = no_show_rate, size = num_obs)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+#### Days since scheduled
+
+```{r}
+data_by_days_since_scheduled <- data[ ,
+  .(no_show_rate = mean(no_show_num), num_obs = .N),
+  keyby = .(days_category = cut(days_since_scheduled, breaks = c(-1, 0, 1, 2, 5, 10, 30, Inf), include.lowest = TRUE))]
+
+ggplot(data = data_by_days_since_scheduled, 
+       aes(x = days_category, y = no_show_rate, size = num_obs)) +
+  geom_point() +
+  ylim(0, NA)
+```
+
+```{r}
+knitr::kable(data[, .(share_no_show = mean(no_show_num)), keyby = "gender"])
+```
+
+```{r}
+# scholarship is indicative of socio-economic status
+knitr::kable(data[, .(share_no_show = mean(no_show_num)), keyby = "scholarship"])
+```
+
+```{r}
+knitr::kable(data[, .(share_no_show = mean(no_show_num)), keyby = "sms_received"])
+```
+
+```{r}
+data[, no_show_num := NULL]
+
+data[, days_category := cut(
+  days_since_scheduled, 
+  breaks = c(-1, 0, 1, 2, 5, 10, 30, Inf), 
+  include.lowest = TRUE)]
+
+data[, age_category := cut(age, 
+                           breaks = seq(0, 100, by = 5), 
+                           include.lowest = TRUE)]
+```
+
+Now create a training and a test data and estimate a simple logistic regression
+to predict `no_show`. 
+```{r}
+# set up training and test data
+# model selection will be done via cross-validation
+
+training_ratio <- 0.5 
+set.seed(1234)
+train_indices <- createDataPartition(y = data[["no_show"]],
+                                     times = 1,
+                                     p = training_ratio,
+                                     list = FALSE)
+data_train <- data[train_indices, ]
+data_test <- data[-train_indices, ]
+```
+
+```{r, warning=FALSE}
+# start simple: estimate logistic regression
+# CV: only for later comparisons
+train_control <- trainControl(method = "cv",
+                              number = 5,
+                              classProbs = TRUE)
+set.seed(857)
+glm_model <- train(no_show ~ age_category,
+                   method = "glm",
+                   data = data_train,
+                   trControl = train_control)
+test_prediction <- predict.train(glm_model, newdata = data_test)
+test_truth <- data_test[["no_show"]]
+```
+
+## Errors in binary classification - the confusion matrix
+
+There are 4 cases:
+
+* true positives: those that are positive in reality and we correctly predict
+them to be positive
+* false positives: those that are negative in reality and we falsely predict
+them to be positive
+* true negatives: those that are negative in reality and we correctly predict
+them to be negative
+* false negatives: those that are positive in reality and we falsely predict
+them to be negative
+
+```{r}
+confusionMatrix(test_prediction, test_truth)
+```
+
+No information rate: if you predict the biggest class for all samples, what
+would be the accuracy? It's a benchmark. Is it a useful predictive model?
+Not really. Thus, accuracy is also not a super useful measure of a predictive
+model. The various types of errors have to be examined and we have to decide
+based on them.
+
+```{r}
+# obtain probabilities instead of binary predictions
+test_prediction_probs <- predict.train(glm_model, 
+                                       newdata = data_test, 
+                                       type = "prob")
+head(test_prediction_probs)
+```
+```{r}
+summary(test_prediction_probs$Yes)
+```
+
+By default, predict.train uses the 50% threshold for prediction. However, it is
+not set into stone that we have to use it.
+```{r}
+test_prediction_v2 <- ifelse(test_prediction_probs$Yes > 0.20, "Yes", "No")
+test_prediction_v2 <- factor(test_prediction_v2, levels = c("Yes", "No"))
+confusionMatrix(test_prediction_v2, test_truth)
+```
+
+## Varying thresholds
+
+If we increase the threshold for predicting something to be positive:
+we will have less and less cases that we label as positive. Both of those
+that are positive in reality and of those that are negative. Thus, both
+the true positives and the false positives increase.
+
+```{r}
+thresholds <- seq(0.1, 0.3, by = 0.05)
+
+for (thr in thresholds) {
+  test_prediction <- ifelse(test_prediction_probs$Yes > thr, "Yes", "No")
+  test_prediction <- factor(test_prediction, levels = c("Yes", "No"))
+  print(paste("Threshold:", thr))
+  print(confusionMatrix(test_prediction, test_truth)[["table"]])
+} 
+```
+
+What to choose then? It depends on which type of error you deem as more
+important. Medical appointment problem: probably it is not too costly to
+send notifications to those who are likely to miss the appointment. Thus,
+false positives may matter less than false negatives.
+
+## The ROC curve
+
+The ROC curve summarizes how a binary classifier performs "overall", taking
+into accounts all possible thresholds. It shows the trade-off 
+between true positive rate (a.k.a sensitivity, # true positives / 
+# all positives) and the false positive rate (a.k.a 1 - specificity, 
+# false positive / # negatives).
+```{r}
+thresholds <- seq(0.1, 0.3, by = 0.05)
+
+true_positive_rates <- rep(0, length(thresholds)) 
+false_positive_rates <- rep(0, length(thresholds)) 
+
+for (ix in 1:length(thresholds)) {
+  thr <- thresholds[ix]
+  test_prediction <- ifelse(test_prediction_probs$Yes > thr, "Yes", "No")
+  test_prediction <- factor(test_prediction, levels = c("Yes", "No"))
+  cm <- as.matrix(confusionMatrix(test_prediction, test_truth))
+  true_positive_rates[ix] <- cm[1, 1] / (cm[1, 1] + cm[2, 1])
+  false_positive_rates[ix] <- cm[1, 2] / (cm[1, 2] + cm[2, 2])
+} 
+```
+
+```{r}
+manual_roc <- data.table("threshold" = thresholds,
+                         "true_positive_rate" = true_positive_rates,
+                         "false_positive_rate" = false_positive_rates)
+ggplot(data = manual_roc, 
+       aes(x = false_positive_rate,
+           y = true_positive_rate,
+           color = threshold)) +
+  geom_point()
+```
+
+One point corresponds to one threshold and shows the trade-off between
+the two types of errors one makes by using the classifier with that particular
+threshold.
+
+Draw the whole line, for __all__ thresholds:
+```{r}
+rocr_prediction <- prediction(test_prediction_probs$Yes,
+                              data_test[["no_show"]])
+# built-in plot method
+plot(performance(rocr_prediction, "tpr", "fpr"), colorize=TRUE) 
+```
+```{r}
+# a ggplot version
+# using prediction function from ROCR package
+glm_prediction <- prediction(test_prediction_probs$Yes,
+                              data_test[["no_show"]])
+glm_perf <- performance(glm_prediction, measure = "tpr", x.measure = "fpr")
+
+glm_roc_df <- data.table(
+  model = "glm",
+  FPR = glm_perf@x.values[[1]],
+  TPR = glm_perf@y.values[[1]],
+  cutoff = glm_perf@alpha.values[[1]]
+)
+
+ggplot(glm_roc_df) +
+  geom_line(aes(FPR, TPR, color = cutoff), size = 2) +
+  geom_ribbon(aes(FPR, ymin = 0, ymax = TPR), fill = "blue", alpha = 0.1) +
+  geom_abline(intercept = 0, slope = 1,  linetype = "dotted", col = "black") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, .1)) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, .1)) +
+  xlab("False Positive Rate") + ylab("True Positive Rate") 
+```
+
+Perfect classifier: North-western corner. Coin-flip classifier: 45-degree
+line.
+
+## AUC 
+
+AUC is the "area under the (ROC) curve". This is a number between 0 and 1.
+__Interpretation: if we take a random positive and a random negative case, 
+AUC shows the probability that the classifier assigns a higher score to the
+positive case than to the negative__ (see my blogpost [here](https://jenopal.netlify.com/2017/12/31/interpretation-on-roc-auc/)).
+
+Higher AUC generally means better classification.
+
+```{r}
+# calculate AUC
+AUC <- performance(rocr_prediction, "auc")@y.values[[1]]
+print(AUC)
+```
+
+We can set AUC as a measure for selecting between hyperparameters or selecting
+between models: it can be calculated for each hold-out sample in a cross
+validation procedure, for example.
+
+```{r}
+# glmnet example for cross-validation, hold-out set AUCs
+train_control <- trainControl(method = "cv",
+                              number = 5,
+                              classProbs = TRUE,
+                              verboseIter = TRUE,
+                              summaryFunction = twoClassSummary) # necessary!
+
+tune_grid <- expand.grid("alpha" = c(0, 1),
+                         "lambda" = c(0.01, 0.001, 0.0001))
+
+set.seed(857)
+glmnet_model <- train(no_show ~ days_category + 
+                                poly(age, 3) +
+                                scholarship +
+                                gender +
+                                alcoholism +
+                                diabetes,
+                      data = data_train,
+                      method = "glmnet",
+                      preProcess = c("center", "scale"),
+                      trControl = train_control,
+                      tuneGrid = tune_grid,
+                      metric = "ROC")  # set it to ROC to choose models based on AUC
+glmnet_model
+```
+
+```{r}
+# finally, evaluate the best model on test set
+test_prediction_glmnet <- predict.train(glmnet_model, 
+                                        newdata = data_test, 
+                                        type = "prob")
+```
+
+```{r}
+# compare it to previous model
+glmnet_prediction <- prediction(test_prediction_glmnet$Yes,
+                                data_test[["no_show"]])
+glmnet_perf <- performance(glmnet_prediction, measure = "tpr", x.measure = "fpr")
+
+glmnet_roc_df <- data.table(
+  model = "glmnet",
+  FPR = glmnet_perf@x.values[[1]],
+  TPR = glmnet_perf@y.values[[1]],
+  cutoff = glmnet_perf@alpha.values[[1]]
+)
+
+roc_df <- rbind(glm_roc_df, glmnet_roc_df)
+
+ggplot(roc_df) +
+  geom_line(aes(FPR, TPR, color = model), size = 2) +
+  geom_abline(intercept = 0, slope = 1,  linetype = "dotted", col = "black") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, .1)) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, .1)) +
+  xlab("False Positive Rate") + ylab("True Positive Rate") 
+```
+
+```{r}
+glmnet_AUC <- performance(glmnet_prediction, measure = "auc")@y.values[[1]]
+print(glmnet_AUC)
+```
+
+## Well-calibrated probabilities
+
+Can the scores produced by the model be regarded as probabilities?
+Let's calculate the predicted and actual share of positive cases for groups
+of observations in the test set based on their predicted scores.
+
+```{r}
+truth_numeric <- ifelse(test_truth == "Yes", 1, 0)
+score_glmnet <- test_prediction_glmnet$Yes
+
+summary(score_glmnet)
+```
+
+```{r}
+actual_vs_predicted <- data.table(actual = truth_numeric,
+                                  predicted = score_glmnet)
+
+actual_vs_predicted[, score_category := cut(predicted,
+                                    seq(0, 0.6, 0.05),
+                                    include.lowest = TRUE)]
+calibration <- actual_vs_predicted[, .(mean_actual = mean(actual),
+                                       mean_predicted = mean(predicted),
+                                       num_obs = .N),
+                                   keyby = .(score_category)]
+ggplot(calibration,
+       aes(x = mean_actual, y = mean_predicted, size = num_obs)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+  ylim(0, 1) + xlim(0, 1)
+```
+
+Except at the very end of the distribution, probabilities look well-calibrated.
