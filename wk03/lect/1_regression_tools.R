@@ -5,6 +5,7 @@
 # install.packages('caret')
 # install.packages('party')
 # install.packages('glmnet')
+# install.packages('doMC')
 
 library(ggplot2)
 library(lubridate)
@@ -12,6 +13,10 @@ library(plyr)
 library(data.table)
 library(caret)
 library(party)
+library(doMC)
+
+
+registerDoMC(cores = 4)
 
 GetBikeData <- function(filePath) {
   dt <- fread(filePath)
@@ -124,11 +129,11 @@ knnModel <- train(count~season+workingday, data = bikeTrain, method = "knn",
                  #tuneGrid = data.frame(k=c(2:8))
                  )
 knnModel
-RootMeanSquaredError(bikeTest$count, predict(knnModel, bikeTest))
+postResample(bikeTest$count, predict(knnModel, bikeTest))
 
 
 ##################################################
-# 1 Trees
+# 3 Trees
 ##################################################
 
 # Exercise 3/A: 
@@ -143,7 +148,7 @@ RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
 
 treeSimpleModel <- ctree(count~season+holiday+workingday+temp+hour, data=bikeTrain,
                          controls = ctree_control()) # maxdepth = 10, minsplit=10, mincriterion=0.99
-RootMeanSquaredError(bikeTest$count, predict(treeSimpleModel, bikeTest))
+postResample(bikeTest$count, predict(treeSimpleModel, bikeTest))
 plot(treeSimpleModel)
 
 # Exercise 3/B:
@@ -156,7 +161,7 @@ treeCPModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrai
                   #tuneGrid = data.frame(cp=seq(0.000001, 0.001, 0.0001))
                   )
 treeCPModel
-RootMeanSquaredError(bikeTest$count, predict(treeCPModel, bikeTest))
+postResample(bikeTest$count, predict(treeCPModel, bikeTest))
 
 treeMDModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrain, method = "rpart2",
                      trControl=trctrl,
@@ -164,5 +169,37 @@ treeMDModel <- train(count~quarter+holiday+workingday+temp+hour, data = bikeTrai
                      #tuneGrid = data.frame(maxdepth=seq(1,10))
 )
 treeMDModel
-RootMeanSquaredError(bikeTest$count, predict(treeMDModel, bikeTest))
+postResample(bikeTest$count, predict(treeMDModel, bikeTest))
+
+
+##################################################
+# 4 Support Vector Machine
+##################################################
+
+#   4.a Linear model
+#################################################
+trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+
+set.seed(123)
+svmLinearModel <- train(count~quarter+holiday+workingday+temp+hour, 
+                    data = bikeTrain, 
+                    method = "svmLinear",
+                    trControl=trctrl,
+                    #preProcess = c("center", "scale"),
+                    tuneLength = 10)
+plot(svmLinearModel)
+postResample(bikeTest$count, predict(svmLinearModel, bikeTest))
+
+#   4.b Non-Linear model
+#################################################
+
+set.seed(123)
+svmRadialModel <- train(count~quarter+temp+hour, 
+                        data = bikeTrain, 
+                        method = "svmRadial",
+                        trControl=trctrl,
+                        tuneLength = 10)
+svmRadialModel
+plot(svmRadialModel)
+postResample(bikeTest$count, predict(svmRadialModel, bikeTest))  # 129.02
 

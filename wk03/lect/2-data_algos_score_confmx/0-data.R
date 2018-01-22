@@ -20,7 +20,7 @@
 
 
 # from local:
-data_localfile <- "wk02/lect/data/spam.csv"
+data_localfile <- "data/spam/spam.csv"
 col_names <- c("word_freq_make", "word_freq_address", "word_freq_all", "word_freq_3d", 
                "word_freq_our", "word_freq_over", "word_freq_remove", "word_freq_internet", 
                "word_freq_order", "word_freq_mail", "word_freq_receive", "word_freq_will", 
@@ -46,5 +46,6 @@ d$spam <- as.factor(d$spam)
 set.seed(123)
 N <- nrow(d)
 idx <- sample(1:N, 0.6*N)
+
 d_train <- d[idx,]
 d_test <- d[-idx,]
