@@ -80,22 +80,7 @@ sum((as.numeric(SpamTest$spam)-1)/nrow(SpamTest))
 # 1 Linear Models
 ##################################################
 
-#   1.a Factor vs integer
-##########################
-
-lmSeasonModel <- lm(spam~., SpamTrain)
-summary(lmSeasonModel)
-postResample(SpamTest$count, predict(lmSeasonModel, SpamTest))
-
-predict(lmSeasonModel, SpamTest)
-
-# Remember: quarter <- factor(season)
-lmQuarterModel <- lm(count~quarter, SpamTrain)
-summary(lmQuarterModel)
-postResample(SpamTest$count, predict(lmQuarterModel, SpamTest))
-
-
-#   1.c Let's introduce caret
+#   1.a Let's introduce caret
 #########################################
 trctrl <- trainControl(method = "cv")
 lmCaret <- train(spam~., 
@@ -108,7 +93,7 @@ postResample(SpamTest$spam, predict(lmCaret, SpamTest))
 
 colnames(SpamTrain, 2)
 
-#   1.d Lasso, Ridge and Elastic Net
+#   1.b Lasso, Ridge and Elastic Net
 #########################################
 SpamTrain
 # Remember: Ridge, when alpha to 0. Lasso, when alpha to 1

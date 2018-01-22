@@ -31,6 +31,7 @@ RootMeanSquaredError <- function(real_value, predicted_value) {
 }
 
 bikeTrain$prediction_model_zero <- 0
+bikeTrain
 RootMeanSquaredError(bikeTrain$count, bikeTrain$prediction_model_zero)
 
 bikeTrain$prediction_model_200 <- 200
@@ -47,7 +48,7 @@ ModelByMean <- function(train, test) {
   new_test$prediction <- mean(train$count)
   return(new_test$prediction)
 }
-
+ModelByMean(bikeTrain, bikeTrain)
 RootMeanSquaredError(bikeTrain$count, ModelByMean(bikeTrain, bikeTrain))
 
 # Idea
@@ -70,3 +71,17 @@ ModelByQuarter <- function(train, test) {
 }
 
 RootMeanSquaredError(bikeTrain$count, ModelByQuarter(bikeTrain, bikeTrain))
+
+ModelByQuarterWorkingday <- function(train, test) {
+  new_test = copy(test)
+  for (q in unique(train$quarter)) {
+    for (w in unique(train$workingday)) { 
+      new_test[quarter == q & workingday==w, 
+               prediction := mean(train[quarter == q & workingday == w ]$count) ]
+    }
+  }
+  return(new_test$prediction)
+}
+
+RootMeanSquaredError(bikeTrain$count, ModelByQuarterWorkingday(bikeTrain, bikeTrain))
+

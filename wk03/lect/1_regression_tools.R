@@ -20,12 +20,13 @@ registerDoMC(cores = 4)
 
 GetBikeData <- function(filePath) {
   dt <- fread(filePath)
-  dt$quarter <- factor(dt$season, labels = c("Q1", "Q2", "Q3", "Q4"))
+  dt$quarter    <- factor(dt$season, labels = c("Q1", "Q2", "Q3", "Q4"))
   dt[weather == 4, weather := 3]  # Remove Very Bad weather, since we have only one instance
-  dt$weather <- factor(dt$weather, levels = 1:3, labels = c("Good", "Normal", "Bad"))
-  dt$hour    <- factor(hour(ymd_hms(dt$datetime)))
-  dt$times   <- as.POSIXct(strftime(ymd_hms(dt$datetime), format="%H:%M:%S"), format="%H:%M:%S")
-  dt$weekday <- wday(ymd_hms(dt$datetime))
+  dt$weather    <- factor(dt$weather, levels = 1:3, labels = c("Good", "Normal", "Bad"))
+  dt$hour       <- hour(ymd_hms(dt$datetime))
+  dt$hourFactor <- factor(dt$hour)
+  dt$times      <- as.POSIXct(strftime(ymd_hms(dt$datetime), format="%H:%M:%S"), format="%H:%M:%S")
+  dt$weekday    <- wday(ymd_hms(dt$datetime))
   return(dt)
 }
 
@@ -40,9 +41,6 @@ bikeTest <- GetBikeData("data/bike_rental/bike_rental_test.csv")
 bikeTest
 
 ggplot(bikeTrain, aes(x=count)) + geom_histogram() 
-
-
-bikeTrain$weather
 
 ##################################################
 # 1 Linear Models
@@ -75,6 +73,12 @@ postResample(bikeTest$count, ModelByQuarter(bikeTrain, bikeTest))
 lmComplex <- lm(count~quarter+temp+atemp+weather+hour+holiday+workingday+windspeed, bikeTrain)
 summary(lmComplex)
 postResample(bikeTest$count, predict(lmComplex, bikeTest))
+
+lmHourFactorComplex <- lm(count~quarter+temp+atemp+weather+hourFactor+holiday+workingday+windspeed, bikeTrain)
+summary(lmHourFactorComplex)
+postResample(bikeTest$count, predict(lmHourFactorComplex, bikeTest))
+
+#   Question: why is lmComplex different from lmHourFactorComplex?
 
 #   1.c Let's introduce caret
 #########################################
