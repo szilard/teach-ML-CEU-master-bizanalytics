@@ -6,7 +6,7 @@ Unsupervised learning. Clustering (k-means, hierarchical).
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1DeIKJFN3pHYMKWac6jLjT4nJVo0tR9mopAnLBXcsfl0).
+Slides [here](https://docs.google.com/presentation/d/1jIGqY9ay6NiNhVmfEPKPKe8XgRxiSDpT8ah423Qn628).
 
 
 ### Reading
