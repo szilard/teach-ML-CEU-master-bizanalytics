@@ -86,6 +86,9 @@ SpamTestPCA <- prcomp(SpamTrain[, !"spam", with=FALSE], center = TRUE, scale=TRU
 plot(SpamTestPCA, type='l')
 summary(SpamTestPCA)
 
+SpamTestPCA$rotation # the matrix of variable loadings 
+SpamTestPCA$x   # the value of the rotated data: the centered and scaled data multiplied by the rotation matrix
+
 predict(SpamTestPCA)
 
 
