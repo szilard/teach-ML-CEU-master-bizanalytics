@@ -161,7 +161,7 @@ data[ , treatment := factor(treatment, levels = c(&quot;Yes&quot;, &quot;No&quot
 
 model &lt;- train(...)
 
-prediction &lt;- predict.train(model, newdata = data_test, type = &quot;prob&quot;)
+prediction &lt;- predict.train(model, newdata = data_test, type = &quot;prob&quot;)$Yes
 prediction_sqrt &lt;- sqrt(prediction)
 prediction_sq &lt;- prediction^2</code></pre>
 <ol style="list-style-type: lower-alpha">
