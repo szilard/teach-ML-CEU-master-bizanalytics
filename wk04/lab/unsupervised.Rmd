@@ -1,0 +1,322 @@
+---
+title: "Lab week 4 - Unsupervised methods"
+subtitle: "Data Science and Machine Learning 1 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-01-30'
+output:
+  html_document:
+    df_print: paged
+  html_notebook:
+    df_print: paged
+---
+
+```{r, message=FALSE}
+library(data.table)
+library(caret)
+library(skimr)
+library(datasets)
+library(ggplot2)
+
+library(ISLR)
+library(NbClust)
+library(factoextra)
+
+theme_set(theme_minimal())
+```
+
+## Principal Component Analysis (PCA)
+
+We transform the coordinates of the original variables to capture as much
+variation as we can with independent (orthogonal) dimensions.
+
+```{r}
+data <- USArrests
+# data <- data.table(data, keep.rownames = TRUE)
+# setnames(data, "rn", "state")
+print(skim(data))
+```
+
+Scaling: necessary to have comparable units of different variables.
+(Multiplying a variable by 100 increases the variance and PCA would try to
+capture that, even though it is only an artifact of units. We don't want that.)
+```{r}
+pca_result <- prcomp(data, scale. = TRUE)
+print(pca_result)
+```
+
+```{r}
+names(pca_result)
+```
+
+```{r}
+# weights sum to one
+colSums(pca_result$rotation^2)
+# PCA components are orthogonal
+sum(pca_result$rotation[, 1] * pca_result$rotation[, 2])
+```
+
+We can plot observations as well as original features in the space spanned
+by the first two principal components.
+```{r}
+fviz_pca(pca_result, scale = 0)
+```
+
+We can plot how much of total variance is captured by subsequent principal
+components (and in total). Total variance: if scaling was done, it equals
+the number of variables (since it is 1 for each variable).
+```{r}
+variances <- pca_result$sdev^2
+total_variance <- sum(variances)
+total_variance
+```
+
+```{r}
+share_variance_by_component <- variances / total_variance
+dt_variance <- data.table(component = 1:length(variances),
+                          share_variance = share_variance_by_component)
+dt_variance[, cum_share_variance := cumsum(share_variance)]
+```
+
+```{r}
+ggplot(data = melt(dt_variance, id.vars = "component")) +
+  geom_line(aes(x = component, y = value, color = variable)) +
+  facet_wrap(~ variable, scales = "free_y") +
+  theme(legend.position = "bottom")
+```
+
+How many components summarize the data? No definite answer: decide based
+on sufficient variance explained.
+
+### PCA with `caret`
+
+We can use `preProcess` from `caret` to perform the same transformations. These
+can serve as inputs to `train`.
+```{r}
+pre_process <- preProcess(data, method = c("center", "scale", "pca"))
+pre_process
+```
+```{r}
+pre_process$rotation
+```
+
+```{r}
+pre_process <- preProcess(data, method = c("center", "scale", "pca"), pcaComp = 4)
+pre_process$rotation
+```
+
+```{r}
+preProcess(data, method = c("center", "scale", "pca"), thresh = 0.999)
+```
+
+### Using PCA as an input to supervised learning
+
+Let's predict baseball player salaries using PCA.
+```{r}
+data <- ISLR::Hitters
+data <- data.table(data)
+print(skim(data))
+```
+```{r}
+data <- data[!is.na(Salary)]
+```
+
+Train a simple linear model:
+```{r}
+set.seed(857)
+lm_fit <- train(Salary ~ . , 
+                data = data, 
+                method = "lm", 
+                trControl = trainControl(method = "cv", number = 10),
+                preProcess = c("center", "scale")
+                )
+lm_fit
+```
+
+We can use PCA with specified number of components (or we can also
+set the `thresh` argument to set a threshold that PCA components
+explain at least a certain share of the variance):
+```{r}
+set.seed(857)
+lm_fit_pca <- train(Salary ~ . , 
+                    data = data, 
+                    method = "lm", 
+                    trControl = trainControl(
+                      method = "cv", 
+                      number = 10,
+                      preProcOptions = list(pcaComp = 18)),
+                    preProcess = c("center", "scale", "pca")
+)
+lm_fit_pca
+```
+
+Method `pcr` implements precisely this: linear regression with principal
+components as explanatory variables. Its hyperparameter is the number of
+components to be used.
+```{r}
+tune_grid <- data.frame(ncomp = 1:19)
+set.seed(857)
+pcr_fit <- train(Salary ~ . , 
+                data = data, 
+                method = "pcr", 
+                trControl = trainControl(method = "cv", number = 10),
+                tuneGrid = tune_grid,
+                preProcess = c("center", "scale")
+                )
+pcr_fit
+```
+
+## K-means clustering
+
+Goal: group observations that are more similar to each other than to others.
+
+```{r}
+data <- data.table(iris)
+setnames(data, c("sepal_length",
+                 "sepal_width", 
+                 "petal_length",
+                 "petal_width", 
+                 "species"))
+print(skim(data))
+```
+
+```{r}
+ggplot(data, aes(x = petal_length, y = sepal_length, color = species)) + geom_point()
+```
+
+Suppose we do not know labels but want to group observations
+based on features.
+```{r}
+data_features <- data[, .(petal_length, petal_width, sepal_length, sepal_width)]
+km <- kmeans(data_features, centers = 3)
+km
+```
+
+```{r}
+data_w_clusters <- cbind(data_features, 
+                         data.table("cluster" = factor(km$cluster)))
+
+ggplot(data_w_clusters, 
+       aes(x = petal_length, y = sepal_length, color = cluster)) + 
+  geom_point()
+```
+
+We can inspect the resulting centers.
+```{r}
+km$centers
+```
+
+```{r}
+centers <- data.table(km$centers)
+str(centers)
+centers[, cluster := factor("center", levels = c(1, 2, 3, "center"))]
+
+data_w_clusters_centers <- rbind(data_w_clusters, centers)
+ggplot(data_w_clusters_centers, 
+       aes(x = petal_length, 
+           y = sepal_length, 
+           color = cluster,
+           size = ifelse(cluster == "center", 2, 1))) + 
+  geom_point() +
+  scale_size(guide = 'none')
+```
+
+Results depend on the starting centers which are randomly chosen
+observations.
+
+```{r}
+set.seed(1122)
+km <- kmeans(data_features, centers = 3, nstart = 1)
+print(km$centers)
+print(table(km$cluster))
+print(km$withinss)
+
+set.seed(123)
+km <- kmeans(data_features, centers = 3, nstart = 1)
+print(km$centers)
+print(table(km$cluster))
+print(km$withinss)
+```
+
+We should always experiment with
+different starting values (probably generated randomly).
+`nstart` controls how many times the algorithm is run with different
+random starting ponits for the centers. Setting it to a high value
+(e.g., 20) is a good idea to achieve the best groupings.
+
+### Choosing K
+
+There are no general rules, depends on the application. There are some
+rules of thumb, though. There are many, you can explore some
+with explanation, [here](http://www.sthda.com/english/wiki/print.php?id=239).
+`NbClust` calculates 30 indices based on various principles and chooses by
+majority rule.
+
+```{r, results="hide"}
+nb <- NbClust(data_features, method = "kmeans", 
+              min.nc = 2, max.nc = 10, index = "all")
+```
+```{r}
+fviz_nbclust(nb)
+```
+
+```{r}
+# the gap method illustrated in the lecture
+nb <- NbClust(data_features, method = "kmeans", 
+              min.nc = 2, max.nc = 10, index = "gap")
+```
+
+## Hierarchical clustering
+
+With hierarchical clustering we get a nested structure of clusters
+based on a dissimilarity measure. Is it better than k-means? It depends - 
+k-means does not yield a hierarchical structure. If the data does not have
+one in reality, hierarchical may be not as good as k-means and there are
+reversed situations as well.
+
+```{r}
+data_distances <- dist(data_features)
+# use the average distance between groups to decide which
+# groups to merge next
+hc <- hclust(data_distances, method = "average")
+```
+
+```{r}
+fviz_dend(hc)
+```
+
+```{r}
+fviz_dend(hc, k = 3)
+```
+
+```{r}
+fviz_dend(hc, k = 6)
+```
+
+```{r}
+# get labels
+cluster_hc <- cutree(hc, 3)
+data_w_clusters <- cbind(data_features, data.table("cluster" = factor(cluster_hc)))
+
+ggplot(data_w_clusters, 
+       aes(x = petal_length, y = sepal_length, color = cluster)) + 
+  geom_point()
+```
+
+How we calculate similarities between groups may strongly affect the clustering.
+```{r}
+# max distance between points of two groups
+hc_complete <- hclust(data_distances, method = "complete")
+fviz_dend(hc_complete, k = 3)
+```
+
+```{r}
+# single: minimal distance between points of two groups
+hc_single <- hclust(data_distances, method = "single")
+fviz_dend(hc_single, k = 3)
+```
+
+## General considerations on clustering
+
+- as both clustering methods are based on distances in features, we may
+want to first bring all variables to the same scale
+- clusters may be sensitive to details such as scaling or not, whether we take subsets of data or what is the dissimilarity measure in hierarchical clustering. Advice: experiment with the settings and look for consistent patterns.
