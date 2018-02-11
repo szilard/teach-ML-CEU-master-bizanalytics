@@ -7,7 +7,7 @@ Hyperparameter tuning, grid and random search.
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1vmRjKD3jg7pL7p3r3LGLXupa12Llh9szj8Jngm5bQkg).
+Slides [here](https://docs.google.com/presentation/d/1CaFlajMiVAEw-sa-oEKAOWWj24TdLzhawPFktb0s2Ao).
 
 
 ### Reading
