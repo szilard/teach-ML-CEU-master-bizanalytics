@@ -110,7 +110,7 @@ lmCaret
 lmRoc <- roc(predictor = predict(lmCaret, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
 lmRoc
 
-trctrlWithPCA <- trainControl(method = "none", preProcOptions = list(thresh=0.5))  
+trctrlWithPCA <- trainControl(method = "none", preProcOptions = list(thresh=c(0.5)))  
 lmCaretWithPCA <- train(spam~., 
                  data = SpamTrain, 
                  method = "glm",

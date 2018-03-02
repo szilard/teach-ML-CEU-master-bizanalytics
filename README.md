@@ -82,19 +82,19 @@ Class announcements and student Q&A will be done via Moodle
 
 ### ML #2
 
-**Week 9:** Deeper understanding of linear models, lasso. Understanding and tuning parameters for trees, random forests and gradient boosting machines. Impact of correlated features. Support vector machines.
+**Week 10:** Deeper understanding of linear models, lasso. Understanding and tuning parameters for trees, random forests and gradient boosting machines. Impact of correlated features. Support vector machines.
 Tools: R packages, xgboost, lightgbm
-[Lecture](wk09/lect) | [Lab](wk09/lab).
-
-**Week 10:** Neural networks and deep learning. Reinforcement Learning. Evolutionary Computing.
-Tools: R packages, Keras.
 [Lecture](wk10/lect) | [Lab](wk10/lab).
 
-**Week 11:** Ensembles, Stacking. Deploying machine learning models to production.
+**Week 11:** Neural networks and deep learning. Reinforcement Learning. Evolutionary Computing.
+Tools: R packages, Keras.
 [Lecture](wk11/lect) | [Lab](wk11/lab).
 
-**Week 12:** Recap and summary. **Final Exam (ML #1 and #2).**
+**Week 12:** Ensembles, Stacking. Deploying machine learning models to production.
 [Lecture](wk12/lect) | [Lab](wk12/lab).
+
+**Week 13:** Recap and summary. **Final Exam (ML #1 and #2).**
+[Lecture](wk13/lect) | [Lab](wk13/lab).
 
 
 
