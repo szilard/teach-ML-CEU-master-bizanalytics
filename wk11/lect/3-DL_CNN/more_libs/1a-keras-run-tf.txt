@@ -1,0 +1,78 @@
+
+
+***   p2.xlarge   ***
+
+
+python 1-keras.py
+
+Using TensorFlow backend.
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:111] successfully opened CUDA library libcurand.so locally
+I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:925] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:951] Found device 0 with properties: 
+name: Tesla K80
+major: 3 minor: 7 memoryClockRate (GHz) 0.8235
+pciBusID 0000:00:1e.0
+Total memory: 11.25GiB
+Free memory: 11.07GiB
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:972] DMA: 0 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] 0:   Y 
+I tensorflow/core/common_runtime/gpu/gpu_device.cc:1041] Creating TensorFlow device (/gpu:0) -> (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0)
+Epoch 1/10
+60000/60000 [==============================] - 4s - loss: 0.3226 - acc: 0.8983       
+Epoch 2/10
+60000/60000 [==============================] - 3s - loss: 0.0768 - acc: 0.9762     
+Epoch 3/10
+60000/60000 [==============================] - 3s - loss: 0.0619 - acc: 0.9808     
+Epoch 4/10
+60000/60000 [==============================] - 3s - loss: 0.0510 - acc: 0.9835     
+Epoch 5/10
+60000/60000 [==============================] - 3s - loss: 0.0430 - acc: 0.9867     
+Epoch 6/10
+60000/60000 [==============================] - 3s - loss: 0.0383 - acc: 0.9874     
+Epoch 7/10
+60000/60000 [==============================] - 3s - loss: 0.0361 - acc: 0.9881     
+Epoch 8/10
+60000/60000 [==============================] - 3s - loss: 0.0328 - acc: 0.9892     
+Epoch 9/10
+60000/60000 [==============================] - 3s - loss: 0.0301 - acc: 0.9901     
+Epoch 10/10
+60000/60000 [==============================] - 3s - loss: 0.0290 - acc: 0.9911     
+Train time: 36.8663649559 sec
+Error rate: 0.89 %
+
+
+nvidia-smi -l 3
+
++------------------------------------------------------+                       
+| NVIDIA-SMI 352.99     Driver Version: 352.99         |                       
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla K80           Off  | 0000:00:1E.0     Off |                    0 |
+| N/A   82C    P0   107W / 149W |  11021MiB / 11519MiB |     66%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID  Type  Process name                               Usage      |
+|=============================================================================|
+|    0      1272    C   /usr/bin/python                                 64MiB |
+|    0     12008    C   python                                       10898MiB |
++-----------------------------------------------------------------------------+
+
+
+mpstat -P ALL 3
+
+10:37:42 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+10:37:45 PM  all   18.52    0.00    3.46    0.00    0.00    0.09    0.47    0.00    0.00   77.46
+10:37:45 PM    0   17.87    0.00    2.66    0.00    0.00    0.00    0.76    0.00    0.00   78.71
+10:37:45 PM    1   16.48    0.00    3.75    0.00    0.00    0.00    0.37    0.00    0.00   79.40
+10:37:45 PM    2   19.70    0.00    3.35    0.00    0.00    0.00    0.37    0.00    0.00   76.58
+10:37:45 PM    3   19.93    0.00    4.06    0.00    0.00    0.00    0.37    0.00    0.00   75.65
+
+

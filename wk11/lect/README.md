@@ -1,26 +1,19 @@
 
-## Lect wk11
+## Lect wk10
 
-Ensembles, stacking. Deploying machine learning models to production. 
+Support vector machines. Neural networks and deep learning. 
+Tools: R packages, H2O, Keras. 
 
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1z3psde9T7Y3XL9k5P8L7fN47XKDVz5aNNESeIvgvEg4).
+Slides [here](https://drive.google.com/open?id=1iFSx_F5fM36CgHUx1gSo3hOoY8WzdUBNPwGIiHercQA).
 
 
 ### Reading
 
-Szilard Pafka: [Tuning GBM models](https://github.com/szilard/GBM-tune)
+Trevor Hastie, Robert Tibshirani, Jerome Friedman: [The Elements of Statistical Learning (2nd Edition)](http://statweb.stanford.edu/~tibs/ElemStatLearn/printings/ESLII_print10.pdf), Ch. 11 (pp. 392-400, 404-408)
 
-Szilard Pafka: [Benchmarking ML Tools](https://github.com/szilard/benchm-ml)
-
-Szilard Pafka: [Performance of top GBM libraries](https://github.com/szilard/GBM-perf)
-
-Szilard Pafka: [Multicore scaling of GBMs](https://github.com/szilard/GBM-multicore)
-
-Szilard Pafka: [Real-time ML scoring](https://github.com/szilard/ML-scoring)
-
-Szilard Pafka: [Machine Learning in production](https://github.com/szilard/ml-prod)
+Rexer Analytics: [2015 Data Science Survey](http://www.rexeranalytics.com/assets/rexer_analytics_2015_data_miner_survey_summary_report.pdf) (Summary Report)
 
 
