@@ -1,0 +1,195 @@
+---
+title: "Lab week 10 - Tree-based methods"
+subtitle: "Data Science and Machine Learning 2 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-03-06'
+output:
+  html_notebook:
+    df_print: paged
+  html_document:
+    df_print: paged
+---
+
+
+
+```{r, message=FALSE}
+library(data.table)
+library(caret)
+library(xgboost)
+library(ISLR)
+library(skimr)
+```
+
+## Bagging, random forests
+
+We covered decision trees in DS-ML-1. Using it as a base model lets us
+build many different models with less variance and better predictive power.
+The downside: interpretation gets harder.
+
+Idea: as individual trees are unstable and have high variance, train many
+versions on bootstrap samples ("Bagging": Bootstrap AGGregation).
+Then predict: take the average (regression),
+majority vote / class share (classification). 
+
+Random forests: randomly constrain the set of predictor variables used to
+grow trees. Goal: avoid correlated trees that are very similar to each other,
+still with the aim of decreasing variance.
+
+```{r}
+data(Hitters)
+data <- data.table(Hitters)
+skim(data)
+```
+
+```{r}
+data <- data[!is.na(Salary)]
+data[, log_salary := log(Salary)]
+data[, Salary := NULL]
+```
+
+
+```{r}
+training_ratio <- 0.75 
+set.seed(1234)
+train_indices <- createDataPartition(y = data[["log_salary"]],
+                                     times = 1,
+                                     p = training_ratio,
+                                     list = FALSE)
+data_train <- data[train_indices, ]
+data_test <- data[-train_indices, ]
+```
+
+Let's see benchmarks: a linear model and a simple regression tree.
+```{r}
+train_control <- trainControl(method = "repeatedcv",
+                              number = 5,
+                              repeats = 3)
+
+set.seed(857)
+linear_model <- train(log_salary ~ .,
+                      method = "lm",
+                      data = data_train,
+                      trControl = train_control)
+linear_model
+```
+
+```{r}
+set.seed(857)
+simple_tree_model <- train(log_salary ~ .,
+                      method = "rpart",
+                      data = data_train,
+                      tuneGrid = data.frame(cp = c(0.01, 0.02, 0.05)),
+                      trControl = train_control)
+simple_tree_model
+```
+
+For random forests,
+`mtry` sets the number of variables randomly chosen for a tree. When `mtry`
+equals the number of features, it is the bagging.
+
+```{r}
+# random forest
+set.seed(857)
+rf_model <- train(log_salary ~ .,
+                  method = "rf",
+                  data = data_train,
+                  trControl = train_control,
+                  tuneGrid = data.frame(mtry = c(2, 3, 5, 7, 9, 12, 19)),
+                  importance = T # to calculate variable importance measures
+                  )
+rf_model
+```
+
+```{r}
+# the number of trees is not a tuning parameter with caret
+# default is 500, you can change it with passing the parameter to train
+set.seed(857)
+rf_model_ntree_10 <- train(log_salary ~ .,
+                  method = "rf",
+                  data = data_train,
+                  trControl = train_control,
+                  tuneGrid = data.frame(mtry = c(2, 3, 5)),
+                  ntree = 10,
+                  importance = T # to calculate variable importance measures
+                  )
+rf_model_ntree_10
+```
+
+```{r}
+# calculate test error
+RMSE <- function(x, true_x) sqrt(mean((x - true_x)^2))
+
+RMSE(data_test[["log_salary"]], predict.train(rf_model, newdata = data_test))
+```
+
+### Variable importance
+
+With the ensemble models we have a hard time with interpretation.
+Variable importance measures can help to see which features contribute most
+to the predictive power of models. The generic `varImp` function of `caret`
+does model-specific calculations, consult [here](https://topepo.github.io/caret/variable-importance.html) for a description
+for your model at hand.
+
+```{r}
+varImp(rf_model)
+```
+
+```{r}
+plot(varImp(rf_model))
+```
+
+## Boosting - XGBoost
+
+TBC
+- best algo for tabular data (not deep learning)
+- wins Kaggles all the time
+- tuning parameters: lots, requires some experimentation
+  - stochastic tuning?
+  
+```{r}
+gbm_grid <- expand.grid(n.trees = c(100, 300, 500), 
+                        interaction.depth = c(5, 10), 
+                        shrinkage = c(0.001, 0.01, 0.1),
+                        n.minobsinnode = c(10))
+  
+gbm_model <- train(log_salary ~ .,
+                   method = "gbm",
+                   data = data_train,
+                   trControl = train_control,
+                   tuneGrid = gbm_grid,
+                   verbose = FALSE # gbm by default prints too much output
+                   )
+gbm_model
+```
+
+4 hyperparameters: [the curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality) 
+can make it hard to come up
+with efficient grids for hyperparameter search. However, with `gbm` and many
+other models, in reality the models to be estimated are not exponentially
+growing with the number of hyperparameters (see [here](https://topepo.github.io/caret/random-hyperparameter-search.html)).
+
+### XGBoost
+
+A celebrated implementation of the gradient boosting idea. 
+See documentation [here](http://xgboost.readthedocs.io/).
+It proved to be very stable and widely applicable.
+```{r}
+xgbGrid <- expand.grid(nrounds = c(100, 300, 500),
+                       max_depth = c(2, 3, 5, 10),
+                       eta = c(0.02, 0.05, 0.1),
+                       gamma = 0,
+                       colsample_bytree = c(0.5, 0.7),
+                       min_child_weight = 1,
+                       subsample = 1)
+set.seed(857)
+xgboost_model <- train(log_salary ~ .,
+                       method = "xgbTree",
+                       data = data_train,
+                       trControl = train_control,
+                       tuneGrid = xgbGrid)
+xgboost_model
+```
+
+## H2O
+- better implementation, production-grade, easy to deploy models
+- some speed/accuracy comparison? Refer to Szilard's benchmarks
