@@ -7,7 +7,7 @@ Tools: R packages, Vowpal Wabbit, xgboost, lightgbm, H2O
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1QkAW1WaJ3R9PAmSuYlA2pNDBWp7Bg3oRPtebfWBM4SI).
+Slides [here](https://docs.google.com/presentation/d/1oqDlYVcnBc9Zu_hxjULthyWhNTnJ46c2vXC5GwDW3hA/edit?usp=sharing).
 
 
 ### Reading
