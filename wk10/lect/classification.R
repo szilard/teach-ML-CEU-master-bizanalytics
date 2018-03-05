@@ -21,7 +21,6 @@ library(doMC)
 library(e1071)
 library(pROC)
 library(randomForest)
-library(lightgbm)
 
 
 # data: https://archive.ics.uci.edu/ml/datasets/Spambase
@@ -81,7 +80,9 @@ sum((as.numeric(SpamTrain$spam))-1)/nrow(SpamTrain)
 
 sum((as.numeric(SpamTest$spam)-1)/nrow(SpamTest))
 
-expand.grid(mtry=seq(1,15,5), ntree=c(100, 150, 200))
+#######################################
+# 1. Random Forest
+#######################################
 
 set.seed(123)
 trctrlRF <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 10, repeats = 1)
@@ -99,8 +100,12 @@ rfModelRoc
 plot(rfModel)
 
 
+#######################################
+# 2. Gradient Boosting Machine
+#######################################
+
 set.seed(123)
-trctrlXgbTree <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 10, repeats = 3)
+trctrlXgbTree <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 10, repeats = 1)
 xgbTreeModel <- train(spam~., 
                  data = SpamTrain, 
                  method = "gbm",
@@ -108,10 +113,29 @@ xgbTreeModel <- train(spam~.,
                  trControl=trctrlXgbTree,
                  tuneLength = 10
 )
-rfModel
-rfModelRoc <- roc(predictor = predict(rfModel, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
-rfModelRoc
-plot(rfModel)
+xgbTreeModel
+xgbTreeModelRoc <- roc(predictor = predict(xgbTreeModel, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
+xgbTreeModelRoc
+plot(xgbTreeModel)
+
+xgbTreeModel2 <- train(spam~., 
+                       data = SpamTrain, 
+                       method = "gbm",
+                       preProcess = c("center", "scale"),
+                       trControl=trctrlXgbTree,
+                       tuneGrid = data.frame(interaction.depth=c(1,2,3), 
+                                             n.trees=c(100, 200,300),
+                                             shrinkage = c(.0005, .001, 0.01),
+                                             n.minobsinnode = c(10, 10, 10)))
+xgbTreeModel2Roc <- roc(predictor = predict(xgbTreeModel2, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
+xgbTreeModel2Roc
+
+plot(xgbTreeModel2)
+
+
+#######################################
+# 2. Support Vector Machine
+#######################################
 
 
 set.seed(123)
