@@ -134,13 +134,28 @@ plot(xgbTreeModel2)
 
 
 #######################################
-# 2. Support Vector Machine
+# 3. Support Vector Machine
 #######################################
 
 
 set.seed(123)
-trctrl <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 10, repeats = 1,
-                       preProcOptions = list(thresh=0.6))
+trctrl <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 5, repeats = 1,
+                       preProcOptions = list(thresh=0.95))
+
+svmLinearModel <- train(spam~., 
+                        data = SpamTrain, 
+                        method = "svmLinear",
+                        trControl=trctrl,
+                        #preProcess = c("center", "scale"),
+                        tuneLength = 10)
+svmLinearModel
+svmLinearModelRoc <- roc(predictor = predict(svmLinearModel, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
+svmLinearModelRoc
+plot(svmLinearModelRoc)
+
+set.seed(123)
+trctrl <- trainControl(method = "repeatedcv", classProbs=TRUE, number = 5, repeats = 1,
+                       preProcOptions = list(thresh=0.95))
 svmRadialModel <- train(spam~., 
                         data = SpamTrain, 
                         method = "svmRadial",
@@ -150,7 +165,7 @@ svmRadialModel <- train(spam~.,
 svmRadialModel
 svmRadialModelRoc <- roc(predictor = predict(svmRadialModel, SpamTest, type='prob', decision.values=T)$Spam, response = SpamTest$spam)
 svmRadialModelRoc
-plot(svmRadialModel)
+plot(svmRadialModelRoc)
 
 
 
