@@ -4,9 +4,9 @@ subtitle: "Data Science and Machine Learning 2 - CEU 2018"
 author: "Jeno Pal"
 date: '2018-03-06'
 output:
-  html_notebook:
-    df_print: paged
   html_document:
+    df_print: paged
+  html_notebook:
     df_print: paged
 ---
 
@@ -15,7 +15,11 @@ output:
 ```{r, message=FALSE}
 library(data.table)
 library(caret)
+library(rpart)
+library(rpart.plot)
 library(xgboost)
+library(randomForest)
+library(gbm)
 library(ISLR)
 library(skimr)
 ```
@@ -42,6 +46,7 @@ skim(data)
 ```
 
 ```{r}
+# goal: predict log salary
 data <- data[!is.na(Salary)]
 data[, log_salary := log(Salary)]
 data[, Salary := NULL]
@@ -83,6 +88,10 @@ simple_tree_model <- train(log_salary ~ .,
 simple_tree_model
 ```
 
+```{r}
+rpart.plot(simple_tree_model[["finalModel"]])
+```
+
 For random forests,
 `mtry` sets the number of variables randomly chosen for a tree. When `mtry`
 equals the number of features, it is the bagging.
@@ -122,6 +131,9 @@ RMSE <- function(x, true_x) sqrt(mean((x - true_x)^2))
 RMSE(data_test[["log_salary"]], predict.train(rf_model, newdata = data_test))
 ```
 
+(It is a small dataset hence performance measures can have large
+variances.)
+
 ### Variable importance
 
 With the ensemble models we have a hard time with interpretation.
@@ -138,19 +150,22 @@ varImp(rf_model)
 plot(varImp(rf_model))
 ```
 
-## Boosting - XGBoost
+## Gradient boosting machines
 
-TBC
-- best algo for tabular data (not deep learning)
-- wins Kaggles all the time
-- tuning parameters: lots, requires some experimentation
-  - stochastic tuning?
-  
+Gradient boosting machines: also ensembles of trees, however,
+the method of choosing them is different. Idea: get the residual and train
+next tree to predict (explain) the residual. Then add it to the previous
+trees, with a shrinkage parameter (to avoid overfitting).
+
+Another difference: GBMs use shallow trees (controlled by
+`interaction.depth`) whereas RFs use unpruned, large trees (with low bias
+and high variance). Common part: idea of bagging.
+
 ```{r}
-gbm_grid <- expand.grid(n.trees = c(100, 300, 500), 
-                        interaction.depth = c(5, 10), 
-                        shrinkage = c(0.001, 0.01, 0.1),
-                        n.minobsinnode = c(10))
+gbm_grid <- expand.grid(n.trees = c(100, 500, 1000), 
+                        interaction.depth = c(2, 3, 5), 
+                        shrinkage = c(0.005, 0.01, 0.1),
+                        n.minobsinnode = c(5))
   
 gbm_model <- train(log_salary ~ .,
                    method = "gbm",
@@ -168,19 +183,56 @@ with efficient grids for hyperparameter search. However, with `gbm` and many
 other models, in reality the models to be estimated are not exponentially
 growing with the number of hyperparameters (see [here](https://topepo.github.io/caret/random-hyperparameter-search.html)).
 
+```{r}
+plot(varImp(gbm_model))
+```
+
+Lower `eta` means slower learning, hence more trees are necessary to have
+good performance.
+
+Not tuned: `bag.fraction` parameter (set to default 0.5): for the construction
+of each tree, only `bag.fraction` share of the sample is used (randomly
+selected, see `?gbm`). 
+This, again, is the same idea as with bagging: decrease
+variance of the model. You can pass another value for it via
+giving `train` an argument `bag.fraction`, just like we saw with
+`rf` and `ntree`.
+
+```{r}
+gbm_grid_2 <- data.frame(n.trees = c(1000), 
+                         interaction.depth = c(5), 
+                         shrinkage = c(0.005),
+                         n.minobsinnode = c(5))
+  
+gbm_model_2 <- train(log_salary ~ .,
+                   method = "gbm",
+                   data = data_train,
+                   trControl = train_control,
+                   tuneGrid = gbm_grid_2,
+                   bag.fraction = 0.8,
+                   verbose = FALSE # gbm by default prints too much output
+                   )
+gbm_model_2
+```
+
+
 ### XGBoost
 
 A celebrated implementation of the gradient boosting idea. 
+_"Both xgboost and gbm follows the principle of gradient boosting. There are however, the difference in modeling details. Specifically, xgboost used a more regularized model formalization to control over-fitting, which gives it better performance."_
+
+
 See documentation [here](http://xgboost.readthedocs.io/).
-It proved to be very stable and widely applicable.
+It proved to be very stable and widely applicable. For the many hyperparameters,
+consult the documentation.
 ```{r}
-xgbGrid <- expand.grid(nrounds = c(100, 300, 500),
-                       max_depth = c(2, 3, 5, 10),
-                       eta = c(0.02, 0.05, 0.1),
+xgbGrid <- expand.grid(nrounds = c(500, 1000),
+                       max_depth = c(2, 3, 5),
+                       eta = c(0.01, 0.05),
                        gamma = 0,
                        colsample_bytree = c(0.5, 0.7),
                        min_child_weight = 1,
-                       subsample = 1)
+                       subsample = c(0.5))
 set.seed(857)
 xgboost_model <- train(log_salary ~ .,
                        method = "xgbTree",
@@ -190,6 +242,19 @@ xgboost_model <- train(log_salary ~ .,
 xgboost_model
 ```
 
-## H2O
-- better implementation, production-grade, easy to deploy models
-- some speed/accuracy comparison? Refer to Szilard's benchmarks
+```{r}
+plot(varImp(xgboost_model))
+```
+
+
+```{r}
+resamples_object <- resamples(list("rpart" = simple_tree_model,
+                                   "rf" = rf_model,
+                                   "gbm" = gbm_model,
+                                   "xgboost" = xgboost_model))
+summary(resamples_object)
+```
+
+
+
+
