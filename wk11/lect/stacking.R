@@ -118,7 +118,7 @@ plot(svmRadialModelRoc)
 
 
 #######################################
-# 2. Stacking
+# 2. Stacking: Manual
 #######################################
 
 set.seed(123)
@@ -204,24 +204,30 @@ stackedModelRoc <- roc(predictor = predict(stackedModel,
 stackedModelRoc
 
 
+#######################################
+# 2. Stacking: Caret
+#######################################
 
 set.seed(123)
-trctrlCaretStack <- trainControl(method = "repeatedcv", index=createFolds(SpamTrain$spam, 3),
-                                 savePredictions=TRUE, 
-                                 #classProbs=TRUE, 
-                                 number = 10, repeats = 1)
+
+trctrlCaretStack <- trainControl(method = "cv", 
+                                 index=createFolds(SpamTrain$spam, 3),
+                                 classProbs=TRUE, 
+                                 savePredictions='all',
+                                 summaryFunction=twoClassSummary,
+                                 number = 3)
                   
 caretModelList <- caretList(
   spam~., 
   data=SpamTrain,
   trControl=trctrlCaretStack,
-  # metric="ROC",
-  savePredictions='all',
-  methodList=c("glmnet", "rpart"),
+  metric="ROC",
+  #methodList=c("rf", "rpart"),
   tuneList=list(
-    rf1=caretModelSpec(method="rf", tuneGrid=data.frame(.mtry=2)),
-    rf2=caretModelSpec(method="rf", tuneGrid=data.frame(.mtry=10))
-    #nn=caretModelSpec(method="glmnet", tuneLength=5, trace=FALSE)
+    rf=caretModelSpec(method="rf", family='binomial', tuneGrid=data.frame(.mtry=2)),
+    rf=caretModelSpec(method="rf", family='binomial', tuneGrid=data.frame(.mtry=3)),
+    glmnet=caretModelSpec(method="glmnet", family='binomial', tuneLength=5),
+    gbm=caretModelSpec(method="gbm", tuneLength=5)
   )
 )
 
@@ -230,25 +236,75 @@ stackedCaretModel <- caretStack(
   method='glmnet',
   family = "binomial",
   metric="ROC",
+  tuneLength=10,
   trControl=trainControl(
     number=10,
-    savePredictions = TRUE,
-    summaryFunction=twoClassSummary,
-    classProbs=TRUE
-  ))
+    savePredictions="final",
+    classProbs=TRUE,
+    summaryFunction=twoClassSummary
+  )
+  )
+
+coef(stackedCaretModel$ens_model$finalModel)
+plot(stackedCaretModel$ens_model)
+
 summary(stackedCaretModel)
 stackedCaretModel
+plot(stackedCaretModel)
 
 stackedCaretModelRoc <- roc(predictor = predict(stackedCaretModel, 
-                                                newdata=SpamTest,
+                                                newdata=SpamTrain,
                                                 type='prob', decision.values=T), 
-                            response = SpamTest$spam)
+                            response = SpamTrain$spam)
 
-stackedCaretModelRoc
+stackedCaretModelRoc  # RF 0.9973
 
-SpamTest$spam
 
-SpamTest
-
-predict(stackedCaretModel, SpamTest)
-stackedCaretModel
+#############################
+# Further stacking examples
+#############################
+# my_control <- trainControl(
+#   method="cv",
+#   number=5,
+#   savePredictions="final",
+#   classProbs=TRUE,
+#   index=createResample(SpamTrain$spam, 25),
+#   summaryFunction=twoClassSummary
+# )
+# 
+# model_list_big <- caretList(
+#   spam~., 
+#   data=SpamTrain,
+#   trControl=my_control,
+#   metric="ROC",
+#   #methodList=c("glm", "rpart"),
+#   tuneList=list(
+#     rf=caretModelSpec(method="rf", tuneGrid=data.frame(.mtry=2)),
+#     rf=caretModelSpec(method="rf", tuneGrid=data.frame(.mtry=3))
+#     #nn=caretModelSpec(method="nnet", tuneLength=2, trace=FALSE)
+#   )
+# )
+# 
+# model_list <- caretList(
+#   spam~., 
+#   data=SpamTrain,
+#   trControl=my_control,
+#   methodList=c("glm", "rpart")
+# )
+# 
+# glm_stack <- caretStack(
+#   model_list_big,
+#   method="glmnet",
+#   metric="ROC",
+#   trControl=trainControl(
+#     method="boot",
+#     number=10,
+#     savePredictions="final",
+#     classProbs=TRUE,
+#     summaryFunction=twoClassSummary
+#   )
+# )
+# 
+# model_list_big
+# summary(glm_stack)
+# predict(glm_stack, newdata=SpamTrain, type='prob', decision.values=T)
