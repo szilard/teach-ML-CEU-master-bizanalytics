@@ -1,5 +1,5 @@
 
-## Lect wk10
+## Lect wk11
 
 Support vector machines. Neural networks and deep learning. 
 Tools: R packages, H2O, Keras. 
