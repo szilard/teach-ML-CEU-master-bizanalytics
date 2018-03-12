@@ -1,8 +1,7 @@
 
 ## Lect wk11
 
-Support vector machines. Neural networks and deep learning. 
-Tools: R packages, H2O, Keras. 
+Support vector machines. Ensembles, Stacking. Neural networks and deep learning. 
 
 
 ### Slides
