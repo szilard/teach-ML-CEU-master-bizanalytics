@@ -222,7 +222,6 @@ caretModelList <- caretList(
   data=SpamTrain,
   trControl=trctrlCaretStack,
   metric="ROC",
-  #methodList=c("rf", "rpart"),
   tuneList=list(
     rf=caretModelSpec(method="rf", family='binomial', tuneGrid=data.frame(.mtry=2)),
     rf=caretModelSpec(method="rf", family='binomial', tuneGrid=data.frame(.mtry=3)),
@@ -257,7 +256,7 @@ stackedCaretModelRoc <- roc(predictor = predict(stackedCaretModel,
                                                 type='prob', decision.values=T), 
                             response = SpamTrain$spam)
 
-stackedCaretModelRoc  # RF 0.9973
+stackedCaretModelRoc
 
 
 #############################
