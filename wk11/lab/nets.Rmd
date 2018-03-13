@@ -1,0 +1,192 @@
+---
+title: "Lab week 11 - Neural nets and deep learning"
+subtitle: "Data Science and Machine Learning 2 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-03-13'
+output:
+  html_document:
+    df_print: paged
+  html_notebook:
+    df_print: paged
+---
+
+```{r, message=FALSE}
+library(ISLR)
+library(data.table)
+library(caret)
+library(skimr)
+library(ROCR)
+```
+
+## Neural nets with `caret`
+
+Very large number of parameters: regularization is needed. Done via
+ideas similar to ridge or lasso. (Hence it is a good idea to
+center and scale features and remove correlated features / de-correlate 
+them. Concrete example here: many binary features, then it
+may not help much).
+
+Also, typically local solutions
+are found: initialization from many random starting values and model
+averaging can help.
+
+```{r}
+# the famous german credit data
+# downloaded in friendly form from
+# https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/credit.csv
+data <- fread("../../data/german_credit/german_credit.csv")
+skim(data)
+```
+```{r}
+data[, default := factor(ifelse(default == 1, "No", "Yes"))]
+
+# turn character variables to factors
+character_variables <- names(data)[sapply(names(data),
+                                          function(x) is.character(data[[x]]))]
+data <- data[, 
+             (character_variables) := lapply(.SD, as.factor), 
+             .SDcols = character_variables]
+  
+```
+
+```{r}
+training_ratio <- 0.75 
+set.seed(1234)
+train_indices <- createDataPartition(y = data[["default"]],
+                                     times = 1,
+                                     p = training_ratio,
+                                     list = FALSE)
+data_train <- data[train_indices, ]
+data_test <- data[-train_indices, ]
+```
+
+```{r}
+train_control <- trainControl(method = "cv",
+                              number = 10,
+                              classProbs = TRUE,
+                              summaryFunction = twoClassSummary)
+```
+
+```{r}
+# baseline logistic model
+set.seed(857)
+glm_model <- train(default ~ .,
+                   method = "glm",
+                   data = data_train,
+                   trControl = train_control,
+                   # preProcess = c("center", "scale", "pca"),
+                   metric = "ROC")
+glm_model
+```
+
+Size: number of units in the hidden layer. Decay: regularization parameter.
+```{r}
+tune_grid <- expand.grid(size = c(3, 5, 10, 15),
+                         decay = c(0.1, 0.5, 1, 1.2))
+
+set.seed(857)
+nnet_model <- train(default ~ .,
+                   method = "nnet",
+                   data = data_train,
+                   trControl = train_control,
+                   tuneGrid = tune_grid,
+                   metric = "ROC",
+                   # avoid extensive iteration output
+                   trace = FALSE)
+nnet_model
+```
+```{r}
+nnet_prediction <- prediction(predict.train(nnet_model, 
+                                            newdata = data_test,
+                                            type = "prob")$Yes,
+                              data_test[["default"]])
+performance(nnet_prediction, measure = "auc")@y.values[[1]]
+```
+
+`nnet` with different random initial seeds. (Default: 5 initial seeds, training takes
+5x times with the same grid. Parameter `repeats` controls the number of seeds.)
+```{r}
+# takes a long time to run for the whole grid above
+tune_grid <- expand.grid(size = c(5),
+                         decay = c(0.5),
+                         bag = FALSE)
+
+set.seed(857)
+avnnet_model <- train(default ~ .,
+                   method = "avNNet",
+                   data = data_train,
+                   trControl = train_control,
+                   tuneGrid = tune_grid,
+                   metric = "ROC",
+                   # avoid extensive iteration output
+                   trace = FALSE)
+avnnet_model
+```
+
+```{r}
+avnnet_prediction <- prediction(predict.train(avnnet_model, 
+                                            newdata = data_test,
+                                            type = "prob")$Yes,
+                              data_test[["default"]])
+performance(avnnet_prediction, measure = "auc")@y.values[[1]]
+```
+
+## Deep learning with `h2o`
+
+"Deep": many layers of hidden units. 
+
+Note on estmiation: when having large datasets, k-fold cross validation can become
+computationally burdensome, hence usually train/validation/test approach is used.
+(see answer on Quora by Yoshua Bengio, one of the originators of deep learning [here](https://www.quora.com/Is-cross-validation-heavily-used-in-deep-learning-or-is-it-too-expensive-to-be-used)).
+
+```{r}
+library(h2o)
+h2o.init(nthreads=-1)
+
+h2o_train <- as.h2o(data_train)
+h2o_test <- as.h2o(data_test)
+
+y <- "default"
+X <- setdiff(names(h2o_train), "default")
+
+```
+
+```{r}
+dl_model <- h2o.deeplearning(x = X, 
+                             y = y, 
+                             training_frame = h2o_train, 
+                             reproducible = TRUE,  # makes training slower but makes it reproducible
+                             seed = 123)
+h2o.performance(dl_model, h2o_test)@metrics$AUC
+```
+
+There are lots of parameters that you can change, see `?h2o.deeplearning`
+and the [docs](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/deep-learning.html).
+
+```{r}
+# a shallow model similar to those we trained with caret
+dl_model_2 <- h2o.deeplearning(x = X,
+                               y = y,
+                               training_frame = h2o_train,
+                               hidden = c(5), # hidden layer sizes, default c(200, 200)
+                               epochs = 10, # default is 10
+                               activation = "Tanh", # different activation function
+                               reproducible = TRUE,
+                               seed = 123)
+h2o.performance(dl_model_2, h2o_test)@metrics$AUC
+```
+
+```{r}
+dl_model_3 <- h2o.deeplearning(x = X,
+                               y = y,
+                               training_frame = h2o_train,
+                               hidden = c(100, 25), # hidden layer sizes, default c(200, 200)
+                               epochs = 50, # default is 10
+                               reproducible = TRUE,
+                               activation = "TanhWithDropout",
+                               hidden_dropout_ratios = c(0.1, 0.5),
+                               l1 = 0.001,
+                               seed = 123)
+h2o.performance(dl_model_3, h2o_test)@metrics$AUC
+```
+

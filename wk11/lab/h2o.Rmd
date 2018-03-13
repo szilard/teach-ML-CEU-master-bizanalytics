@@ -1,0 +1,190 @@
+---
+title: "Lab week 11 - h2o"
+subtitle: "Data Science and Machine Learning 2 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-03-13'
+output:
+  html_document:
+    df_print: paged
+  html_notebook:
+    df_print: paged
+---
+
+H2O: state-of-the-art machine learning software that is even
+suitable for big datasets. 
+It offers very efficient and scalable implementations of 
+popular ML algorithms that can 
+
+* run on distributed systems
+* utilize multiple cores
+* work with GPUs
+
+Models estimated with h2o can be deployed to production environments
+through Java objects (see [here](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/productionizing.html)).
+Also, h2o scales well compared to other competitor implementations
+(see Szilard Pafka's famous benchmarks [here](https://github.com/szilard/benchm-ml)).
+
+In general, best resource to learn is the
+[documentation](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html) and many
+tutorials are available on YouTube.
+
+```{r}
+library(data.table)
+library(ISLR)
+library(ggplot2)
+
+library(h2o)
+h2o.init()
+```
+
+```{r}
+# stop it via h2o.shutdown()
+```
+
+```{r}
+data <- data.table(Wage)
+skimr::skim(data)
+```
+
+```{r}
+data[, c("region","wage") := NULL]
+
+h2o_data <- as.h2o(data)
+str(h2o_data)
+```
+
+```{r}
+splitted_data <- h2o.splitFrame(h2o_data, 
+                                ratios = c(0.6, 0.2), 
+                                seed = 123)
+data_train <- splitted_data[[1]]
+data_valid <- splitted_data[[2]]
+data_test <- splitted_data[[3]]
+```
+
+GLM: __penalized__ linear regression methods.
+```{r}
+y <- "logwage"
+X <- setdiff(names(h2o_data), c(y, "year"))
+
+glm_fit <- h2o.glm(X, y, 
+               training_frame = data_train,
+               alpha = 0,
+               nfolds = 5, 
+               seed = 123)
+
+# xval stands for 'cross-validation'
+print(h2o.performance(glm_fit, xval = TRUE))
+```
+
+```{r}
+print(h2o.rmse(glm_fit, xval = TRUE))
+```
+
+You can perform a grid search with cross-validation to tune hyperparamters.
+```{r}
+hyper_params <- list(alpha = c(0, .25, .5, .75, .1))
+
+# build grid search with previously selected hyperparameters
+glm_grid <- h2o.grid(x = X, 
+                     y = y, 
+                     training_frame = data_train, 
+                     algorithm = "glm", 
+                     lambda_search = TRUE,
+                     nfolds = 5,
+                     seed = 123,
+                     hyper_params = hyper_params)
+h2o.getGrid(grid_id = glm_grid@grid_id, sort_by = "rmse", decreasing = FALSE)
+```
+
+Random Forests are there for you to use as well.
+```{r}
+# random forests
+rf_params <- list(ntrees = c(500),
+                  mtries = c(2, 3, 5))
+
+rf_grid <- h2o.grid(x = X, 
+                    y = y, 
+                    training_frame = data_train, 
+                    algorithm = "randomForest", 
+                    nfolds = 5,
+                    seed = 123,
+                    hyper_params = rf_params)
+
+h2o.getGrid(grid_id = rf_grid@grid_id, sort_by = "rmse", decreasing = FALSE)
+```
+
+Just like GBMs.
+
+```{r}
+# GBM hyperparamters
+gbm_params <- list(learn_rate = c(0.01, 0.05),
+                    max_depth = c(2, 3, 5),
+                    sample_rate = c(0.5),
+                    col_sample_rate = c(0.5, 1.0))
+
+# Train and validate a cartesian grid of GBMs
+gbm_grid <- h2o.grid(x = X, 
+                     y = y, 
+                     training_frame = data_train, 
+                     algorithm = "gbm", 
+                     nfolds = 5,
+                     seed = 123,
+                     ntrees = 300,
+                     hyper_params = gbm_params)
+
+h2o.getGrid(gbm_grid@grid_id, sort_by = "rmse", decreasing = FALSE)
+```
+
+```{r}
+# get best models
+glm_model <- h2o.getModel(h2o.getGrid(glm_grid@grid_id)@model_ids[[1]])
+rf_model <- h2o.getModel(h2o.getGrid(rf_grid@grid_id)@model_ids[[1]])
+gbm_model <- h2o.getModel(h2o.getGrid(gbm_grid@grid_id)@model_ids[[1]])
+
+# predict on validation set
+validation_performances <- list(
+  "glm" = h2o.rmse(h2o.performance(glm_model, newdata = data_valid)),
+  "rf" = h2o.rmse(h2o.performance(rf_model, newdata = data_valid)),
+  "gbm" = h2o.rmse(h2o.performance(gbm_model, newdata = data_valid))
+)
+
+validation_performances
+```
+
+```{r}
+# test set performance
+h2o.rmse(h2o.performance(gbm_model, newdata = data_test))
+```
+
+```{r}
+# turn back h2oFrames to plain data.frame
+prediction_vs_truth = data.table(cbind(
+    as.data.frame(h2o.predict(gbm_model, newdata = data_test)),
+    as.data.frame(data_test)[["logwage"]]
+))
+
+setnames(prediction_vs_truth, c("prediction", "truth"))
+
+
+head(prediction_vs_truth)
+
+ggplot(data = prediction_vs_truth,
+       aes(x = truth, y = prediction)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  xlim(3, 6) + ylim(3, 6) +
+  geom_point() +
+  theme_minimal()
+```
+
+And, of course, there is deep learning, too! We'll come to that later.
+Let's just try it out of the box and see validation set performance.
+```{r}
+dl_model <- h2o.deeplearning(X, y, 
+                             training_frame = data_train,
+                             reproducible = TRUE, # needed in deeplearning for full reproducibility
+                             seed = 123)
+h2o.rmse(h2o.performance(dl_model, newdata = data_valid))
+```
+
+XGboost is also available (however, not on Windows).
