@@ -17,3 +17,4 @@ A.E. Eiben and J.E. Smith: [Introduction to Evolutionary Computing](http://www.c
  * Genetic Algorithms (Chapter 3)
  * Evolutionary Strategies (Chapter 4)
  * Evolutionary Programming (Chapter 5)
+ * Genetic Programming (Chapter 6)
