@@ -1,26 +1,19 @@
 
 ## Lect wk11
 
-Ensembles, stacking. Deploying machine learning models to production. 
+Neural Networks, Deep Learning. Evolutionary computing (Genetic Algorithm, Evolutionary Strategies, Evolutionary Programming, Genetic Programming)
 
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1z3psde9T7Y3XL9k5P8L7fN47XKDVz5aNNESeIvgvEg4).
+Slides [here](https://docs.google.com/presentation/d/1ZHHTibNs-wsJ7IysEo-HhYqOHhggKwX3GANM7CTKWBU).
 
 
 ### Reading
 
-Szilard Pafka: [Tuning GBM models](https://github.com/szilard/GBM-tune)
-
-Szilard Pafka: [Benchmarking ML Tools](https://github.com/szilard/benchm-ml)
-
-Szilard Pafka: [Performance of top GBM libraries](https://github.com/szilard/GBM-perf)
-
-Szilard Pafka: [Multicore scaling of GBMs](https://github.com/szilard/GBM-multicore)
-
-Szilard Pafka: [Real-time ML scoring](https://github.com/szilard/ML-scoring)
-
-Szilard Pafka: [Machine Learning in production](https://github.com/szilard/ml-prod)
-
-
+A.E. Eiben and J.E. Smith: [Outlines of an EC course](http://www.cs.vu.nl/~gusz/ecbook/ecbook-course.html)
+Introduction to EC (Chapter 1)
+Evolutionary Algorithms (Chapter 2)
+Genetic Algorithms (Chapter 3)
+Evolutionary Strategies (Chapter 4)
+Evolutionary Programming (Chapter 5)
