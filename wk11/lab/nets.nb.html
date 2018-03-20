@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jeno Pal" />
 
-<meta name="date" content="2018-03-13" />
+<meta name="date" content="2018-03-20" />
 
 <title>Lab week 11 - Neural nets and deep learning</title>
 
@@ -172,7 +172,7 @@ $(document).ready(function () {
 <h1 class="title toc-ignore">Lab week 11 - Neural nets and deep learning</h1>
 <h3 class="subtitle"><em>Data Science and Machine Learning 2 - CEU 2018</em></h3>
 <h4 class="author"><em>Jeno Pal</em></h4>
-<h4 class="date"><em>2018-03-13</em></h4>
+<h4 class="date"><em>2018-03-20</em></h4>
 
 </div>
 
@@ -202,7 +202,7 @@ library(ROCR)</code></pre>
 data &lt;- fread(&quot;../../data/german_credit/german_credit.csv&quot;)
 skim(data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2tpbSBzdW1tYXJ5IHN0YXRpc3RpY3NcbiBuIG9iczogMTAwMCBcbiBuIHZhcmlhYmxlczogMjEgXG5cblZhcmlhYmxlIHR5cGU6IGNoYXJhY3RlciBcbiAgICAgICAgICB2YXJpYWJsZSBtaXNzaW5nIGNvbXBsZXRlICAgIG4gbWluIG1heCBlbXB0eSBuX3VuaXF1ZVxuICBjaGVja2luZ19iYWxhbmNlICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDYgIDEwICAgICAwICAgICAgICA0XG4gICAgY3JlZGl0X2hpc3RvcnkgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNiAgMjIgICAgIDAgICAgICAgIDVcbiBlbXBsb3ltZW50X2xlbmd0aCAgICAgICAwICAgICAxMDAwIDEwMDAgICA3ICAxMCAgICAgMCAgICAgICAgNVxuICAgIGZvcmVpZ25fd29ya2VyICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDIgICAzICAgICAwICAgICAgICAyXG4gICAgICAgICAgIGhvdXNpbmcgICAgICAgMCAgICAgMTAwMCAxMDAwICAgMyAgIDggICAgIDAgICAgICAgIDNcbiAgaW5zdGFsbG1lbnRfcGxhbiAgICAgICAwICAgICAxMDAwIDEwMDAgICA0ICAgNiAgICAgMCAgICAgICAgM1xuICAgICAgICAgICAgICAgam9iICAgICAgIDAgICAgIDEwMDAgMTAwMCAgMTYgIDIzICAgICAwICAgICAgICA0XG4gICAgIG90aGVyX2RlYnRvcnMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNCAgMTIgICAgIDAgICAgICAgIDNcbiAgIHBlcnNvbmFsX3N0YXR1cyAgICAgICAwICAgICAxMDAwIDEwMDAgICA2ICAxMyAgICAgMCAgICAgICAgNFxuICAgICAgICAgIHByb3BlcnR5ICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDUgIDI0ICAgICAwICAgICAgICA0XG4gICAgICAgICAgIHB1cnBvc2UgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNiAgMTkgICAgIDAgICAgICAgMTBcbiAgIHNhdmluZ3NfYmFsYW5jZSAgICAgICAwICAgICAxMDAwIDEwMDAgICA3ICAxMyAgICAgMCAgICAgICAgNVxuICAgICAgICAgdGVsZXBob25lICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDMgICA0ICAgICAwICAgICAgICAyXG5cblZhcmlhYmxlIHR5cGU6IGludGVnZXIgXG4gICAgICAgICAgICAgdmFyaWFibGUgbWlzc2luZyBjb21wbGV0ZSAgICBuICAgIG1lYW4gICAgICBzZCAgcDAgICAgcDI1IG1lZGlhbiAgICAgcDc1ICBwMTAwXG4gICAgICAgICAgICAgICAgICBhZ2UgICAgICAgMCAgICAgMTAwMCAxMDAwICAgMzUuNTUgICAxMS4zOCAgMTkgICAyNyAgICAgMzMgICAgIDQyICAgICAgIDc1XG4gICAgICAgICAgICAgICBhbW91bnQgICAgICAgMCAgICAgMTAwMCAxMDAwIDMyNzEuMjYgMjgyMi43NCAyNTAgMTM2NS41IDIzMTkuNSAzOTcyLjI1IDE4NDI0XG4gICAgICAgICAgICAgIGRlZmF1bHQgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuMyAgICAgMC40NiAgIDEgICAgMSAgICAgIDEgICAgICAyICAgICAgICAyXG4gICAgICAgICAgIGRlcGVuZGVudHMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuMTYgICAgMC4zNiAgIDEgICAgMSAgICAgIDEgICAgICAxICAgICAgICAyXG4gICAgIGV4aXN0aW5nX2NyZWRpdHMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuNDEgICAgMC41OCAgIDEgICAgMSAgICAgIDEgICAgICAyICAgICAgICA0XG4gICAgIGluc3RhbGxtZW50X3JhdGUgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDIuOTcgICAgMS4xMiAgIDEgICAgMiAgICAgIDMgICAgICA0ICAgICAgICA0XG4gbW9udGhzX2xvYW5fZHVyYXRpb24gICAgICAgMCAgICAgMTAwMCAxMDAwICAgMjAuOSAgICAxMi4wNiAgIDQgICAxMiAgICAgMTggICAgIDI0ICAgICAgIDcyXG4gICAgcmVzaWRlbmNlX2hpc3RvcnkgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDIuODUgICAgMS4xICAgIDEgICAgMiAgICAgIDMgICAgICA0ICAgICAgICA0XG4gICAgIGhpc3RcbiDilofilofilobiloPiloLiloHiloHiloFcbiDilofiloPiloLiloHiloHiloHiloHiloFcbiDilofiloHiloHiloHiloHiloHiloHiloNcbiDilofiloHiloHiloHiloHiloHiloHiloJcbiDilofiloHiloXiloHiloHiloHiloHiloFcbiDiloLiloHiloPiloHiloHiloLiloHilodcbiDilofiloXiloXiloPiloHiloHiloHiloFcbiDiloLiloHilobiloHiloHiloPiloHilodcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2tpbSBzdW1tYXJ5IHN0YXRpc3RpY3NcbiBuIG9iczogMTAwMCBcbiBuIHZhcmlhYmxlczogMjEgXG5cblZhcmlhYmxlIHR5cGU6IGNoYXJhY3RlciBcbiAgICAgICAgICB2YXJpYWJsZSBtaXNzaW5nIGNvbXBsZXRlICAgIG4gbWluIG1heCBlbXB0eSBuX3VuaXF1ZVxuICBjaGVja2luZ19iYWxhbmNlICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDYgIDEwICAgICAwICAgICAgICA0XG4gICAgY3JlZGl0X2hpc3RvcnkgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNiAgMjIgICAgIDAgICAgICAgIDVcbiBlbXBsb3ltZW50X2xlbmd0aCAgICAgICAwICAgICAxMDAwIDEwMDAgICA3ICAxMCAgICAgMCAgICAgICAgNVxuICAgIGZvcmVpZ25fd29ya2VyICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDIgICAzICAgICAwICAgICAgICAyXG4gICAgICAgICAgIGhvdXNpbmcgICAgICAgMCAgICAgMTAwMCAxMDAwICAgMyAgIDggICAgIDAgICAgICAgIDNcbiAgaW5zdGFsbG1lbnRfcGxhbiAgICAgICAwICAgICAxMDAwIDEwMDAgICA0ICAgNiAgICAgMCAgICAgICAgM1xuICAgICAgICAgICAgICAgam9iICAgICAgIDAgICAgIDEwMDAgMTAwMCAgMTYgIDIzICAgICAwICAgICAgICA0XG4gICAgIG90aGVyX2RlYnRvcnMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNCAgMTIgICAgIDAgICAgICAgIDNcbiAgIHBlcnNvbmFsX3N0YXR1cyAgICAgICAwICAgICAxMDAwIDEwMDAgICA2ICAxMyAgICAgMCAgICAgICAgNFxuICAgICAgICAgIHByb3BlcnR5ICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDUgIDI0ICAgICAwICAgICAgICA0XG4gICAgICAgICAgIHB1cnBvc2UgICAgICAgMCAgICAgMTAwMCAxMDAwICAgNiAgMTkgICAgIDAgICAgICAgMTBcbiAgIHNhdmluZ3NfYmFsYW5jZSAgICAgICAwICAgICAxMDAwIDEwMDAgICA3ICAxMyAgICAgMCAgICAgICAgNVxuICAgICAgICAgdGVsZXBob25lICAgICAgIDAgICAgIDEwMDAgMTAwMCAgIDMgICA0ICAgICAwICAgICAgICAyXG5cblZhcmlhYmxlIHR5cGU6IGludGVnZXIgXG4gICAgICAgICAgICAgdmFyaWFibGUgbWlzc2luZyBjb21wbGV0ZSAgICBuICAgIG1lYW4gICAgICBzZCAgcDAgICAgcDI1IG1lZGlhbiAgICAgcDc1XG4gICAgICAgICAgICAgICAgICBhZ2UgICAgICAgMCAgICAgMTAwMCAxMDAwICAgMzUuNTUgICAxMS4zOCAgMTkgICAyNyAgICAgMzMgICAgIDQyICAgXG4gICAgICAgICAgICAgICBhbW91bnQgICAgICAgMCAgICAgMTAwMCAxMDAwIDMyNzEuMjYgMjgyMi43NCAyNTAgMTM2NS41IDIzMTkuNSAzOTcyLjI1XG4gICAgICAgICAgICAgIGRlZmF1bHQgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuMyAgICAgMC40NiAgIDEgICAgMSAgICAgIDEgICAgICAyICAgXG4gICAgICAgICAgIGRlcGVuZGVudHMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuMTYgICAgMC4zNiAgIDEgICAgMSAgICAgIDEgICAgICAxICAgXG4gICAgIGV4aXN0aW5nX2NyZWRpdHMgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDEuNDEgICAgMC41OCAgIDEgICAgMSAgICAgIDEgICAgICAyICAgXG4gICAgIGluc3RhbGxtZW50X3JhdGUgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDIuOTcgICAgMS4xMiAgIDEgICAgMiAgICAgIDMgICAgICA0ICAgXG4gbW9udGhzX2xvYW5fZHVyYXRpb24gICAgICAgMCAgICAgMTAwMCAxMDAwICAgMjAuOSAgICAxMi4wNiAgIDQgICAxMiAgICAgMTggICAgIDI0ICAgXG4gICAgcmVzaWRlbmNlX2hpc3RvcnkgICAgICAgMCAgICAgMTAwMCAxMDAwICAgIDIuODUgICAgMS4xICAgIDEgICAgMiAgICAgIDMgICAgICA0ICAgXG4gIHAxMDAgICAgIGhpc3RcbiAgICA3NSDilofilofilobiloPiloLiloHiloHiloFcbiAxODQyNCDilofiloPiloLiloHiloHiloHiloHiloFcbiAgICAgMiDilofiloHiloHiloHiloHiloHiloHiloNcbiAgICAgMiDilofiloHiloHiloHiloHiloHiloHiloJcbiAgICAgNCDilofiloHiloXiloHiloHiloHiloHiloFcbiAgICAgNCDiloLiloHiloPiloHiloHiloLiloHilodcbiAgICA3MiDilofiloXiloXiloPiloHiloHiloHiloFcbiAgICAgNCDiloLiloHilobiloHiloHiloPiloHilodcbiJ9 -->
 <pre><code>Skim summary statistics
  n obs: 1000 
  n variables: 21 
@@ -224,24 +224,24 @@ Variable type: character
          telephone       0     1000 1000   3   4     0        2
 
 Variable type: integer 
-             variable missing complete    n    mean      sd  p0    p25 median     p75  p100
-                  age       0     1000 1000   35.55   11.38  19   27     33     42       75
-               amount       0     1000 1000 3271.26 2822.74 250 1365.5 2319.5 3972.25 18424
-              default       0     1000 1000    1.3     0.46   1    1      1      2        2
-           dependents       0     1000 1000    1.16    0.36   1    1      1      1        2
-     existing_credits       0     1000 1000    1.41    0.58   1    1      1      2        4
-     installment_rate       0     1000 1000    2.97    1.12   1    2      3      4        4
- months_loan_duration       0     1000 1000   20.9    12.06   4   12     18     24       72
-    residence_history       0     1000 1000    2.85    1.1    1    2      3      4        4
-     hist
- ▇▇▆▃▂▁▁▁
- ▇▃▂▁▁▁▁▁
- ▇▁▁▁▁▁▁▃
- ▇▁▁▁▁▁▁▂
- ▇▁▅▁▁▁▁▁
- ▂▁▃▁▁▂▁▇
- ▇▅▅▃▁▁▁▁
- ▂▁▆▁▁▃▁▇</code></pre>
+             variable missing complete    n    mean      sd  p0    p25 median     p75
+                  age       0     1000 1000   35.55   11.38  19   27     33     42   
+               amount       0     1000 1000 3271.26 2822.74 250 1365.5 2319.5 3972.25
+              default       0     1000 1000    1.3     0.46   1    1      1      2   
+           dependents       0     1000 1000    1.16    0.36   1    1      1      1   
+     existing_credits       0     1000 1000    1.41    0.58   1    1      1      2   
+     installment_rate       0     1000 1000    2.97    1.12   1    2      3      4   
+ months_loan_duration       0     1000 1000   20.9    12.06   4   12     18     24   
+    residence_history       0     1000 1000    2.85    1.1    1    2      3      4   
+  p100     hist
+    75 ▇▇▆▃▂▁▁▁
+ 18424 ▇▃▂▁▁▁▁▁
+     2 ▇▁▁▁▁▁▁▃
+     2 ▇▁▁▁▁▁▁▂
+     4 ▇▁▅▁▁▁▁▁
+     4 ▂▁▃▁▁▂▁▇
+    72 ▇▅▅▃▁▁▁▁
+     4 ▂▁▆▁▁▃▁▇</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
@@ -363,9 +363,12 @@ The final values used for the model were size = 10 and decay = 1.</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVyZm9ybWFuY2Uobm5ldF9wcmVkaWN0aW9uLCBtZWFzdXJlID0gXCJhdWNcIilAeS52YWx1ZXNbWzFdXVxuXG5gYGAifQ== -->
-<pre class="r"><code>performance(nnet_prediction, measure = &quot;auc&quot;)@y.values[[1]]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubm5ldF9wcmVkaWN0aW9uIDwtIHByZWRpY3Rpb24ocHJlZGljdC50cmFpbihubmV0X21vZGVsLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3ZGF0YSA9IGRhdGFfdGVzdCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9IFwicHJvYlwiKSRZZXMsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhX3Rlc3RbW1wiZGVmYXVsdFwiXV0pXG5wZXJmb3JtYW5jZShubmV0X3ByZWRpY3Rpb24sIG1lYXN1cmUgPSBcImF1Y1wiKUB5LnZhbHVlc1tbMV1dXG5gYGAifQ== -->
+<pre class="r"><code>nnet_prediction &lt;- prediction(predict.train(nnet_model, 
+                                            newdata = data_test,
+                                            type = &quot;prob&quot;)$Yes,
+                              data_test[[&quot;default&quot;]])
+performance(nnet_prediction, measure = &quot;auc&quot;)@y.values[[1]]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNzgwNDk1MlxuIn0= -->
 <pre><code>[1] 0.7804952</code></pre>
@@ -375,11 +378,28 @@ The final values used for the model were size = 10 and decay = 1.</code></pre>
 <p><code>nnet</code> with different random initial seeds. (Default: 5 initial seeds, training takes 5x times with the same grid. Parameter <code>repeats</code> controls the number of seeds.)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXZubmV0X21vZGVsXG5cbmBgYCJ9 -->
-<pre class="r"><code>avnnet_model
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB0YWtlcyBhIGxvbmcgdGltZSB0byBydW4gZm9yIHRoZSB3aG9sZSBncmlkIGFib3ZlXG50dW5lX2dyaWQgPC0gZXhwYW5kLmdyaWQoc2l6ZSA9IGMoNSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgZGVjYXkgPSBjKDAuNSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgYmFnID0gRkFMU0UpXG5zZXQuc2VlZCg4NTcpXG5hdm5uZXRfbW9kZWwgPC0gdHJhaW4oZGVmYXVsdCB+IC4sXG4gICAgICAgICAgICAgICAgICAgbWV0aG9kID0gXCJhdk5OZXRcIixcbiAgICAgICAgICAgICAgICAgICBkYXRhID0gZGF0YV90cmFpbixcbiAgICAgICAgICAgICAgICAgICB0ckNvbnRyb2wgPSB0cmFpbl9jb250cm9sLFxuICAgICAgICAgICAgICAgICAgIHR1bmVHcmlkID0gdHVuZV9ncmlkLFxuICAgICAgICAgICAgICAgICAgIG1ldHJpYyA9IFwiUk9DXCIsXG4gICAgICAgICAgICAgICAgICAgIyBhdm9pZCBleHRlbnNpdmUgaXRlcmF0aW9uIG91dHB1dFxuICAgICAgICAgICAgICAgICAgIHRyYWNlID0gRkFMU0UpXG5gYGAifQ== -->
+<pre class="r"><code># takes a long time to run for the whole grid above
+tune_grid &lt;- expand.grid(size = c(5),
+                         decay = c(0.5),
+                         bag = FALSE)
+set.seed(857)
+avnnet_model &lt;- train(default ~ .,
+                   method = &quot;avNNet&quot;,
+                   data = data_train,
+                   trControl = train_control,
+                   tuneGrid = tune_grid,
+                   metric = &quot;ROC&quot;,
+                   # avoid extensive iteration output
+                   trace = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTW9kZWwgQXZlcmFnZWQgTmV1cmFsIE5ldHdvcmsgXG5cbjc1MCBzYW1wbGVzXG4gMjAgcHJlZGljdG9yXG4gIDIgY2xhc3NlczogJ05vJywgJ1llcycgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQpIFxuU3VtbWFyeSBvZiBzYW1wbGUgc2l6ZXM6IDY3NSwgNjc1LCA2NzQsIDY3NSwgNjc1LCA2NzQsIC4uLiBcblJlc2FtcGxpbmcgcmVzdWx0czpcblxuICBST0MgICAgICAgIFNlbnMgICAgICAgU3BlYyAgICAgXG4gIDAuNzk4Nzk2NiAgMC44ODIyMjA2ICAwLjQ0MDMxNjJcblxuVHVuaW5nIHBhcmFtZXRlciAnc2l6ZScgd2FzIGhlbGQgY29uc3RhbnQgYXQgYSB2YWx1ZSBvZiA1XG5UdW5pbmcgcGFyYW1ldGVyICdkZWNheScgd2FzXG4gaGVsZCBjb25zdGFudCBhdCBhIHZhbHVlIG9mIDAuNVxuVHVuaW5nIHBhcmFtZXRlciAnYmFnJyB3YXMgaGVsZCBjb25zdGFudCBhdCBhIHZhbHVlXG4gb2YgRkFMU0VcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiZXhlY3V0aW5nICVkb3BhciUgc2VxdWVudGlhbGx5OiBubyBwYXJhbGxlbCBiYWNrZW5kIHJlZ2lzdGVyZWRcbiJ9 -->
+<pre><code>executing %dopar% sequentially: no parallel backend registered</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXZubmV0X21vZGVsXG5gYGAifQ== -->
+<pre class="r"><code>avnnet_model</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTW9kZWwgQXZlcmFnZWQgTmV1cmFsIE5ldHdvcmsgXG5cbjc1MCBzYW1wbGVzXG4gMjAgcHJlZGljdG9yXG4gIDIgY2xhc3NlczogJ05vJywgJ1llcycgXG5cbk5vIHByZS1wcm9jZXNzaW5nXG5SZXNhbXBsaW5nOiBDcm9zcy1WYWxpZGF0ZWQgKDEwIGZvbGQpIFxuU3VtbWFyeSBvZiBzYW1wbGUgc2l6ZXM6IDY3NSwgNjc1LCA2NzQsIDY3NSwgNjc1LCA2NzQsIC4uLiBcblJlc2FtcGxpbmcgcmVzdWx0czpcblxuICBST0MgICAgICAgIFNlbnMgICAgICAgU3BlYyAgICAgXG4gIDAuNzk4Nzk2NiAgMC44ODIyMjA2ICAwLjQ0MDMxNjJcblxuVHVuaW5nIHBhcmFtZXRlciAnc2l6ZScgd2FzIGhlbGQgY29uc3RhbnQgYXQgYSB2YWx1ZSBvZiA1XG5cblR1bmluZyBwYXJhbWV0ZXIgJ2RlY2F5JyB3YXMgaGVsZCBjb25zdGFudCBhdCBhIHZhbHVlIG9mIDAuNVxuXG5UdW5pbmcgcGFyYW1ldGVyICdiYWcnIHdhcyBoZWxkIGNvbnN0YW50IGF0IGEgdmFsdWUgb2YgRkFMU0VcbiJ9 -->
 <pre><code>Model Averaged Neural Network 
 
 750 samples
@@ -395,18 +415,21 @@ Resampling results:
   0.7987966  0.8822206  0.4403162
 
 Tuning parameter 'size' was held constant at a value of 5
-Tuning parameter 'decay' was
- held constant at a value of 0.5
-Tuning parameter 'bag' was held constant at a value
- of FALSE</code></pre>
+
+Tuning parameter 'decay' was held constant at a value of 0.5
+
+Tuning parameter 'bag' was held constant at a value of FALSE</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGVyZm9ybWFuY2UoYXZubmV0X3ByZWRpY3Rpb24sIG1lYXN1cmUgPSBcImF1Y1wiKUB5LnZhbHVlc1tbMV1dXG5cbmBgYCJ9 -->
-<pre class="r"><code>performance(avnnet_prediction, measure = &quot;auc&quot;)@y.values[[1]]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXZubmV0X3ByZWRpY3Rpb24gPC0gcHJlZGljdGlvbihwcmVkaWN0LnRyYWluKGF2bm5ldF9tb2RlbCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5ld2RhdGEgPSBkYXRhX3Rlc3QsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGUgPSBcInByb2JcIikkWWVzLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGF0YV90ZXN0W1tcImRlZmF1bHRcIl1dKVxucGVyZm9ybWFuY2UoYXZubmV0X3ByZWRpY3Rpb24sIG1lYXN1cmUgPSBcImF1Y1wiKUB5LnZhbHVlc1tbMV1dXG5gYGAifQ== -->
+<pre class="r"><code>avnnet_prediction &lt;- prediction(predict.train(avnnet_model, 
+                                            newdata = data_test,
+                                            type = &quot;prob&quot;)$Yes,
+                              data_test[[&quot;default&quot;]])
+performance(avnnet_prediction, measure = &quot;auc&quot;)@y.values[[1]]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNzc3OTgxXG4ifQ== -->
 <pre><code>[1] 0.777981</code></pre>
@@ -417,88 +440,610 @@ Tuning parameter 'bag' was held constant at a value
 <div id="deep-learning-with-h2o" class="section level2">
 <h2>Deep learning with <code>h2o</code></h2>
 <p>“Deep”: many layers of hidden units.</p>
-<p>Note on estmiation: when having large datasets, k-fold cross validation can become computationally burdensome, hence usually train/validation/test approach is used. (see answer on Quora by Yoshua Bengio, one of the originators of deep learning <a href="https://www.quora.com/Is-cross-validation-heavily-used-in-deep-learning-or-is-it-too-expensive-to-be-used">here</a>).</p>
+<p>Note on estmiation: when having large datasets, k-fold cross validation can become computationally burdensome, hence many times train/validation/test approach is used. (see answer on Quora by Yoshua Bengio, one of the originators of deep learning <a href="https://www.quora.com/Is-cross-validation-heavily-used-in-deep-learning-or-is-it-too-expensive-to-be-used">here</a>). However, cross validation can still be used to tune some of the hyperparameters.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoMm8pXG5oMm8uaW5pdChudGhyZWFkcz0tMSlcblxuaDJvX3RyYWluIDwtIGFzLmgybyhkYXRhX3RyYWluKVxuaDJvX3Rlc3QgPC0gYXMuaDJvKGRhdGFfdGVzdClcblxueSA8LSBcImRlZmF1bHRcIlxuWCA8LSBzZXRkaWZmKG5hbWVzKGgyb190cmFpbiksIFwiZGVmYXVsdFwiKVxuXG5gYGAifQ== -->
-<pre class="r"><code>library(h2o)
-h2o.init(nthreads=-1)
-
-h2o_train &lt;- as.h2o(data_train)
-h2o_test &lt;- as.h2o(data_test)
-
-y &lt;- &quot;default&quot;
-X &lt;- setdiff(names(h2o_train), &quot;default&quot;)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoMm8pXG5gYGAifQ== -->
+<pre class="r"><code>library(h2o)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5cbllvdXIgbmV4dCBzdGVwIGlzIHRvIHN0YXJ0IEgyTzpcbiAgICA+IGgyby5pbml0KClcblxuRm9yIEgyTyBwYWNrYWdlIGRvY3VtZW50YXRpb24sIGFzayBmb3IgaGVscDpcbiAgICA+ID8/aDJvXG5cbkFmdGVyIHN0YXJ0aW5nIEgyTywgeW91IGNhbiB1c2UgdGhlIFdlYiBVSSBhdCBodHRwOi8vbG9jYWxob3N0OjU0MzIxXG5Gb3IgbW9yZSBpbmZvcm1hdGlvbiB2aXNpdCBodHRwOi8vZG9jcy5oMm8uYWlcblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhoMm/igJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgY29yLCBzZCwgdmFyXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0cyBhcmUgbWFza2VkIGZyb20g4oCYcGFja2FnZTpiYXNl4oCZOlxuXG4gICAgJiYsICUqJSwgJWluJSwgfHwsIGFwcGx5LCBhcy5mYWN0b3IsIGFzLm51bWVyaWMsIGNvbG5hbWVzLCBjb2xuYW1lczwtLCBpZmVsc2UsXG4gICAgaXMuY2hhcmFjdGVyLCBpcy5mYWN0b3IsIGlzLm51bWVyaWMsIGxvZywgbG9nMTAsIGxvZzFwLCBsb2cyLCByb3VuZCwgc2lnbmlmLCB0cnVuY1xuIn0= -->
+<pre><code>
+----------------------------------------------------------------------
+
+Your next step is to start H2O:
+    &gt; h2o.init()
+
+For H2O package documentation, ask for help:
+    &gt; ??h2o
+
+After starting H2O, you can use the Web UI at http://localhost:54321
+For more information visit http://docs.h2o.ai
+
+----------------------------------------------------------------------
+
+
+Attaching package: ‘h2o’
+
+The following objects are masked from ‘package:stats’:
+
+    cor, sd, var
+
+The following objects are masked from ‘package:base’:
+
+    &amp;&amp;, %*%, %in%, ||, apply, as.factor, as.numeric, colnames, colnames&lt;-, ifelse,
+    is.character, is.factor, is.numeric, log, log10, log1p, log2, round, signif, trunc</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLmluaXQobnRocmVhZHM9LTEpXG5gYGAifQ== -->
+<pre class="r"><code>h2o.init(nthreads=-1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5IMk8gaXMgbm90IHJ1bm5pbmcgeWV0LCBzdGFydGluZyBpdCBub3cuLi5cblxuTm90ZTogIEluIGNhc2Ugb2YgZXJyb3JzIGxvb2sgYXQgdGhlIGZvbGxvd2luZyBsb2cgZmlsZXM6XG4gICAgL3Zhci9mb2xkZXJzLzIzL3FkZzlnMnR4MDYxYmZrcTExNzhtNzM4bTAwMDBncC9ULy9SdG1wRVV2dkJVL2gyb19qcGFsX3N0YXJ0ZWRfZnJvbV9yLm91dFxuICAgIC92YXIvZm9sZGVycy8yMy9xZGc5ZzJ0eDA2MWJma3ExMTc4bTczOG0wMDAwZ3AvVC8vUnRtcEVVdnZCVS9oMm9fanBhbF9zdGFydGVkX2Zyb21fci5lcnJcbiJ9 -->
+<pre><code>
+H2O is not running yet, starting it now...
+
+Note:  In case of errors look at the following log files:
+    /var/folders/23/qdg9g2tx061bfkq1178m738m0000gp/T//RtmpEUvvBU/h2o_jpal_started_from_r.out
+    /var/folders/23/qdg9g2tx061bfkq1178m738m0000gp/T//RtmpEUvvBU/h2o_jpal_started_from_r.err</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiamF2YSB2ZXJzaW9uIFwiMS44LjBfMTIxXCJcbkphdmEoVE0pIFNFIFJ1bnRpbWUgRW52aXJvbm1lbnQgKGJ1aWxkIDEuOC4wXzEyMS1iMTMpXG5KYXZhIEhvdFNwb3QoVE0pIDY0LUJpdCBTZXJ2ZXIgVk0gKGJ1aWxkIDI1LjEyMS1iMTMsIG1peGVkIG1vZGUpXG4ifQ== -->
+<pre><code>java version &quot;1.8.0_121&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5TdGFydGluZyBIMk8gSlZNIGFuZCBjb25uZWN0aW5nOiAuLiBDb25uZWN0aW9uIHN1Y2Nlc3NmdWwhXG5cblIgaXMgY29ubmVjdGVkIHRvIHRoZSBIMk8gY2x1c3RlcjogXG4gICAgSDJPIGNsdXN0ZXIgdXB0aW1lOiAgICAgICAgIDIgc2Vjb25kcyAzNDcgbWlsbGlzZWNvbmRzIFxuICAgIEgyTyBjbHVzdGVyIHZlcnNpb246ICAgICAgICAzLjE2LjAuMiBcbiAgICBIMk8gY2x1c3RlciB2ZXJzaW9uIGFnZTogICAgMyBtb250aHMgYW5kIDE4IGRheXMgISEhIFxuICAgIEgyTyBjbHVzdGVyIG5hbWU6ICAgICAgICAgICBIMk9fc3RhcnRlZF9mcm9tX1JfanBhbF96dmgyODEgXG4gICAgSDJPIGNsdXN0ZXIgdG90YWwgbm9kZXM6ICAgIDEgXG4gICAgSDJPIGNsdXN0ZXIgdG90YWwgbWVtb3J5OiAgIDMuNTYgR0IgXG4gICAgSDJPIGNsdXN0ZXIgdG90YWwgY29yZXM6ICAgIDQgXG4gICAgSDJPIGNsdXN0ZXIgYWxsb3dlZCBjb3JlczogIDQgXG4gICAgSDJPIGNsdXN0ZXIgaGVhbHRoeTogICAgICAgIFRSVUUgXG4gICAgSDJPIENvbm5lY3Rpb24gaXA6ICAgICAgICAgIGxvY2FsaG9zdCBcbiAgICBIMk8gQ29ubmVjdGlvbiBwb3J0OiAgICAgICAgNTQzMjEgXG4gICAgSDJPIENvbm5lY3Rpb24gcHJveHk6ICAgICAgIE5BIFxuICAgIEgyTyBJbnRlcm5hbCBTZWN1cml0eTogICAgICBGQUxTRSBcbiAgICBIMk8gQVBJIEV4dGVuc2lvbnM6ICAgICAgICAgWEdCb29zdCwgQWxnb3MsIEF1dG9NTCwgQ29yZSBWMywgQ29yZSBWNCBcbiAgICBSIFZlcnNpb246ICAgICAgICAgICAgICAgICAgUiB2ZXJzaW9uIDMuNC4zICgyMDE3LTExLTMwKSBcbiJ9 -->
+<pre><code>
+Starting H2O JVM and connecting: .. Connection successful!
+
+R is connected to the H2O cluster: 
+    H2O cluster uptime:         2 seconds 347 milliseconds 
+    H2O cluster version:        3.16.0.2 
+    H2O cluster version age:    3 months and 18 days !!! 
+    H2O cluster name:           H2O_started_from_R_jpal_zvh281 
+    H2O cluster total nodes:    1 
+    H2O cluster total memory:   3.56 GB 
+    H2O cluster total cores:    4 
+    H2O cluster allowed cores:  4 
+    H2O cluster healthy:        TRUE 
+    H2O Connection ip:          localhost 
+    H2O Connection port:        54321 
+    H2O Connection proxy:       NA 
+    H2O Internal Security:      FALSE 
+    H2O API Extensions:         XGBoost, Algos, AutoML, Core V3, Core V4 
+    R Version:                  R version 3.4.3 (2017-11-30) </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5Zb3VyIEgyTyBjbHVzdGVyIHZlcnNpb24gaXMgdG9vIG9sZCAoMyBtb250aHMgYW5kIDE4IGRheXMpIVxuUGxlYXNlIGRvd25sb2FkIGFuZCBpbnN0YWxsIHRoZSBsYXRlc3QgdmVyc2lvbiBmcm9tIGh0dHA6Ly9oMm8uYWkvZG93bmxvYWQvXG4ifQ== -->
+<pre><code>
+Your H2O cluster version is too old (3 months and 18 days)!
+Please download and install the latest version from http://h2o.ai/download/</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGxfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSB5LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBoMm9fdHJhaW4sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXByb2R1Y2libGUgPSBUUlVFLCAgIyBtYWtlcyB0cmFpbmluZyBzbG93ZXIgYnV0IG1ha2VzIGl0IHJlcHJvZHVjaWJsZVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKVxuaDJvLnBlcmZvcm1hbmNlKGRsX21vZGVsLCBoMm9fdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YSA8LSBoMm8uaW1wb3J0RmlsZShcIi4uLy4uL2RhdGEvYWlybGluZXMvYWlybGluZTEwMEsuY3N2XCIpXG5gYGAifQ== -->
+<pre class="r"><code>data &lt;- h2o.importFile(&quot;../../data/airlines/airline100K.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB0YWtlIDEwJSBhcyB0cmFpbmluZyBzZXQgdG8gc3BlZWQgdXAgY29tcHV0YXRpb25zXG5kYXRhX3NwbGl0IDwtIGgyby5zcGxpdEZyYW1lKGRhdGEsIHJhdGlvcyA9IGMoMC4xLCAwLjQpLCBzZWVkID0gMTIzKVxuZGF0YV90cmFpbiA8LSBkYXRhX3NwbGl0W1sxXV1cbmRhdGFfdmFsaWQgPC0gZGF0YV9zcGxpdFtbMl1dXG5kYXRhX3Rlc3QgPC0gZGF0YV9zcGxpdFtbM11dXG55IDwtIFwiZGVwX2RlbGF5ZWRfMTVtaW5cIlxuWCA8LSBzZXRkaWZmKG5hbWVzKGRhdGFfdHJhaW4pLCB5KVxuYGBgIn0= -->
+<pre class="r"><code># take 10% as training set to speed up computations
+data_split &lt;- h2o.splitFrame(data, ratios = c(0.1, 0.4), seed = 123)
+data_train &lt;- data_split[[1]]
+data_valid &lt;- data_split[[2]]
+data_test &lt;- data_split[[3]]
+y &lt;- &quot;dep_delayed_15min&quot;
+X &lt;- setdiff(names(data_train), y)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Validation frame: used to determine early stopping conditions. More on this later.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGxfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSB5LCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgcmVwcm9kdWNpYmxlID0gVFJVRSwgICMgbWFrZXMgdHJhaW5pbmcgc2xvd2VyIGJ1dCBtYWtlcyBpdCByZXByb2R1Y2libGVcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMylcbmBgYCJ9 -->
 <pre class="r"><code>dl_model &lt;- h2o.deeplearning(x = X, 
                              y = y, 
-                             training_frame = h2o_train, 
-                             reproducible = TRUE,  # makes training slower but makes it reproducible
-                             seed = 123)
-h2o.performance(dl_model, h2o_test)@metrics$AUC</code></pre>
+                             training_frame = data_train, 
+                             validation_frame = data_valid,
+                             # reproducible = TRUE,  # makes training slower but makes it reproducible
+                             seed = 123)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>There are lots of parameters that you can change, see <code>?h2o.deeplearning</code> and the <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/deep-learning.html">docs</a>.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBhIHNoYWxsb3cgbW9kZWwgc2ltaWxhciB0byB0aG9zZSB3ZSB0cmFpbmVkIHdpdGggY2FyZXRcbmRsX21vZGVsXzIgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0geSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGgyb190cmFpbixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDUpLCAjIGhpZGRlbiBsYXllciBzaXplcywgZGVmYXVsdCBjKDIwMCwgMjAwKVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVwb2NocyA9IDEwLCAjIGRlZmF1bHQgaXMgMTBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhY3RpdmF0aW9uID0gXCJUYW5oXCIsICMgZGlmZmVyZW50IGFjdGl2YXRpb24gZnVuY3Rpb25cbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXByb2R1Y2libGUgPSBUUlVFLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpXG5oMm8ucGVyZm9ybWFuY2UoZGxfbW9kZWxfMiwgaDJvX3Rlc3QpQG1ldHJpY3MkQVVDXG5gYGAifQ== -->
-<pre class="r"><code># a shallow model similar to those we trained with caret
-dl_model_2 &lt;- h2o.deeplearning(x = X,
-                               y = y,
-                               training_frame = h2o_train,
-                               hidden = c(5), # hidden layer sizes, default c(200, 200)
-                               epochs = 10, # default is 10
-                               activation = &quot;Tanh&quot;, # different activation function
-                               reproducible = TRUE,
-                               seed = 123)
-h2o.performance(dl_model_2, h2o_test)@metrics$AUC</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGxfbW9kZWxfMyA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSB5LFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gaDJvX3RyYWluLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhpZGRlbiA9IGMoMTAwLCAyNSksICMgaGlkZGVuIGxheWVyIHNpemVzLCBkZWZhdWx0IGMoMjAwLCAyMDApXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXBvY2hzID0gNTAsICMgZGVmYXVsdCBpcyAxMFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcHJvZHVjaWJsZSA9IFRSVUUsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWN0aXZhdGlvbiA9IFwiVGFuaFdpdGhEcm9wb3V0XCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuX2Ryb3BvdXRfcmF0aW9zID0gYygwLjUsIDAuNSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbDEgPSAwLjAwMSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKVxuYGBgIn0= -->
-<pre class="r"><code>dl_model_3 &lt;- h2o.deeplearning(x = X,
-                               y = y,
-                               training_frame = h2o_train,
-                               hidden = c(100, 25), # hidden layer sizes, default c(200, 200)
-                               epochs = 50, # default is 10
-                               reproducible = TRUE,
-                               activation = &quot;TanhWithDropout&quot;,
-                               hidden_dropout_ratios = c(0.5, 0.5),
-                               l1 = 0.001,
-                               seed = 123)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTYlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzIlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09fCAxMDAlXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDMwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDYwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA3MCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgfCAgODAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgIHwgIDkwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
 <pre><code>
-  |                                                                                        
-  |                                                                                  |   0%
-  |                                                                                        
-  |=============                                                                     |  16%
-  |                                                                                        
-  |==========================                                                        |  32%
-  |                                                                                        
-  |==================================================================================| 100%</code></pre>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |=========                                                                                 |  10%
+  |                                                                                                
+  |==================                                                                        |  20%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |====================================                                                      |  40%
+  |                                                                                                
+  |=============================================                                             |  50%
+  |                                                                                                
+  |======================================================                                    |  60%
+  |                                                                                                
+  |===============================================================                           |  70%
+  |                                                                                                
+  |========================================================================                  |  80%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGRsX21vZGVsXzMsIGgyb190ZXN0KUBtZXRyaWNzJEFVQ1xuYGBgIn0= -->
-<pre class="r"><code>h2o.performance(dl_model_3, h2o_test)@metrics$AUC</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGRsX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDXG5gYGAifQ== -->
+<pre class="r"><code>h2o.performance(dl_model, data_test)@metrics$AUC</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNzk2ODc2MlxuIn0= -->
-<pre><code>[1] 0.7968762</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjg5MDgzNVxuIn0= -->
+<pre><code>[1] 0.6890835</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnNjb3JlSGlzdG9yeShkbF9tb2RlbClcbmBgYCJ9 -->
+<pre class="r"><code>h2o.scoreHistory(dl_model)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2NvcmluZyBIaXN0b3J5OiBcbiAgICAgICAgICAgIHRpbWVzdGFtcCAgIGR1cmF0aW9uIHRyYWluaW5nX3NwZWVkICAgZXBvY2hzIGl0ZXJhdGlvbnMgICAgICBzYW1wbGVzIHRyYWluaW5nX3Jtc2VcbjEgMjAxOC0wMy0xOSAxODowMTo1OSAgMC4wMDAgc2VjICAgICAgICAgICAgICAgICAwLjAwMDAwICAgICAgICAgIDAgICAgIDAuMDAwMDAwICAgICAgICAgICAgICBcbjIgMjAxOC0wMy0xOSAxODowMjowMyAgNy42NDggc2VjICAgMzQwNyBvYnMvc2VjICAxLjAwMDAwICAgICAgICAgIDEgIDk5NTIuMDAwMDAwICAgICAgIDAuMzgxNjZcbjMgMjAxOC0wMy0xOSAxODowMjoxOSAyNC4yNzUgc2VjICAgNjU5NyBvYnMvc2VjIDEwLjAwMDAwICAgICAgICAgMTAgOTk1MjAuMDAwMDAwICAgICAgIDAuMzI1MDRcbjQgMjAxOC0wMy0xOSAxODowMjoyNCAyOC4wNTMgc2VjICAgNjU4MyBvYnMvc2VjIDEwLjAwMDAwICAgICAgICAgMTAgOTk1MjAuMDAwMDAwICAgICAgIDAuMzgxNjZcbiAgdHJhaW5pbmdfbG9nbG9zcyB0cmFpbmluZ19hdWMgdHJhaW5pbmdfbGlmdCB0cmFpbmluZ19jbGFzc2lmaWNhdGlvbl9lcnJvciB2YWxpZGF0aW9uX3Jtc2VcbjEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbjIgICAgICAgICAgMC40NTk3NSAgICAgIDAuNzE0MTIgICAgICAgMy4xMDM1MyAgICAgICAgICAgICAgICAgICAgICAgMC4yODYyNyAgICAgICAgIDAuMzgyOTRcbjMgICAgICAgICAgMC4zMzc4OCAgICAgIDAuODY3MjAgICAgICAgNS4wNjkxMSAgICAgICAgICAgICAgICAgICAgICAgMC4xODE5NyAgICAgICAgIDAuMzg4NzdcbjQgICAgICAgICAgMC40NTk3NSAgICAgIDAuNzE0MTIgICAgICAgMy4xMDM1MyAgICAgICAgICAgICAgICAgICAgICAgMC4yODYyNyAgICAgICAgIDAuMzgyOTRcbiAgdmFsaWRhdGlvbl9sb2dsb3NzIHZhbGlkYXRpb25fYXVjIHZhbGlkYXRpb25fbGlmdCB2YWxpZGF0aW9uX2NsYXNzaWZpY2F0aW9uX2Vycm9yXG4xICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuMiAgICAgICAgICAgIDAuNDY1OTkgICAgICAgIDAuNjg1NzkgICAgICAgICAyLjY1NDA0ICAgICAgICAgICAgICAgICAgICAgICAgIDAuMzQ3OTRcbjMgICAgICAgICAgICAwLjQ5NDE4ICAgICAgICAwLjY3NzM4ICAgICAgICAgMy4wNDgyMCAgICAgICAgICAgICAgICAgICAgICAgICAwLjM2OTEwXG40ICAgICAgICAgICAgMC40NjU5OSAgICAgICAgMC42ODU3OSAgICAgICAgIDIuNjU0MDQgICAgICAgICAgICAgICAgICAgICAgICAgMC4zNDc5NFxuIn0= -->
+<pre><code>Scoring History: 
+            timestamp   duration training_speed   epochs iterations      samples training_rmse
+1 2018-03-19 18:01:59  0.000 sec                 0.00000          0     0.000000              
+2 2018-03-19 18:02:03  7.648 sec   3407 obs/sec  1.00000          1  9952.000000       0.38166
+3 2018-03-19 18:02:19 24.275 sec   6597 obs/sec 10.00000         10 99520.000000       0.32504
+4 2018-03-19 18:02:24 28.053 sec   6583 obs/sec 10.00000         10 99520.000000       0.38166
+  training_logloss training_auc training_lift training_classification_error validation_rmse
+1                                                                                          
+2          0.45975      0.71412       3.10353                       0.28627         0.38294
+3          0.33788      0.86720       5.06911                       0.18197         0.38877
+4          0.45975      0.71412       3.10353                       0.28627         0.38294
+  validation_logloss validation_auc validation_lift validation_classification_error
+1                                                                                  
+2            0.46599        0.68579         2.65404                         0.34794
+3            0.49418        0.67738         3.04820                         0.36910
+4            0.46599        0.68579         2.65404                         0.34794</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>There are lots of parameters that you can change, see <code>?h2o.deeplearning</code> and the <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/deep-learning.html">docs</a>. Some selected parameters:</p>
+<p>Network structure and functional form</p>
+<ul>
+<li><code>hidden</code>: neuron layer architecture: length of vector shows number of layers, number shows number of neurons within layer. The default: two hidden layers with 200-200 neurons. Makes sense to experiment with shallower but more neuron or with deeper and less neurons per layer architectures.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2hhbGxvd19zbWFsbF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygxMCksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpXG5gYGAifQ== -->
+<pre class="r"><code>shallow_small_model &lt;- h2o.deeplearning(x = X, 
+                             y = y, 
+                             training_frame = data_train, 
+                             validation_frame = data_valid,
+                             hidden = c(10),
+                             seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1MCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgfCAgOTAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PXwgMTAwJVxuIn0= -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |=============================================                                             |  50%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKHNoYWxsb3dfc21hbGxfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(shallow_small_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkxODE0N1xuIn0= -->
+<pre><code>[1] 0.6918147</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2hhbGxvd19sYXJnZV9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYyg1MTIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKVxuYGBgIn0= -->
+<pre class="r"><code>shallow_large_model &lt;- h2o.deeplearning(x = X, 
+                             y = y, 
+                             training_frame = data_train, 
+                             validation_frame = data_valid,
+                             hidden = c(512),
+                             seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDglXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDExJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxNSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTklXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIzJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyNyVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDM0JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzOCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDIlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQ2JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0OSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTMlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDU3JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA2MSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNjUlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDY4JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICB8ICA3MiVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgfCAgNzYlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgIHwgIDgwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICB8ICA4NCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgfCAgODclXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgIHwgIDkxJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICB8ICA5NSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gfCAgOTklXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PXwgMTAwJVxuIn0= -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |===                                                                                       |   4%
+  |                                                                                                
+  |=======                                                                                   |   8%
+  |                                                                                                
+  |==========                                                                                |  11%
+  |                                                                                                
+  |==============                                                                            |  15%
+  |                                                                                                
+  |=================                                                                         |  19%
+  |                                                                                                
+  |=====================                                                                     |  23%
+  |                                                                                                
+  |========================                                                                  |  27%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |===============================                                                           |  34%
+  |                                                                                                
+  |==================================                                                        |  38%
+  |                                                                                                
+  |======================================                                                    |  42%
+  |                                                                                                
+  |=========================================                                                 |  46%
+  |                                                                                                
+  |============================================                                              |  49%
+  |                                                                                                
+  |================================================                                          |  53%
+  |                                                                                                
+  |===================================================                                       |  57%
+  |                                                                                                
+  |=======================================================                                   |  61%
+  |                                                                                                
+  |==========================================================                                |  65%
+  |                                                                                                
+  |==============================================================                            |  68%
+  |                                                                                                
+  |=================================================================                         |  72%
+  |                                                                                                
+  |====================================================================                      |  76%
+  |                                                                                                
+  |========================================================================                  |  80%
+  |                                                                                                
+  |===========================================================================               |  84%
+  |                                                                                                
+  |===============================================================================           |  87%
+  |                                                                                                
+  |==================================================================================        |  91%
+  |                                                                                                
+  |=====================================================================================     |  95%
+  |                                                                                                
+  |========================================================================================= |  99%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKHNoYWxsb3dfbGFyZ2VfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(shallow_large_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjc0NTQ4MlxuIn0= -->
+<pre><code>[1] 0.6745482</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGVlcF9zbWFsbF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKVxuYGBgIn0= -->
+<pre class="r"><code>deep_small_model &lt;- h2o.deeplearning(x = X, 
+                             y = y, 
+                             training_frame = data_train, 
+                             validation_frame = data_valid,
+                             hidden = c(32, 32, 32, 32, 32),
+                             seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNjAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgIHwgIDkwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |======================================================                                    |  60%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGRlZXBfc21hbGxfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(deep_small_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkyMjk3MVxuIn0= -->
+<pre><code>[1] 0.6922971</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGVlcF9sYXJnZV9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygxMDAsIDEwMCwgMTAwKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMylcbmBgYCJ9 -->
+<pre class="r"><code>deep_large_model &lt;- h2o.deeplearning(x = X, 
+                             y = y, 
+                             training_frame = data_train, 
+                             validation_frame = data_valid,
+                             hidden = c(100, 100, 100),
+                             seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTYlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDI1JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDklXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDY2JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICB8ICA3NCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgfCAgOTAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IHwgIDk4JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |=======                                                                                   |   8%
+  |                                                                                                
+  |===============                                                                           |  16%
+  |                                                                                                
+  |======================                                                                    |  25%
+  |                                                                                                
+  |=====================================                                                     |  41%
+  |                                                                                                
+  |============================================                                              |  49%
+  |                                                                                                
+  |===========================================================                               |  66%
+  |                                                                                                
+  |==================================================================                        |  74%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |========================================================================================= |  98%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGRlZXBfbGFyZ2VfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(deep_large_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkxMjQxM1xuIn0= -->
+<pre><code>[1] 0.6912413</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li><code>activation</code>: the nonlinear transformative function used. Default: Rectifier.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFuaF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLFxuICAgICAgICAgICAgICAgICBhY3RpdmF0aW9uID0gXCJUYW5oXCIsXG4gICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpXG5gYGAifQ== -->
+<pre class="r"><code>tanh_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 activation = &quot;Tanh&quot;,
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNyVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjElXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDM1JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA0MSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTUlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDY5JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICB8ICA4MyVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgfCAgOTAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgIHwgIDk3JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |======                                                                                    |   7%
+  |                                                                                                
+  |===================                                                                       |  21%
+  |                                                                                                
+  |===============================                                                           |  35%
+  |                                                                                                
+  |=====================================                                                     |  41%
+  |                                                                                                
+  |==================================================                                        |  55%
+  |                                                                                                
+  |==============================================================                            |  69%
+  |                                                                                                
+  |===========================================================================               |  83%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |=======================================================================================   |  97%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKHRhbmhfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(tanh_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkwODgwOFxuIn0= -->
+<pre><code>[1] 0.6908808</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Training samples</p>
+<ul>
+<li><p><code>epochs</code>: how many times will all training datapoints be used to adjust the model in the course of the optimization (note: early stopping is used by default so there is no guarantee that all epochs will be used).</p></li>
+<li><p><code>mini_batch_size</code>: after how many training samples is the gradient update made (defaults to 1)</p></li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9yZV9lcG9jaHNfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgXG4gICAgICAgICAgICAgICAgIHkgPSB5LCBcbiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCBcbiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsXG4gICAgICAgICAgICAgICAgIGhpZGRlbiA9IGMoMzIsIDMyLCAzMiwgMzIsIDMyKSxcbiAgICAgICAgICAgICAgICAgZXBvY2hzID0gMjAsXG4gICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpXG5gYGAifQ== -->
+<pre class="r"><code>more_epochs_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 epochs = 20,
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOSVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjclXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQ1JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA2MyVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNzIlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gIHwgIDk4JVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |========                                                                                  |   9%
+  |                                                                                                
+  |========================                                                                  |  27%
+  |                                                                                                
+  |========================================                                                  |  45%
+  |                                                                                                
+  |========================================================                                  |  63%
+  |                                                                                                
+  |================================================================                          |  72%
+  |                                                                                                
+  |========================================================================================  |  98%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKG1vcmVfZXBvY2hzX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDXG5gYGAifQ== -->
+<pre class="r"><code>h2o.performance(more_epochs_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkyOTQ4NFxuIn0= -->
+<pre><code>[1] 0.6929484</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGlnaGVyX2JhdGNoX3NpemVfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgXG4gICAgICAgICAgICAgICAgIHkgPSB5LCBcbiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCBcbiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsXG4gICAgICAgICAgICAgICAgIGhpZGRlbiA9IGMoMzIsIDMyLCAzMiwgMzIsIDMyKSxcbiAgICAgICAgICAgICAgICAgbWluaV9iYXRjaF9zaXplID0gMTAsXG4gICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpXG5gYGAifQ== -->
+<pre class="r"><code>higher_batch_size_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 mini_batch_size = 10,
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDYwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICB8ICA5MCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09fCAxMDAlXG4ifQ== -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |=========                                                                                 |  10%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |======================================================                                    |  60%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGhpZ2hlcl9iYXRjaF9zaXplX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDXG5gYGAifQ== -->
+<pre class="r"><code>h2o.performance(higher_batch_size_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkzMzY3NVxuIn0= -->
+<pre><code>[1] 0.6933675</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Regularization</p>
+<ul>
+<li><code>hidden_dropout_ratios</code>: with how large probability will neurons be left out of the model at a step (defaults to 0.5). Have to use “WithDropout” activation to use dropout.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHJvcG91dF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLFxuICAgICAgICAgICAgICAgICBhY3RpdmF0aW9uID0gXCJSZWN0aWZpZXJXaXRoRHJvcG91dFwiLFxuICAgICAgICAgICAgICAgICBoaWRkZW5fZHJvcG91dF9yYXRpb3MgPSBjKDAuMSwgMC4xLCAwLjIsIDAuMiwgMC4yKSxcbiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMylcbmBgYCJ9 -->
+<pre class="r"><code>dropout_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 activation = &quot;RectifierWithDropout&quot;,
+                 hidden_dropout_ratios = c(0.1, 0.1, 0.2, 0.2, 0.2),
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNzAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgIHwgIDkwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT18IDEwMCVcbiJ9 -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |===============================================================                           |  70%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGRyb3BvdXRfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(dropout_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjk4MDUwNlxuIn0= -->
+<pre><code>[1] 0.6980506</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li><code>input_dropout_ratio</code>: drop some input features randomly</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5wdXRfZHJvcG91dF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCBcbiAgICAgICAgICAgICAgICAgeSA9IHksIFxuICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIFxuICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCxcbiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLFxuICAgICAgICAgICAgICAgICBpbnB1dF9kcm9wb3V0X3JhdGlvID0gMC40LFxuICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKVxuYGBgIn0= -->
+<pre class="r"><code>input_dropout_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 input_dropout_ratio = 0.4,
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAgICAgICAgICAgICAgICAgIHwgIDgwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICB8ICA5MCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09fCAxMDAlXG4ifQ== -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |==================                                                                        |  20%
+  |                                                                                                
+  |=============================================                                             |  50%
+  |                                                                                                
+  |========================================================================                  |  80%
+  |                                                                                                
+  |=================================================================================         |  90%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGlucHV0X2Ryb3BvdXRfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUNcbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(input_dropout_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjk3NzE4OVxuIn0= -->
+<pre><code>[1] 0.6977189</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>For more on dropout, see the original paper <a href="http://jmlr.org/papers/volume15/srivastava14a.old/srivastava14a.pdf">here</a>.</p>
+<ul>
+<li><code>l1</code>, <code>l2</code>: weight on <span class="math inline">\(L1\)</span> (lasso), <span class="math inline">\(L2\)</span> (ridge) penalty terms</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVndWxhcml6ZWRfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgXG4gICAgICAgICAgICAgICAgIHkgPSB5LCBcbiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCBcbiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsXG4gICAgICAgICAgICAgICAgIGhpZGRlbiA9IGMoMzIsIDMyLCAzMiwgMzIsIDMyKSxcbiAgICAgICAgICAgICAgICAgbDEgPSAwLjAwMSxcbiAgICAgICAgICAgICAgICAgbDIgPSAwLjAwMSxcbiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMylcbmBgYCJ9 -->
+<pre class="r"><code>regularized_model &lt;- h2o.deeplearning(x = X, 
+                 y = y, 
+                 training_frame = data_train, 
+                 validation_frame = data_valid,
+                 hidden = c(32, 32, 32, 32, 32),
+                 l1 = 0.001,
+                 l2 = 0.001,
+                 seed = 123)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAwJVxuICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gIHw9PT09PT09PT09PT09PT09PT09PT09PT09PT0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzMCVcbiAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICB8PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICAgICAgICAgICAgICAgICAgfCAgODAlXG4gIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgfD09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PXwgMTAwJVxuIn0= -->
+<pre><code>
+  |                                                                                                
+  |                                                                                          |   0%
+  |                                                                                                
+  |===========================                                                               |  30%
+  |                                                                                                
+  |========================================================================                  |  80%
+  |                                                                                                
+  |==========================================================================================| 100%</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKHJlZ3VsYXJpemVkX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDXG5gYGAifQ== -->
+<pre class="r"><code>h2o.performance(regularized_model, data_test)@metrics$AUC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjkzNzU5NVxuIn0= -->
+<pre><code>[1] 0.6937595</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li>early stopping options: <code>stopping_rounds</code>, <code>stoppnig_metric</code>, <code>stopping_tolerance</code></li>
+</ul>
+<p>Training constantly tracks validation frame performance. Early stopping is enabled by default but can be tuned when to stop. This, again, is to prevent overfitting. (If you don’t supply a <code>validation_frame</code>, early stopping still works but based on metrics calculated from the training set = may not be as informative for out of sample performance.)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaDJvLnBlcmZvcm1hbmNlKGVhcmx5X3N0b3BwaW5nX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDXG5cbmBgYCJ9 -->
+<pre class="r"><code>h2o.performance(early_stopping_model, data_test)@metrics$AUC
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuNjk0MjU0MVxuIn0= -->
+<pre><code>[1] 0.6942541</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTGFiIHdlZWsgMTEgLSBOZXVyYWwgbmV0cyBhbmQgZGVlcCBsZWFybmluZyIKc3VidGl0bGU6ICJEYXRhIFNjaWVuY2UgYW5kIE1hY2hpbmUgTGVhcm5pbmcgMiAtIENFVSAyMDE4IgphdXRob3I6ICJKZW5vIFBhbCIKZGF0ZTogJzIwMTgtMDMtMTMnCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgZGZfcHJpbnQ6IHBhZ2VkCiAgaHRtbF9ub3RlYm9vazoKICAgIGRmX3ByaW50OiBwYWdlZAotLS0KCmBgYHtyLCBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KElTTFIpCmxpYnJhcnkoZGF0YS50YWJsZSkKbGlicmFyeShjYXJldCkKbGlicmFyeShza2ltcikKbGlicmFyeShST0NSKQpgYGAKCiMjIE5ldXJhbCBuZXRzIHdpdGggYGNhcmV0YAoKVmVyeSBsYXJnZSBudW1iZXIgb2YgcGFyYW1ldGVyczogcmVndWxhcml6YXRpb24gaXMgbmVlZGVkLiBEb25lIHZpYQppZGVhcyBzaW1pbGFyIHRvIHJpZGdlIG9yIGxhc3NvLiAoSGVuY2UgaXQgaXMgYSBnb29kIGlkZWEgdG8KY2VudGVyIGFuZCBzY2FsZSBmZWF0dXJlcyBhbmQgcmVtb3ZlIGNvcnJlbGF0ZWQgZmVhdHVyZXMgLyBkZS1jb3JyZWxhdGUgCnRoZW0uIENvbmNyZXRlIGV4YW1wbGUgaGVyZTogbWFueSBiaW5hcnkgZmVhdHVyZXMsIHRoZW4gaXQKbWF5IG5vdCBoZWxwIG11Y2gpLgoKQWxzbywgdHlwaWNhbGx5IGxvY2FsIHNvbHV0aW9ucwphcmUgZm91bmQ6IGluaXRpYWxpemF0aW9uIGZyb20gbWFueSByYW5kb20gc3RhcnRpbmcgdmFsdWVzIGFuZCBtb2RlbAphdmVyYWdpbmcgY2FuIGhlbHAuCgpgYGB7cn0KIyB0aGUgZmFtb3VzIGdlcm1hbiBjcmVkaXQgZGF0YQojIGRvd25sb2FkZWQgaW4gZnJpZW5kbHkgZm9ybSBmcm9tCiMgaHR0cHM6Ly9naXRodWIuY29tL3N0ZWR5L01hY2hpbmUtTGVhcm5pbmctd2l0aC1SLWRhdGFzZXRzL2Jsb2IvbWFzdGVyL2NyZWRpdC5jc3YKZGF0YSA8LSBmcmVhZCgiLi4vLi4vZGF0YS9nZXJtYW5fY3JlZGl0L2dlcm1hbl9jcmVkaXQuY3N2IikKc2tpbShkYXRhKQpgYGAKYGBge3J9CmRhdGFbLCBkZWZhdWx0IDo9IGZhY3RvcihpZmVsc2UoZGVmYXVsdCA9PSAxLCAiTm8iLCAiWWVzIikpXQoKIyB0dXJuIGNoYXJhY3RlciB2YXJpYWJsZXMgdG8gZmFjdG9ycwpjaGFyYWN0ZXJfdmFyaWFibGVzIDwtIG5hbWVzKGRhdGEpW3NhcHBseShuYW1lcyhkYXRhKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZnVuY3Rpb24oeCkgaXMuY2hhcmFjdGVyKGRhdGFbW3hdXSkpXQpkYXRhIDwtIGRhdGFbLCAKICAgICAgICAgICAgIChjaGFyYWN0ZXJfdmFyaWFibGVzKSA6PSBsYXBwbHkoLlNELCBhcy5mYWN0b3IpLCAKICAgICAgICAgICAgIC5TRGNvbHMgPSBjaGFyYWN0ZXJfdmFyaWFibGVzXQogIApgYGAKCmBgYHtyfQp0cmFpbmluZ19yYXRpbyA8LSAwLjc1IApzZXQuc2VlZCgxMjM0KQp0cmFpbl9pbmRpY2VzIDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oeSA9IGRhdGFbWyJkZWZhdWx0Il1dLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGltZXMgPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcCA9IHRyYWluaW5nX3JhdGlvLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFKQpkYXRhX3RyYWluIDwtIGRhdGFbdHJhaW5faW5kaWNlcywgXQpkYXRhX3Rlc3QgPC0gZGF0YVstdHJhaW5faW5kaWNlcywgXQpgYGAKCmBgYHtyfQp0cmFpbl9jb250cm9sIDwtIHRyYWluQ29udHJvbChtZXRob2QgPSAiY3YiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBudW1iZXIgPSAxMCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NQcm9icyA9IFRSVUUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1bW1hcnlGdW5jdGlvbiA9IHR3b0NsYXNzU3VtbWFyeSkKYGBgCgpgYGB7cn0KIyBiYXNlbGluZSBsb2dpc3RpYyBtb2RlbApzZXQuc2VlZCg4NTcpCmdsbV9tb2RlbCA8LSB0cmFpbihkZWZhdWx0IH4gLiwKICAgICAgICAgICAgICAgICAgIG1ldGhvZCA9ICJnbG0iLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGRhdGFfdHJhaW4sCiAgICAgICAgICAgICAgICAgICB0ckNvbnRyb2wgPSB0cmFpbl9jb250cm9sLAogICAgICAgICAgICAgICAgICAgIyBwcmVQcm9jZXNzID0gYygiY2VudGVyIiwgInNjYWxlIiwgInBjYSIpLAogICAgICAgICAgICAgICAgICAgbWV0cmljID0gIlJPQyIpCmdsbV9tb2RlbApgYGAKClNpemU6IG51bWJlciBvZiB1bml0cyBpbiB0aGUgaGlkZGVuIGxheWVyLiBEZWNheTogcmVndWxhcml6YXRpb24gcGFyYW1ldGVyLgpgYGB7cn0KdHVuZV9ncmlkIDwtIGV4cGFuZC5ncmlkKHNpemUgPSBjKDMsIDUsIDEwLCAxNSksCiAgICAgICAgICAgICAgICAgICAgICAgICBkZWNheSA9IGMoMC4xLCAwLjUsIDEsIDEuMikpCgpzZXQuc2VlZCg4NTcpCm5uZXRfbW9kZWwgPC0gdHJhaW4oZGVmYXVsdCB+IC4sCiAgICAgICAgICAgICAgICAgICBtZXRob2QgPSAibm5ldCIsCiAgICAgICAgICAgICAgICAgICBkYXRhID0gZGF0YV90cmFpbiwKICAgICAgICAgICAgICAgICAgIHRyQ29udHJvbCA9IHRyYWluX2NvbnRyb2wsCiAgICAgICAgICAgICAgICAgICB0dW5lR3JpZCA9IHR1bmVfZ3JpZCwKICAgICAgICAgICAgICAgICAgIG1ldHJpYyA9ICJST0MiLAogICAgICAgICAgICAgICAgICAgIyBhdm9pZCBleHRlbnNpdmUgaXRlcmF0aW9uIG91dHB1dAogICAgICAgICAgICAgICAgICAgdHJhY2UgPSBGQUxTRSkKbm5ldF9tb2RlbApgYGAKYGBge3J9Cm5uZXRfcHJlZGljdGlvbiA8LSBwcmVkaWN0aW9uKHByZWRpY3QudHJhaW4obm5ldF9tb2RlbCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3ZGF0YSA9IGRhdGFfdGVzdCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlID0gInByb2IiKSRZZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGFfdGVzdFtbImRlZmF1bHQiXV0pCnBlcmZvcm1hbmNlKG5uZXRfcHJlZGljdGlvbiwgbWVhc3VyZSA9ICJhdWMiKUB5LnZhbHVlc1tbMV1dCmBgYAoKYG5uZXRgIHdpdGggZGlmZmVyZW50IHJhbmRvbSBpbml0aWFsIHNlZWRzLiAoRGVmYXVsdDogNSBpbml0aWFsIHNlZWRzLCB0cmFpbmluZyB0YWtlcwo1eCB0aW1lcyB3aXRoIHRoZSBzYW1lIGdyaWQuIFBhcmFtZXRlciBgcmVwZWF0c2AgY29udHJvbHMgdGhlIG51bWJlciBvZiBzZWVkcy4pCmBgYHtyfQojIHRha2VzIGEgbG9uZyB0aW1lIHRvIHJ1biBmb3IgdGhlIHdob2xlIGdyaWQgYWJvdmUKdHVuZV9ncmlkIDwtIGV4cGFuZC5ncmlkKHNpemUgPSBjKDUpLAogICAgICAgICAgICAgICAgICAgICAgICAgZGVjYXkgPSBjKDAuNSksCiAgICAgICAgICAgICAgICAgICAgICAgICBiYWcgPSBGQUxTRSkKCnNldC5zZWVkKDg1NykKYXZubmV0X21vZGVsIDwtIHRyYWluKGRlZmF1bHQgfiAuLAogICAgICAgICAgICAgICAgICAgbWV0aG9kID0gImF2Tk5ldCIsCiAgICAgICAgICAgICAgICAgICBkYXRhID0gZGF0YV90cmFpbiwKICAgICAgICAgICAgICAgICAgIHRyQ29udHJvbCA9IHRyYWluX2NvbnRyb2wsCiAgICAgICAgICAgICAgICAgICB0dW5lR3JpZCA9IHR1bmVfZ3JpZCwKICAgICAgICAgICAgICAgICAgIG1ldHJpYyA9ICJST0MiLAogICAgICAgICAgICAgICAgICAgIyBhdm9pZCBleHRlbnNpdmUgaXRlcmF0aW9uIG91dHB1dAogICAgICAgICAgICAgICAgICAgdHJhY2UgPSBGQUxTRSkKYXZubmV0X21vZGVsCmBgYAoKYGBge3J9CmF2bm5ldF9wcmVkaWN0aW9uIDwtIHByZWRpY3Rpb24ocHJlZGljdC50cmFpbihhdm5uZXRfbW9kZWwsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5ld2RhdGEgPSBkYXRhX3Rlc3QsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJwcm9iIikkWWVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhX3Rlc3RbWyJkZWZhdWx0Il1dKQpwZXJmb3JtYW5jZShhdm5uZXRfcHJlZGljdGlvbiwgbWVhc3VyZSA9ICJhdWMiKUB5LnZhbHVlc1tbMV1dCmBgYAoKIyMgRGVlcCBsZWFybmluZyB3aXRoIGBoMm9gCgoiRGVlcCI6IG1hbnkgbGF5ZXJzIG9mIGhpZGRlbiB1bml0cy4gCgpOb3RlIG9uIGVzdG1pYXRpb246IHdoZW4gaGF2aW5nIGxhcmdlIGRhdGFzZXRzLCBrLWZvbGQgY3Jvc3MgdmFsaWRhdGlvbiBjYW4gYmVjb21lCmNvbXB1dGF0aW9uYWxseSBidXJkZW5zb21lLCBoZW5jZSB1c3VhbGx5IHRyYWluL3ZhbGlkYXRpb24vdGVzdCBhcHByb2FjaCBpcyB1c2VkLgooc2VlIGFuc3dlciBvbiBRdW9yYSBieSBZb3NodWEgQmVuZ2lvLCBvbmUgb2YgdGhlIG9yaWdpbmF0b3JzIG9mIGRlZXAgbGVhcm5pbmcgW2hlcmVdKGh0dHBzOi8vd3d3LnF1b3JhLmNvbS9Jcy1jcm9zcy12YWxpZGF0aW9uLWhlYXZpbHktdXNlZC1pbi1kZWVwLWxlYXJuaW5nLW9yLWlzLWl0LXRvby1leHBlbnNpdmUtdG8tYmUtdXNlZCkpLgoKYGBge3J9CmxpYnJhcnkoaDJvKQpoMm8uaW5pdChudGhyZWFkcz0tMSkKCmgyb190cmFpbiA8LSBhcy5oMm8oZGF0YV90cmFpbikKaDJvX3Rlc3QgPC0gYXMuaDJvKGRhdGFfdGVzdCkKCnkgPC0gImRlZmF1bHQiClggPC0gc2V0ZGlmZihuYW1lcyhoMm9fdHJhaW4pLCAiZGVmYXVsdCIpCgpgYGAKCmBgYHtyfQpkbF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0geSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBoMm9fdHJhaW4sIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcHJvZHVjaWJsZSA9IFRSVUUsICAjIG1ha2VzIHRyYWluaW5nIHNsb3dlciBidXQgbWFrZXMgaXQgcmVwcm9kdWNpYmxlCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKGRsX21vZGVsLCBoMm9fdGVzdClAbWV0cmljcyRBVUMKYGBgCgpUaGVyZSBhcmUgbG90cyBvZiBwYXJhbWV0ZXJzIHRoYXQgeW91IGNhbiBjaGFuZ2UsIHNlZSBgP2gyby5kZWVwbGVhcm5pbmdgCmFuZCB0aGUgW2RvY3NdKGh0dHA6Ly9kb2NzLmgyby5haS9oMm8vbGF0ZXN0LXN0YWJsZS9oMm8tZG9jcy9kYXRhLXNjaWVuY2UvZGVlcC1sZWFybmluZy5odG1sKS4KCmBgYHtyfQojIGEgc2hhbGxvdyBtb2RlbCBzaW1pbGFyIHRvIHRob3NlIHdlIHRyYWluZWQgd2l0aCBjYXJldApkbF9tb2RlbF8yIDwtIGgyby5kZWVwbGVhcm5pbmcoeCA9IFgsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0geSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gaDJvX3RyYWluLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYyg1KSwgIyBoaWRkZW4gbGF5ZXIgc2l6ZXMsIGRlZmF1bHQgYygyMDAsIDIwMCkKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVwb2NocyA9IDEwLCAjIGRlZmF1bHQgaXMgMTAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFjdGl2YXRpb24gPSAiVGFuaCIsICMgZGlmZmVyZW50IGFjdGl2YXRpb24gZnVuY3Rpb24KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJlcHJvZHVjaWJsZSA9IFRSVUUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKQpoMm8ucGVyZm9ybWFuY2UoZGxfbW9kZWxfMiwgaDJvX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoKYGBge3J9CmRsX21vZGVsXzMgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSB5LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBoMm9fdHJhaW4sCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDEwMCwgMjUpLCAjIGhpZGRlbiBsYXllciBzaXplcywgZGVmYXVsdCBjKDIwMCwgMjAwKQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXBvY2hzID0gNTAsICMgZGVmYXVsdCBpcyAxMAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVwcm9kdWNpYmxlID0gVFJVRSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFjdGl2YXRpb24gPSAiVGFuaFdpdGhEcm9wb3V0IiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhpZGRlbl9kcm9wb3V0X3JhdGlvcyA9IGMoMC4xLCAwLjUpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbDEgPSAwLjAwMSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpCmgyby5wZXJmb3JtYW5jZShkbF9tb2RlbF8zLCBoMm9fdGVzdClAbWV0cmljcyRBVUMKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTGFiIHdlZWsgMTEgLSBOZXVyYWwgbmV0cyBhbmQgZGVlcCBsZWFybmluZyIKc3VidGl0bGU6ICJEYXRhIFNjaWVuY2UgYW5kIE1hY2hpbmUgTGVhcm5pbmcgMiAtIENFVSAyMDE4IgphdXRob3I6ICJKZW5vIFBhbCIKZGF0ZTogJzIwMTgtMDMtMjAnCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgZGZfcHJpbnQ6IHBhZ2VkCiAgaHRtbF9ub3RlYm9vazoKICAgIGRmX3ByaW50OiBwYWdlZAotLS0KCmBgYHtyLCBtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KElTTFIpCmxpYnJhcnkoZGF0YS50YWJsZSkKbGlicmFyeShjYXJldCkKbGlicmFyeShza2ltcikKbGlicmFyeShST0NSKQpgYGAKCiMjIE5ldXJhbCBuZXRzIHdpdGggYGNhcmV0YAoKVmVyeSBsYXJnZSBudW1iZXIgb2YgcGFyYW1ldGVyczogcmVndWxhcml6YXRpb24gaXMgbmVlZGVkLiBEb25lIHZpYQppZGVhcyBzaW1pbGFyIHRvIHJpZGdlIG9yIGxhc3NvLiAoSGVuY2UgaXQgaXMgYSBnb29kIGlkZWEgdG8KY2VudGVyIGFuZCBzY2FsZSBmZWF0dXJlcyBhbmQgcmVtb3ZlIGNvcnJlbGF0ZWQgZmVhdHVyZXMgLyBkZS1jb3JyZWxhdGUgCnRoZW0uIENvbmNyZXRlIGV4YW1wbGUgaGVyZTogbWFueSBiaW5hcnkgZmVhdHVyZXMsIHRoZW4gaXQKbWF5IG5vdCBoZWxwIG11Y2gpLgoKQWxzbywgdHlwaWNhbGx5IGxvY2FsIHNvbHV0aW9ucwphcmUgZm91bmQ6IGluaXRpYWxpemF0aW9uIGZyb20gbWFueSByYW5kb20gc3RhcnRpbmcgdmFsdWVzIGFuZCBtb2RlbAphdmVyYWdpbmcgY2FuIGhlbHAuCgpgYGB7cn0KIyB0aGUgZmFtb3VzIGdlcm1hbiBjcmVkaXQgZGF0YQojIGRvd25sb2FkZWQgaW4gZnJpZW5kbHkgZm9ybSBmcm9tCiMgaHR0cHM6Ly9naXRodWIuY29tL3N0ZWR5L01hY2hpbmUtTGVhcm5pbmctd2l0aC1SLWRhdGFzZXRzL2Jsb2IvbWFzdGVyL2NyZWRpdC5jc3YKZGF0YSA8LSBmcmVhZCgiLi4vLi4vZGF0YS9nZXJtYW5fY3JlZGl0L2dlcm1hbl9jcmVkaXQuY3N2IikKc2tpbShkYXRhKQpgYGAKYGBge3J9CmRhdGFbLCBkZWZhdWx0IDo9IGZhY3RvcihpZmVsc2UoZGVmYXVsdCA9PSAxLCAiTm8iLCAiWWVzIikpXQoKIyB0dXJuIGNoYXJhY3RlciB2YXJpYWJsZXMgdG8gZmFjdG9ycwpjaGFyYWN0ZXJfdmFyaWFibGVzIDwtIG5hbWVzKGRhdGEpW3NhcHBseShuYW1lcyhkYXRhKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZnVuY3Rpb24oeCkgaXMuY2hhcmFjdGVyKGRhdGFbW3hdXSkpXQpkYXRhIDwtIGRhdGFbLCAKICAgICAgICAgICAgIChjaGFyYWN0ZXJfdmFyaWFibGVzKSA6PSBsYXBwbHkoLlNELCBhcy5mYWN0b3IpLCAKICAgICAgICAgICAgIC5TRGNvbHMgPSBjaGFyYWN0ZXJfdmFyaWFibGVzXQogIApgYGAKCmBgYHtyfQp0cmFpbmluZ19yYXRpbyA8LSAwLjc1IApzZXQuc2VlZCgxMjM0KQp0cmFpbl9pbmRpY2VzIDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oeSA9IGRhdGFbWyJkZWZhdWx0Il1dLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdGltZXMgPSAxLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcCA9IHRyYWluaW5nX3JhdGlvLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFKQpkYXRhX3RyYWluIDwtIGRhdGFbdHJhaW5faW5kaWNlcywgXQpkYXRhX3Rlc3QgPC0gZGF0YVstdHJhaW5faW5kaWNlcywgXQpgYGAKCmBgYHtyfQp0cmFpbl9jb250cm9sIDwtIHRyYWluQ29udHJvbChtZXRob2QgPSAiY3YiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBudW1iZXIgPSAxMCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NQcm9icyA9IFRSVUUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1bW1hcnlGdW5jdGlvbiA9IHR3b0NsYXNzU3VtbWFyeSkKYGBgCgpgYGB7cn0KIyBiYXNlbGluZSBsb2dpc3RpYyBtb2RlbApzZXQuc2VlZCg4NTcpCmdsbV9tb2RlbCA8LSB0cmFpbihkZWZhdWx0IH4gLiwKICAgICAgICAgICAgICAgICAgIG1ldGhvZCA9ICJnbG0iLAogICAgICAgICAgICAgICAgICAgZGF0YSA9IGRhdGFfdHJhaW4sCiAgICAgICAgICAgICAgICAgICB0ckNvbnRyb2wgPSB0cmFpbl9jb250cm9sLAogICAgICAgICAgICAgICAgICAgIyBwcmVQcm9jZXNzID0gYygiY2VudGVyIiwgInNjYWxlIiwgInBjYSIpLAogICAgICAgICAgICAgICAgICAgbWV0cmljID0gIlJPQyIpCmdsbV9tb2RlbApgYGAKClNpemU6IG51bWJlciBvZiB1bml0cyBpbiB0aGUgaGlkZGVuIGxheWVyLiBEZWNheTogcmVndWxhcml6YXRpb24gcGFyYW1ldGVyLgpgYGB7cn0KdHVuZV9ncmlkIDwtIGV4cGFuZC5ncmlkKHNpemUgPSBjKDMsIDUsIDEwLCAxNSksCiAgICAgICAgICAgICAgICAgICAgICAgICBkZWNheSA9IGMoMC4xLCAwLjUsIDEsIDEuMikpCgpzZXQuc2VlZCg4NTcpCm5uZXRfbW9kZWwgPC0gdHJhaW4oZGVmYXVsdCB+IC4sCiAgICAgICAgICAgICAgICAgICBtZXRob2QgPSAibm5ldCIsCiAgICAgICAgICAgICAgICAgICBkYXRhID0gZGF0YV90cmFpbiwKICAgICAgICAgICAgICAgICAgIHRyQ29udHJvbCA9IHRyYWluX2NvbnRyb2wsCiAgICAgICAgICAgICAgICAgICB0dW5lR3JpZCA9IHR1bmVfZ3JpZCwKICAgICAgICAgICAgICAgICAgIG1ldHJpYyA9ICJST0MiLAogICAgICAgICAgICAgICAgICAgIyBhdm9pZCBleHRlbnNpdmUgaXRlcmF0aW9uIG91dHB1dAogICAgICAgICAgICAgICAgICAgdHJhY2UgPSBGQUxTRSkKbm5ldF9tb2RlbApgYGAKYGBge3J9Cm5uZXRfcHJlZGljdGlvbiA8LSBwcmVkaWN0aW9uKHByZWRpY3QudHJhaW4obm5ldF9tb2RlbCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3ZGF0YSA9IGRhdGFfdGVzdCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlID0gInByb2IiKSRZZXMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGFfdGVzdFtbImRlZmF1bHQiXV0pCnBlcmZvcm1hbmNlKG5uZXRfcHJlZGljdGlvbiwgbWVhc3VyZSA9ICJhdWMiKUB5LnZhbHVlc1tbMV1dCmBgYAoKYG5uZXRgIHdpdGggZGlmZmVyZW50IHJhbmRvbSBpbml0aWFsIHNlZWRzLiAoRGVmYXVsdDogNSBpbml0aWFsIHNlZWRzLCB0cmFpbmluZyB0YWtlcwo1eCB0aW1lcyB3aXRoIHRoZSBzYW1lIGdyaWQuIFBhcmFtZXRlciBgcmVwZWF0c2AgY29udHJvbHMgdGhlIG51bWJlciBvZiBzZWVkcy4pCmBgYHtyfQojIHRha2VzIGEgbG9uZyB0aW1lIHRvIHJ1biBmb3IgdGhlIHdob2xlIGdyaWQgYWJvdmUKdHVuZV9ncmlkIDwtIGV4cGFuZC5ncmlkKHNpemUgPSBjKDUpLAogICAgICAgICAgICAgICAgICAgICAgICAgZGVjYXkgPSBjKDAuNSksCiAgICAgICAgICAgICAgICAgICAgICAgICBiYWcgPSBGQUxTRSkKCnNldC5zZWVkKDg1NykKYXZubmV0X21vZGVsIDwtIHRyYWluKGRlZmF1bHQgfiAuLAogICAgICAgICAgICAgICAgICAgbWV0aG9kID0gImF2Tk5ldCIsCiAgICAgICAgICAgICAgICAgICBkYXRhID0gZGF0YV90cmFpbiwKICAgICAgICAgICAgICAgICAgIHRyQ29udHJvbCA9IHRyYWluX2NvbnRyb2wsCiAgICAgICAgICAgICAgICAgICB0dW5lR3JpZCA9IHR1bmVfZ3JpZCwKICAgICAgICAgICAgICAgICAgIG1ldHJpYyA9ICJST0MiLAogICAgICAgICAgICAgICAgICAgIyBhdm9pZCBleHRlbnNpdmUgaXRlcmF0aW9uIG91dHB1dAogICAgICAgICAgICAgICAgICAgdHJhY2UgPSBGQUxTRSkKYXZubmV0X21vZGVsCmBgYAoKYGBge3J9CmF2bm5ldF9wcmVkaWN0aW9uIDwtIHByZWRpY3Rpb24ocHJlZGljdC50cmFpbihhdm5uZXRfbW9kZWwsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5ld2RhdGEgPSBkYXRhX3Rlc3QsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZSA9ICJwcm9iIikkWWVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkYXRhX3Rlc3RbWyJkZWZhdWx0Il1dKQpwZXJmb3JtYW5jZShhdm5uZXRfcHJlZGljdGlvbiwgbWVhc3VyZSA9ICJhdWMiKUB5LnZhbHVlc1tbMV1dCmBgYAoKIyMgRGVlcCBsZWFybmluZyB3aXRoIGBoMm9gCgoiRGVlcCI6IG1hbnkgbGF5ZXJzIG9mIGhpZGRlbiB1bml0cy4gCgpOb3RlIG9uIGVzdG1pYXRpb246IHdoZW4gaGF2aW5nIGxhcmdlIGRhdGFzZXRzLCBrLWZvbGQgY3Jvc3MgdmFsaWRhdGlvbiBjYW4gYmVjb21lCmNvbXB1dGF0aW9uYWxseSBidXJkZW5zb21lLCBoZW5jZSBtYW55IHRpbWVzIHRyYWluL3ZhbGlkYXRpb24vdGVzdCBhcHByb2FjaCBpcyB1c2VkLgooc2VlIGFuc3dlciBvbiBRdW9yYSBieSBZb3NodWEgQmVuZ2lvLCBvbmUgb2YgdGhlIG9yaWdpbmF0b3JzIG9mIGRlZXAgbGVhcm5pbmcgW2hlcmVdKGh0dHBzOi8vd3d3LnF1b3JhLmNvbS9Jcy1jcm9zcy12YWxpZGF0aW9uLWhlYXZpbHktdXNlZC1pbi1kZWVwLWxlYXJuaW5nLW9yLWlzLWl0LXRvby1leHBlbnNpdmUtdG8tYmUtdXNlZCkpLiBIb3dldmVyLCBjcm9zcyB2YWxpZGF0aW9uIGNhbiBzdGlsbCBiZSB1c2VkCnRvIHR1bmUgc29tZSBvZiB0aGUgaHlwZXJwYXJhbWV0ZXJzLgoKYGBge3J9CmxpYnJhcnkoaDJvKQpoMm8uaW5pdChudGhyZWFkcz0tMSkKYGBgCgpgYGB7cn0KZGF0YSA8LSBoMm8uaW1wb3J0RmlsZSgiLi4vLi4vZGF0YS9haXJsaW5lcy9haXJsaW5lMTAwSy5jc3YiKQoKIyB0YWtlIDEwJSBhcyB0cmFpbmluZyBzZXQgdG8gc3BlZWQgdXAgY29tcHV0YXRpb25zCmRhdGFfc3BsaXQgPC0gaDJvLnNwbGl0RnJhbWUoZGF0YSwgcmF0aW9zID0gYygwLjEsIDAuNCksIHNlZWQgPSAxMjMpCmRhdGFfdHJhaW4gPC0gZGF0YV9zcGxpdFtbMV1dCmRhdGFfdmFsaWQgPC0gZGF0YV9zcGxpdFtbMl1dCmRhdGFfdGVzdCA8LSBkYXRhX3NwbGl0W1szXV0KCnkgPC0gImRlcF9kZWxheWVkXzE1bWluIgpYIDwtIHNldGRpZmYobmFtZXMoZGF0YV90cmFpbiksIHkpCmBgYAoKVmFsaWRhdGlvbiBmcmFtZTogdXNlZCB0byBkZXRlcm1pbmUgZWFybHkgc3RvcHBpbmcgY29uZGl0aW9ucy4gTW9yZSBvbiB0aGlzIGxhdGVyLgoKYGBge3J9CmRsX21vZGVsIDwtIGgyby5kZWVwbGVhcm5pbmcoeCA9IFgsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSB5LCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbGlkYXRpb25fZnJhbWUgPSBkYXRhX3ZhbGlkLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgcmVwcm9kdWNpYmxlID0gVFJVRSwgICMgbWFrZXMgdHJhaW5pbmcgc2xvd2VyIGJ1dCBtYWtlcyBpdCByZXByb2R1Y2libGUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKQpoMm8ucGVyZm9ybWFuY2UoZGxfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUMKYGBgCgpgYGB7cn0KaDJvLnNjb3JlSGlzdG9yeShkbF9tb2RlbCkKYGBgCgpUaGVyZSBhcmUgbG90cyBvZiBwYXJhbWV0ZXJzIHRoYXQgeW91IGNhbiBjaGFuZ2UsIHNlZSBgP2gyby5kZWVwbGVhcm5pbmdgCmFuZCB0aGUgW2RvY3NdKGh0dHA6Ly9kb2NzLmgyby5haS9oMm8vbGF0ZXN0LXN0YWJsZS9oMm8tZG9jcy9kYXRhLXNjaWVuY2UvZGVlcC1sZWFybmluZy5odG1sKS4gU29tZSBzZWxlY3RlZCBwYXJhbWV0ZXJzOgoKTmV0d29yayBzdHJ1Y3R1cmUgYW5kIGZ1bmN0aW9uYWwgZm9ybQoKKiBgaGlkZGVuYDogbmV1cm9uIGxheWVyIGFyY2hpdGVjdHVyZTogbGVuZ3RoIG9mIHZlY3RvciBzaG93cwpudW1iZXIgb2YgbGF5ZXJzLCBudW1iZXIgc2hvd3MgbnVtYmVyIG9mIG5ldXJvbnMgd2l0aGluIGxheWVyLgpUaGUgZGVmYXVsdDogdHdvIGhpZGRlbiBsYXllcnMgd2l0aCAyMDAtMjAwIG5ldXJvbnMuIE1ha2VzIHNlbnNlIHRvCmV4cGVyaW1lbnQgd2l0aCBzaGFsbG93ZXIgYnV0IG1vcmUgbmV1cm9uIG9yIHdpdGggZGVlcGVyIGFuZCBsZXNzIG5ldXJvbnMKcGVyIGxheWVyIGFyY2hpdGVjdHVyZXMuCgpgYGB7cn0Kc2hhbGxvd19zbWFsbF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0geSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDEwKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKQpoMm8ucGVyZm9ybWFuY2Uoc2hhbGxvd19zbWFsbF9tb2RlbCwgZGF0YV90ZXN0KUBtZXRyaWNzJEFVQwpgYGAKYGBge3J9CnNoYWxsb3dfbGFyZ2VfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYyg1MTIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpCmgyby5wZXJmb3JtYW5jZShzaGFsbG93X2xhcmdlX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoKYGBge3J9CmRlZXBfc21hbGxfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpCmgyby5wZXJmb3JtYW5jZShkZWVwX3NtYWxsX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoKYGBge3J9CmRlZXBfbGFyZ2VfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygxMDAsIDEwMCwgMTAwKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKQpoMm8ucGVyZm9ybWFuY2UoZGVlcF9sYXJnZV9tb2RlbCwgZGF0YV90ZXN0KUBtZXRyaWNzJEFVQwpgYGAKCgoKKiBgYWN0aXZhdGlvbmA6IHRoZSBub25saW5lYXIgdHJhbnNmb3JtYXRpdmUgZnVuY3Rpb24gdXNlZC4gRGVmYXVsdDogUmVjdGlmaWVyLgoKYGBge3J9CnRhbmhfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLAogICAgICAgICAgICAgICAgIGFjdGl2YXRpb24gPSAiVGFuaCIsCiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKHRhbmhfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUMKYGBgCgoKVHJhaW5pbmcgc2FtcGxlcwoKKiBgZXBvY2hzYDogaG93IG1hbnkgdGltZXMgd2lsbCBhbGwgdHJhaW5pbmcgZGF0YXBvaW50cyBiZSB1c2VkCnRvIGFkanVzdCB0aGUgbW9kZWwgaW4gdGhlIGNvdXJzZSBvZiB0aGUgb3B0aW1pemF0aW9uIChub3RlOiBlYXJseQpzdG9wcGluZyBpcyB1c2VkIGJ5IGRlZmF1bHQgc28gdGhlcmUgaXMgbm8gZ3VhcmFudGVlIHRoYXQKYWxsIGVwb2NocyB3aWxsIGJlIHVzZWQpLgoKKiBgbWluaV9iYXRjaF9zaXplYDogYWZ0ZXIgaG93IG1hbnkgdHJhaW5pbmcgc2FtcGxlcyBpcyB0aGUKZ3JhZGllbnQgdXBkYXRlIG1hZGUgKGRlZmF1bHRzIHRvIDEpCgpgYGB7cn0KbW9yZV9lcG9jaHNfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLAogICAgICAgICAgICAgICAgIGVwb2NocyA9IDIwLAogICAgICAgICAgICAgICAgIHNlZWQgPSAxMjMpCmgyby5wZXJmb3JtYW5jZShtb3JlX2Vwb2Noc19tb2RlbCwgZGF0YV90ZXN0KUBtZXRyaWNzJEFVQwpgYGAKCmBgYHtyfQpoaWdoZXJfYmF0Y2hfc2l6ZV9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCAKICAgICAgICAgICAgICAgICB5ID0geSwgCiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCAKICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCwKICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDMyLCAzMiwgMzIsIDMyLCAzMiksCiAgICAgICAgICAgICAgICAgbWluaV9iYXRjaF9zaXplID0gMTAsCiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKGhpZ2hlcl9iYXRjaF9zaXplX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoKUmVndWxhcml6YXRpb24KCiogYGhpZGRlbl9kcm9wb3V0X3JhdGlvc2A6IHdpdGggaG93IGxhcmdlIHByb2JhYmlsaXR5IHdpbGwgbmV1cm9ucwpiZSBsZWZ0IG91dCBvZiB0aGUgbW9kZWwgYXQgYSBzdGVwIChkZWZhdWx0cyB0byAwLjUpLiBIYXZlIHRvIHVzZQoiV2l0aERyb3BvdXQiIGFjdGl2YXRpb24gdG8gdXNlIGRyb3BvdXQuCgpgYGB7cn0KZHJvcG91dF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCAKICAgICAgICAgICAgICAgICB5ID0geSwgCiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCAKICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCwKICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDMyLCAzMiwgMzIsIDMyLCAzMiksCiAgICAgICAgICAgICAgICAgYWN0aXZhdGlvbiA9ICJSZWN0aWZpZXJXaXRoRHJvcG91dCIsCiAgICAgICAgICAgICAgICAgaGlkZGVuX2Ryb3BvdXRfcmF0aW9zID0gYygwLjEsIDAuMSwgMC4yLCAwLjIsIDAuMiksCiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKGRyb3BvdXRfbW9kZWwsIGRhdGFfdGVzdClAbWV0cmljcyRBVUMKYGBgCgoqIGBpbnB1dF9kcm9wb3V0X3JhdGlvYDogZHJvcCBzb21lIGlucHV0IGZlYXR1cmVzIHJhbmRvbWx5CgpgYGB7cn0KaW5wdXRfZHJvcG91dF9tb2RlbCA8LSBoMm8uZGVlcGxlYXJuaW5nKHggPSBYLCAKICAgICAgICAgICAgICAgICB5ID0geSwgCiAgICAgICAgICAgICAgICAgdHJhaW5pbmdfZnJhbWUgPSBkYXRhX3RyYWluLCAKICAgICAgICAgICAgICAgICB2YWxpZGF0aW9uX2ZyYW1lID0gZGF0YV92YWxpZCwKICAgICAgICAgICAgICAgICBoaWRkZW4gPSBjKDMyLCAzMiwgMzIsIDMyLCAzMiksCiAgICAgICAgICAgICAgICAgaW5wdXRfZHJvcG91dF9yYXRpbyA9IDAuNCwKICAgICAgICAgICAgICAgICBzZWVkID0gMTIzKQpoMm8ucGVyZm9ybWFuY2UoaW5wdXRfZHJvcG91dF9tb2RlbCwgZGF0YV90ZXN0KUBtZXRyaWNzJEFVQwpgYGAKCkZvciBtb3JlIG9uIGRyb3BvdXQsIHNlZSB0aGUgb3JpZ2luYWwgcGFwZXIgW2hlcmVdKGh0dHA6Ly9qbWxyLm9yZy9wYXBlcnMvdm9sdW1lMTUvc3JpdmFzdGF2YTE0YS5vbGQvc3JpdmFzdGF2YTE0YS5wZGYpLgoKKiBgbDFgLCBgbDJgOiB3ZWlnaHQgb24gJEwxJCAobGFzc28pLCAkTDIkIChyaWRnZSkgcGVuYWx0eSB0ZXJtcwoKYGBge3J9CnJlZ3VsYXJpemVkX21vZGVsIDwtIGgyby5kZWVwbGVhcm5pbmcoeCA9IFgsIAogICAgICAgICAgICAgICAgIHkgPSB5LCAKICAgICAgICAgICAgICAgICB0cmFpbmluZ19mcmFtZSA9IGRhdGFfdHJhaW4sIAogICAgICAgICAgICAgICAgIHZhbGlkYXRpb25fZnJhbWUgPSBkYXRhX3ZhbGlkLAogICAgICAgICAgICAgICAgIGhpZGRlbiA9IGMoMzIsIDMyLCAzMiwgMzIsIDMyKSwKICAgICAgICAgICAgICAgICBsMSA9IDAuMDAxLAogICAgICAgICAgICAgICAgIGwyID0gMC4wMDEsCiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKHJlZ3VsYXJpemVkX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoKKiBlYXJseSBzdG9wcGluZyBvcHRpb25zOiBgc3RvcHBpbmdfcm91bmRzYCwgYHN0b3BwbmlnX21ldHJpY2AsIGBzdG9wcGluZ190b2xlcmFuY2VgCgpUcmFpbmluZyBjb25zdGFudGx5IHRyYWNrcyB2YWxpZGF0aW9uIGZyYW1lIHBlcmZvcm1hbmNlLiBFYXJseSBzdG9wcGluZyBpcyBlbmFibGVkCmJ5IGRlZmF1bHQgYnV0IGNhbiBiZSB0dW5lZCB3aGVuIHRvIHN0b3AuIFRoaXMsIGFnYWluLCBpcyB0byBwcmV2ZW50IG92ZXJmaXR0aW5nLgooSWYgeW91IGRvbid0IHN1cHBseSBhIGB2YWxpZGF0aW9uX2ZyYW1lYCwgZWFybHkgc3RvcHBpbmcgc3RpbGwgd29ya3MgYnV0IGJhc2VkIG9uIAptZXRyaWNzIGNhbGN1bGF0ZWQgZnJvbSB0aGUgdHJhaW5pbmcgc2V0ID0gbWF5IG5vdCBiZSBhcyBpbmZvcm1hdGl2ZSBmb3Igb3V0IG9mIHNhbXBsZQpwZXJmb3JtYW5jZS4pCgpgYGB7cn0KZWFybHlfc3RvcHBpbmdfbW9kZWwgPC0gaDJvLmRlZXBsZWFybmluZyh4ID0gWCwgCiAgICAgICAgICAgICAgICAgeSA9IHksIAogICAgICAgICAgICAgICAgIHRyYWluaW5nX2ZyYW1lID0gZGF0YV90cmFpbiwgCiAgICAgICAgICAgICAgICAgdmFsaWRhdGlvbl9mcmFtZSA9IGRhdGFfdmFsaWQsCiAgICAgICAgICAgICAgICAgaGlkZGVuID0gYygzMiwgMzIsIDMyLCAzMiwgMzIpLAogICAgICAgICAgICAgICAgIGVwb2NocyA9IDEwMCwKICAgICAgICAgICAgICAgICBzdG9wcGluZ19yb3VuZHMgPSAyLAogICAgICAgICAgICAgICAgIHN0b3BwaW5nX21ldHJpYyA9ICJBVUMiLAogICAgICAgICAgICAgICAgIHN0b3BwaW5nX3RvbGVyYW5jZSA9IDAuMDEsCiAgICAgICAgICAgICAgICAgc2VlZCA9IDEyMykKaDJvLnBlcmZvcm1hbmNlKGVhcmx5X3N0b3BwaW5nX21vZGVsLCBkYXRhX3Rlc3QpQG1ldHJpY3MkQVVDCmBgYAoK</div>
 
 
 

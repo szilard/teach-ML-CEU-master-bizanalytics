@@ -1,0 +1,184 @@
+---
+title: "Lab week 12 - Stacking"
+subtitle: "Data Science and Machine Learning 2 - CEU 2018"
+author: "Jeno Pal"
+date: '2018-03-20'
+output:
+  html_notebook:
+    df_print: paged
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(data.table)
+library(GGally)
+
+library(h2o)
+h2o.init()
+```
+
+
+Stacking:
+
+* specify different $L$ predictive models
+* score training observations using out-of-fold predictions
+* this gives a "level-one" data: the original outcome and the scores
+coming from the $L$ base models
+* use these to estimate a second level predictive model ("meta-learner")
+
+When predicting new observations
+
+  * the base models are estimated using all training observations, use these
+  to get scores for the new observation
+  * input this to the meta-learner model to get the predicted outcome
+
+The more uncorrelated predictions are, the more room there is to
+improve individual models.
+
+Stacked models do not always perform better than individual ones but
+many times they do.
+
+You have seen
+how to do stacking with `caret` in the lecture.
+It is very convenient to create stacked ensembles in h2o, we are
+gaining practice with this now. See more [here](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/stacked-ensembles.html).
+
+
+```{r}
+data <- h2o.importFile("../../data/airlines/airline100K.csv")
+
+data_split <- h2o.splitFrame(data, ratios = 0.7, seed = 123)
+data_train <- data_split[[1]]
+data_test <- data_split[[2]]
+
+y <- "dep_delayed_15min"
+X <- setdiff(names(data_train), y)
+```
+
+Train some base learners using cross validation.
+
+```{r}
+glm_model <- h2o.glm(
+  X, y,
+  training_frame = data_train,
+  family = "binomial",
+  alpha = 1, 
+  lambda_search = TRUE,
+  seed = 123,
+  nfolds = 5, 
+  keep_cross_validation_predictions = TRUE
+)
+```
+
+```{r}
+gbm_model <- h2o.gbm(
+  X, y,
+  training_frame = data_train,
+  ntrees = 200, 
+  max_depth = 10, 
+  learn_rate = 0.1, 
+  seed = 123,
+  nfolds = 5, 
+  keep_cross_validation_predictions = TRUE
+)
+```
+```{r}
+deeplearning_model <- h2o.deeplearning(
+  X, y,
+  training_frame = data_train,
+  hidden = c(32, 8),
+  seed = 123,
+  nfolds = 5, 
+  keep_cross_validation_predictions = TRUE
+)
+```
+
+```{r}
+ensemble_model <- h2o.stackedEnsemble(
+  X, y,
+  training_frame = data_train,
+  base_models = list(glm_model, 
+                     gbm_model,
+                     deeplearning_model))
+```
+```{r}
+# inspect test set correlations of scores
+predictions <- data.table(
+  "glm" = as.data.frame(h2o.predict(glm_model, newdata = data_test)$Y)$Y,
+  "gbm" = as.data.frame(h2o.predict(gbm_model, newdata = data_test)$Y)$Y,
+  "dl" = as.data.frame(h2o.predict(deeplearning_model, newdata = data_test)$Y)$Y
+)
+
+ggcorr(predictions, label = TRUE, label_round = 2)
+```
+
+
+```{r}
+# test set performances
+print(h2o.auc(h2o.performance(glm_model, newdata = data_test)))
+print(h2o.auc(h2o.performance(gbm_model, newdata = data_test)))
+print(h2o.auc(h2o.performance(deeplearning_model, newdata = data_test)))
+```
+
+```{r}
+# for the ensemble model
+print(h2o.auc(h2o.performance(ensemble_model, newdata = data_test)))
+```
+
+The baseline meta-learner is a glm model. You can try others:
+```{r}
+ensemble_model_gbm <- h2o.stackedEnsemble(
+  X, y,
+  training_frame = data_train,
+  metalearner_algorithm = "gbm",
+  base_models = list(glm_model, 
+                     gbm_model,
+                     deeplearning_model))
+```
+
+```{r}
+print(h2o.auc(h2o.performance(ensemble_model_gbm, newdata = data_test)))
+```
+
+Meta-learning can also be built upon same-family, different
+hyperparameter models via a grid of hyperparameters.
+
+```{r}
+learn_rate_opt <- c(0.1, 0.3)
+max_depth_opt <- c(3, 5, 7)
+hyper_params <- list(learn_rate = learn_rate_opt,
+                     max_depth = max_depth_opt)
+
+gbm_grid <- h2o.grid(
+  x = X, y = y,
+  training_frame = data_train,
+  algorithm = "gbm",
+  ntrees = 10,
+  hyper_params = hyper_params,
+  seed = 123,
+  nfolds = 5, 
+  keep_cross_validation_predictions = TRUE)
+```
+
+```{r}
+ensemble_model_grid_gbm <- h2o.stackedEnsemble(
+  X, y,
+  training_frame = data_train,
+  base_models = gbm_grid@model_ids)
+```
+```{r}
+# individual test set performances
+for (model_id in gbm_grid@model_ids) {
+  model <- h2o.getModel(model_id)
+  print(model_id)
+  print(h2o.auc(h2o.performance(model, newdata = data_test)))
+}
+```
+
+```{r}
+print(h2o.auc(h2o.performance(ensemble_model_grid_gbm, newdata = data_test)))
+```
+
+
+

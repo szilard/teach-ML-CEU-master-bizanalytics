@@ -13,8 +13,7 @@ output:
 ## Deep neural nets with `keras`
 
 The [homepage](https://keras.rstudio.com/) has great descrpitions, expamples
-and tutorials. Note: if you are really into building deeper neural nets, you'll
-need computational power as well, like GPUs.
+and tutorials. Cheatsheet [here](https://www.rstudio.com/resources/cheatsheets/). 
 
 ```{r}
 library(keras)
@@ -24,11 +23,18 @@ y_train <- mnist$train$y
 x_test <- mnist$test$x
 y_test <- mnist$test$y
 ```
+
 ```{r, fig.width=2, fig.height=2}
-# show example of image
-# https://stackoverflow.com/questions/37953644/r-image-plot-mnist-dataset
-image(1:28, 1:28, x_train[18, , ], col=gray((0:255)/255))
+show_mnist_image <- function(x) {
+  image(1:28, 1:28, t(x)[,nrow(x):1],col=gray((0:255)/255)) 
+}
+
+show_mnist_image(x_train[18, , ])
 ```
+
+### A fully connected network example
+
+Similar to what we saw with `h2o`. 
 
 ```{r}
 # reshape
@@ -77,4 +83,68 @@ model %>% evaluate(x_test, y_test)
 
 ```{r}
 model %>% predict_classes(x_test)
+```
+
+## A convolutional neural net example
+
+It makes use of the 2d structure of the original input data, applying
+filters exploiting the 2d images. In `h2o` there is no option to use such models
+by default.
+
+```{r}
+mnist <- dataset_mnist()
+x_train <- mnist$train$x
+y_train <- mnist$train$y
+x_test <- mnist$test$x
+y_test <- mnist$test$y
+
+x_train <- array_reshape(x_train, c(nrow(x_train), 28, 28, 1))
+x_test <- array_reshape(x_test, c(nrow(x_test), 28, 28, 1))
+
+# rescale
+x_train <- x_train / 255
+x_test <- x_test / 255
+
+# one-hot encoding of the target variable
+y_train <- to_categorical(y_train, 10)
+y_test <- to_categorical(y_test, 10)
+```
+
+```{r}
+cnn_model <- keras_model_sequential() 
+cnn_model %>% 
+  layer_conv_2d(filters = 32,
+                kernel_size = c(3, 3), 
+                activation = 'relu',
+                input_shape = c(28, 28, 1)) %>%
+  layer_max_pooling_2d(pool_size = c(2, 2)) %>% 
+  layer_dropout(rate = 0.25) %>%
+  layer_flatten() %>% 
+  layer_dense(units = 32, activation = 'relu') %>% 
+  layer_dense(units = 10, activation = 'softmax')
+```
+
+```{r}
+summary(cnn_model)
+```
+
+```{r}
+cnn_model %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy')
+)
+```
+
+```{r}
+history <- cnn_model %>% fit(
+  x_train, y_train, 
+  epochs = 10, 
+  batch_size = 128, 
+  validation_split = 0.2
+)
+```
+
+```{r}
+cnn_model %>% evaluate(x_test, y_test)
 ```
