@@ -1,5 +1,5 @@
 
-## Lect wk09
+## Lect wk10
 
 Trees, Bagging, Boosting. Random Forests and Gradient Boosting machines. 
 

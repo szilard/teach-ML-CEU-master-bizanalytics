@@ -1,12 +1,12 @@
 
-## Lect wk12
+## Lect wk13
 
-Recap and summary. 
+Recap, summary and Q&A.
 
 
 ### Slides
 
-Slides [here](https://drive.google.com/open?id=1nDL9EUMk2L1HRMryAoenaDWRTd7RQTdCKqsRvHxxL7Q).
+Slides [here](https://docs.google.com/presentation/d/1aDO7gQNAjo7TyGcTKJmShlw5n_rNaiss4B_4qmY5Bjs).
 
 
 ### Reading

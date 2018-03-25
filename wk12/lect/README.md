@@ -1,5 +1,5 @@
 
-## Lect wk11
+## Lect wk12
 
 Neural Networks, Deep Learning. Evolutionary computing (Genetic Algorithm, Evolutionary Strategies, Evolutionary Programming, Genetic Programming)
 
