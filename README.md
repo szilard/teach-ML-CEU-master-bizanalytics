@@ -28,7 +28,7 @@ This course will build on the previous one (which introduced the basic concepts 
 
 
 
-### Course Designer (and Instructor previous years):
+### Initial Course Designer (and Instructor pre-2018):
 
 Szilárd Pafka <br>
 
